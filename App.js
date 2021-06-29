@@ -1,21 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import { useAssets } from 'expo-asset';
+import global from './global';
+import Splash from './screens/splash';
+import AppNavigator from './screens/auth/mobile';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    FuturaT: global.FONT.FUTURA,
+    SFProRegular: global.FONT.SFProRegular,
+    SFProMedium: global.FONT.SFProMedium,
+    SFProBold: global.FONT.SFProBold,
+  });
+
+  const [imagesLoaded] = useAssets([
+    global.IMAGE.STOCK.STOCK_1,
+    global.IMAGE.STOCK.STOCK_2,
+    global.IMAGE.STOCK.STOCK_3,
+    global.IMAGE.STOCK.STOCK_4,
+    global.IMAGE.STOCK.STOCK_5,
+    global.IMAGE.STOCK.STOCK_6,
+    global.IMAGE.STOCK.STOCK_7,
+    global.IMAGE.STOCK.STOCK_8,
+    global.IMAGE.STOCK.STOCK_9,
+    global.IMAGE.STOCK.STOCK_10,
+    global.IMAGE.STOCK.STOCK_11,
+    global.IMAGE.STOCK.STOCK_12,
+    global.IMAGE.STOCK.STOCK_13,
+    global.IMAGE.STOCK.STOCK_14,
+    global.IMAGE.STOCK.STOCK_15,
+    global.IMAGE.STOCK.STOCK_16,
+    global.IMAGE.STOCK.STOCK_17,
+    global.IMAGE.STOCK.STOCK_18,
+    global.IMAGE.STOCK.STOCK_19,
+  ]);
+
+  if(!fontsLoaded || !imagesLoaded)
+    return (<Splash/>);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppNavigator/>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
