@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE } from '../constants';
+import { MOBILE_NUMBER_CHANGE, MOBILE_NUMBER_VERIFIED } from '../constants';
 
 const initialState = {
     phoneNumber: '',
@@ -14,6 +14,15 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 phoneNumber: action.payload
+            };
+
+        case MOBILE_NUMBER_VERIFIED:
+            return {
+                ...state,
+                userId: action.payload.userId,
+                accessToken: action.payload.accessToken,
+                refreshToken: action.payload.refreshToken,
+                userType: action.payload.userType,
             };
 
         default:

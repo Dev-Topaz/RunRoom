@@ -24,3 +24,19 @@ export async function sendVerifyCode(phoneNumber) {
     return result;
 }
 
+export async function verifyCode(phoneNumber, codeNumber) {
+
+    const result = await Axios.post('/Users/VerifyCode', {
+        mobileNumber: phoneNumber,
+        verificationCode: codeNumber,
+    }).then(
+        async function(response) {
+            return response.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
