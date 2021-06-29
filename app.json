@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "RunRoom",
+    "slug": "RunRoom",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.metomine.runroom",
+      "buildNumber": "2.0.3",
+      "infoPlist": {
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
+        "NSLocationWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
+        "NSLocationAlwaysUsageDescription": "App uses your location permission to let others know where you are running now.",
+        "NSPhotoLibraryUsageDescription": "App uses your library permission to get a picture for your avatar.",
+        "NSCameraUsageDescription": "App uses your camera permission to get a picture for your avatar.",
+        "NSMicrophoneUsageDescription": "App uses your microphone permission to capture a movie with your phone."
+      },
+      "config": {
+        "googleMapsApiKey": "AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "This is a project for Thomas Mulder."
+  }
+}
