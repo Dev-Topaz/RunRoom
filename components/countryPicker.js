@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
     },
     cancelText: {
         textAlign: 'center',
-        color: '#CCC',
+        color: 'black',
         fontSize: 18,
     },
 });
 
-export default React.memo(CountryPicker);
+export default CountryPicker;
