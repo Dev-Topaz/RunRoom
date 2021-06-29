@@ -1,9 +1,13 @@
 import React from 'react';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
+import { Provider } from 'react-redux';
 import global from './global';
+import configureStore from './store/configureStore';
 import Splash from './screens/splash';
 import AppNavigator from './screens/auth/mobile';
+
+const store = configureStore()
 
 export default function App() {
 
@@ -40,6 +44,8 @@ export default function App() {
     return (<Splash/>);
 
   return (
-    <AppNavigator/>
+    <Provider store = { store }>
+      <AppNavigator/>
+    </Provider>
   );
 }
