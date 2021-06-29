@@ -54,7 +54,7 @@ const Username = (props) => {
 
     return (
         <View style={css.bgAuthContainer}>
-            <Text style={css.titleText}>GETTING STARTED</Text>
+            <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>GETTING STARTED</Text>
             <Text style={css.authIndicatorText}>How would you like us to address you?</Text>
             <Text style={[css.labelText, { marginTop: 23 }]}>First Name</Text>
             <View style={[css.textInputContainer, { borderWidth: 1, borderColor: isError && firstName.length == 0 ? global.COLOR.WARNING_BORDER : global.COLOR.BACKGROUND }]}>
