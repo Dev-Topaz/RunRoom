@@ -1,7 +1,8 @@
-import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { changeUnit } from '../store/actions/actions';
 
 export async function initUnitFromStorageToRedux(dispatch) {
+
     try {
         const value = await AsyncStorage.getItem('unit');
         if(value != null) {

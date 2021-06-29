@@ -5,7 +5,14 @@ import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
 
+import { initUnitFromStorageToRedux } from '../../utils/func';
+import { useDispatch } from 'react-redux';
+import { changeMobileNumber } from '../../store/actions/actions';
+import { sendVerifyCode } from '../../utils/api';
+
 const MobileInput = (props) => {
+
+    const dispatch = useDispatch();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState([]);
@@ -14,6 +21,7 @@ const MobileInput = (props) => {
 
     useEffect(() => {
         setModalData(phoneInput.current.getPickerData());
+        initUnitFromStorageToRedux(dispatch);
     }, []);
 
     const selectCountry = (item) => {
@@ -28,7 +36,7 @@ const MobileInput = (props) => {
         } else {
             sendVerifyCode(value).then(result => {
                 if(result) {
-                    //dispatch(changeMobileNumber(value));
+                    dispatch(changeMobileNumber(value));
                     //props.navigation.navigate('Verify');
                 } else {
                     Alert.alert('ERROR', 'There is an error in sending mobile number.');
