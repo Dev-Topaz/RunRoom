@@ -4,7 +4,6 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { saveUser, getUserDetails } from '../../utils/api';
 import { useSelector } from 'react-redux';
 

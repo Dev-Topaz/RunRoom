@@ -37,7 +37,7 @@ const MobileInput = (props) => {
             sendVerifyCode(value).then(result => {
                 if(result) {
                     dispatch(changeMobileNumber(value));
-                    //props.navigation.navigate('Verify');
+                    props.navigation.navigate('Verify');
                 } else {
                     Alert.alert('ERROR', 'There is an error in sending mobile number.');
                 }

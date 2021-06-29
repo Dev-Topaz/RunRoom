@@ -41,7 +41,7 @@ const Verification = (props) => {
         verifyCode(phoneNumber, value).then(result => {
             if(result.isVerified) {
                 dispatch(codeVerified(result));
-                //props.navigation.navigate('UserName');
+                props.navigation.navigate('UserName');
                 setValue('');
             } else {
                 setValue('');
