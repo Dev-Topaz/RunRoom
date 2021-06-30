@@ -5,13 +5,14 @@ import { Icon } from 'react-native-elements';
 import global from '../global';
 
 import Splash from '../screens/splash';
+import RoomMain from '../screens/room/main';
 
 export default createAppContainer(
     createMaterialBottomTabNavigator(
         {
             Room: createSwitchNavigator(
                 {
-                    RoomMain: { screen: Splash },
+                    RoomMain: { screen: RoomMain },
                 },
                 {
                     initialRouteName: 'RoomMain',

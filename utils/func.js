@@ -34,8 +34,8 @@ export function convertFloat(distance) {
             return dist + '';
 }
 
-export function getRemainTimeStyle(current, date) {
-    const dateObject = new Date(date);
+export function getRemainTimeStyle(current, target) {
+    const dateObject = new Date(target);
     let ts = (dateObject.getTime() - current.getTime()) / 1000;
     let td = Math.floor(ts / (3600 * 24));
     let th = Math.floor(ts % (3600 * 24) / 3600);
@@ -51,8 +51,8 @@ export function getRemainTimeStyle(current, date) {
         return 4;
 }
 
-export function displayRemainTime(current, date) {
-    const dateObject = new Date(date);
+export function displayRemainTime(current, target) {
+    const dateObject = new Date(target);
     let ts = (dateObject.getTime() - current.getTime()) / 1000;
     let td = Math.floor(ts / (3600 * 24));
     let th = Math.floor(ts % (3600 * 24) / 3600);
@@ -75,9 +75,9 @@ export function displayRemainTime(current, date) {
     }
 }
 
-export function displayRunDateTime(current, date) {
-    if(moment(date).isSame(current, 'day'))
-        return moment(date.toString()).format('HH:mm, [Today]');
+export function displayRunDateTime(current, target) {
+    if(moment(target).isSame(current, 'day'))
+        return moment(target.toString()).format('HH:mm, [Today]');
     else
-        return moment(date.toString()).format('HH:mm, ddd MMM D');
+        return moment(target.toString()).format('HH:mm, ddd MMM D');
 }

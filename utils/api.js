@@ -94,3 +94,82 @@ export async function getUserDetails(userId, accessToken) {
 
     return result;
 }
+
+export async function getAllRunRooms(pageId, pageSize, accessToken, filterOption) {
+
+    const result = Axios.get('/RunRooms/GetAllRunRooms', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+            Invited: filterOption.invited,
+            Participating: filterOption.participating,
+            Organized: filterOption.organized,
+            StartingFrom: filterOption.dateValue,
+            RunDistanceFrom: filterOption.startValue,
+            RunDistanceTo: filterOption.endValue,
+            Unit: filterOption.unit,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function joinRun(joinInfo, accessToken) {
+
+    const result = Axios.post('/RunRooms/JoinARace', {
+        runnerId: joinInfo.runnerId,
+        runRoomId: joinInfo.runRoomId,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.data.success) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function disjoinRun(disjoinInfo, accessToken) {
+
+    const result = Axios.put('/RunRooms/OptOutFromARace', {
+        runnerId: disjoinInfo.runnerId,
+        runRoomId: disjoinInfo.runRoomId,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.data.success) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}

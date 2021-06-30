@@ -40,6 +40,7 @@ export default {
         BLACK40: 'rgba(0, 0, 0, 0.4)',
         WHITE95: 'rgba(255, 255, 255, 0.95)',
         WHITE85: 'rgba(255, 255, 255, 0.85)',
+        WHITE75: 'rgba(255, 255, 255, 0.75)',
         STATUS_INACTIVE: 'rgba(237, 238, 239, 1)',
         STATUS_ACTIVE: 'rgba(241, 194, 167, 1)',
         GOT: 'rgba(74, 144, 226, 1)',

@@ -4,8 +4,10 @@ import { FloatingAction } from 'react-native-floating-action';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
+import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { getAllRunRooms, joinRun, disjoinRun } from '../../utils/api';
 
 const RoomMain = (props) => {
 
@@ -18,6 +20,103 @@ const RoomMain = (props) => {
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [current, setCurrent] = useState(new Date());
+    const [filterOption, setFilterOption] = useState({
+        invited: false,
+        participating: false,
+        organized: false,
+        startValue: 0,
+        endValue: 20,
+        unit: 1,
+        dateValue: new Date(),
+    });
+
+    useEffect(() => {
+        StatusBar.setHidden(true);
+    }, []);
+
+    useEffect(() => {
+        setPage(1);
+    }, [filterOption]);
+
+    useEffect(() => {
+        setLoading(true);
+        getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
+            if(result != null && result.length > 0) {
+                if(page != 1)
+                    setData([...data, ...result]);
+                else
+                    setData(result);
+            }
+            setLoading(false);
+        });
+    }, [page]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {setCurrent(new Date())}, 60000);
+        let target = [...data];
+
+        while(true) {
+            if(target.length < 1)
+                break;
+            if(getRemainTimeStyle(current, target[0].runDateTime) == 4) {
+                target.shift();
+            } else {
+                setData(target);
+                break;
+            }
+        }
+
+        return () => clearInterval(timer);
+    }, [current]);
+
+
+    const renderItem = ({ item, index }) => (
+        <View key={item.id} style={css.card}>
+            <ImageBackground source={stockImages[item.stockImageID]} style={css.thumbnail}>
+                <View style={css.thumbOverlay}>
+                    <View style={css.leftTop}>
+                        <Text style={css.thumbRunnerText}>{item.totalRunnersCount + (item.totalRunnersCount  == 1 ? ' Runner' : ' Runners')}</Text>
+                        <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers) + (unit == 1 ? ' MI' : ' KM')}</Text>
+                    </View>
+                    <View style={css.rightBottom}>
+                        <Text style={css.typeSymbol}>●</Text>
+                        <Text style={css.typeText}>{item.roomType == 1 ? 'PUBLIC' : 'PRIVATE'}</Text>
+                    </View>
+                    <View style={css.leftBottom}>
+                        <Text style={css.thumbDateText}>{getRemainTimeStyle(current, item.runDateTime) > 3 ? null : displayRunDateTime(current, item.runDateTime)}</Text>
+                        {
+                            getRemainTimeStyle(current, item.runDateTime) == 1 ?
+                                <Text style={css.thumbRemainText2}>{displayRemainTime(current, item.runDateTime)}</Text>
+                            : getRemainTimeStyle(current, item.runDateTime) == 2 ?
+                                <Text style={css.thumbRemainText1}>{displayRemainTime(current, item.runDateTime)}</Text>
+                            :   <Text style={css.thumbRemainText3}>{displayRemainTime(current, item.runDateTime)}</Text>
+                        }
+                    </View>
+                    <View style={css.rightTop}>
+                        <Pressable style={{ flexDirection: 'row' }} onPress={() => {}}>
+                            {
+                                item.runners.length > 3 ?
+                                    <View>
+                                        <View style={[css.badge, {right: 0}]}>
+                                            <Text style={css.badgeText}>{'+' + (item.runners.length - 3)}</Text>
+                                        </View>
+                                        <Image source={item.runners[2].runnerPicture == null ? unknown : item.runners[2].runnerPicture} style={[css.followAvatar, {right: 25}]}/>
+                                        <Image source={item.runners[1].runnerPicture == null ? unknown : item.runners[1].runnerPicture} style={[css.followAvatar, {right: 48}]}/>
+                                        <Image source={item.runners[0].runnerPicture == null ? unknown : item.runners[0].runnerPicture} style={[css.followAvatar, {right: 70}]}/>
+                                    </View>
+                                : item.runners.map((runner, idx = 0) => {
+                                    return (
+                                        <Image key={idx} source={runner.runnerPicture == null ? unknown : {uri: runner.runnerPicture}} style={[css.followAvatar, {right: 25*idx++}]}/>
+                                    );
+                                })
+                            }
+                        </Pressable>
+                    </View>
+                </View>
+            </ImageBackground>
+        </View>
+    );
 
     return (
         <View style={{ flex: 1, backgroundColor: global.COLOR.BACKGROUND }}>
@@ -74,3 +173,27 @@ const styles = StyleSheet.create({
 });
 
 export default RoomMain;
+
+const stockImages = [
+    global.IMAGE.STOCK.STOCK_1,
+    global.IMAGE.STOCK.STOCK_2,
+    global.IMAGE.STOCK.STOCK_3,
+    global.IMAGE.STOCK.STOCK_4,
+    global.IMAGE.STOCK.STOCK_5,
+    global.IMAGE.STOCK.STOCK_6,
+    global.IMAGE.STOCK.STOCK_7,
+    global.IMAGE.STOCK.STOCK_8,
+    global.IMAGE.STOCK.STOCK_9,
+    global.IMAGE.STOCK.STOCK_10,
+    global.IMAGE.STOCK.STOCK_11,
+    global.IMAGE.STOCK.STOCK_12,
+    global.IMAGE.STOCK.STOCK_13,
+    global.IMAGE.STOCK.STOCK_14,
+    global.IMAGE.STOCK.STOCK_15,
+    global.IMAGE.STOCK.STOCK_16,
+    global.IMAGE.STOCK.STOCK_17,
+    global.IMAGE.STOCK.STOCK_18,
+    global.IMAGE.STOCK.STOCK_19,
+];
+
+const unknown = global.IMAGE.UNKNOWN;
