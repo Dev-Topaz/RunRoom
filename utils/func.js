@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { changeUnit } from '../store/actions/actions';
+import { isInteger } from 'lodash';
+import moment from 'moment';
 
 export async function initUnitFromStorageToRedux(dispatch) {
 
@@ -22,4 +24,60 @@ export async function initUnitFromStorageToRedux(dispatch) {
     } catch(e) {
         console.log('Error: ' + e);
     }
+}
+
+export function convertFloat(distance) {
+    let dist = Math.floor(distance * 10) / 10;
+        if(isInteger(dist))
+            return dist + '.0';
+        else 
+            return dist + '';
+}
+
+export function getRemainTimeStyle(current, date) {
+    const dateObject = new Date(date);
+    let ts = (dateObject.getTime() - current.getTime()) / 1000;
+    let td = Math.floor(ts / (3600 * 24));
+    let th = Math.floor(ts % (3600 * 24) / 3600);
+    let tm = Math.floor(ts % 3600 / 60);
+
+    if(td > 0)
+        return 1;
+    else if(th > 0)
+        return 2;
+    else if(tm > 2)
+        return 3;
+    else
+        return 4;
+}
+
+export function displayRemainTime(current, date) {
+    const dateObject = new Date(date);
+    let ts = (dateObject.getTime() - current.getTime()) / 1000;
+    let td = Math.floor(ts / (3600 * 24));
+    let th = Math.floor(ts % (3600 * 24) / 3600);
+    let tm = Math.floor(ts % 3600 / 60);
+    let remain = '';
+
+    if(td > 0) {
+        remain = remain + td + (td == 1 ? ' day' : ' days');
+        if(th > 0)
+            remain = remain + ' and ' + th + (th == 1 ? ' hour' : ' hours');
+        return remain + ' to start';
+    } else if(th > 0) {
+        remain = remain + th + (th == 1 ? ' hour' : ' hours');
+        if(tm > 0)
+            remain = remain + ' and ' + tm + ' min';
+        return remain + ' to start';
+    } else {
+        remain = remain + tm + ' minutes';
+        return remain + ' to START';
+    }
+}
+
+export function displayRunDateTime(current, date) {
+    if(moment(date).isSame(current, 'day'))
+        return moment(date.toString()).format('HH:mm, [Today]');
+    else
+        return moment(date.toString()).format('HH:mm, ddd MMM D');
 }

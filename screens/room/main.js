@@ -58,9 +58,19 @@ const RoomMain = (props) => {
 }
 
 const styles = StyleSheet.create({
-    emptyContainer: {},
-    emptyText: {},
-    listFooter: {},
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    emptyText: {
+        fontFamily: 'SFProBold',
+        fontSize: 24,
+        color: global.COLOR.PRIMARY100,
+    },
+    listFooter: {
+        paddingVertical: 20,
+    },
 });
 
 export default RoomMain;
