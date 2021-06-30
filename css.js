@@ -52,4 +52,46 @@ export default StyleSheet.create({
         fontSize: 16,
         color: 'white',
     },
+    modalContainer801: {
+        width: global.CONSTANTS.WIDTH,
+        height: global.CONSTANTS.SIZE_801,
+        backgroundColor: 'white',
+        top: global.CONSTANTS.HEIGHT - global.CONSTANTS.SIZE_801,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        paddingTop: 45,
+    },
+    modalHeader: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+    },
+    modalTitleText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+    },
+    modalCloseButton: {
+        position: 'absolute',
+        right: 1,
+    },
+    modalBackButton: {
+        position: 'absolute',
+        left: 6,
+    },
+    mainHeader: {
+        height: global.CONSTANTS.SIZE_110,
+        backgroundColor: 'white',
+        borderColor: global.COLOR.HEADER_BORDER,
+        borderWidth: 0.5,
+        justifyContent: 'flex-end',
+    },
+    mainTitleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingBottom: 10,
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+    },
 });
