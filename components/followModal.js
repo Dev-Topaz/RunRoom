@@ -21,7 +21,7 @@ const FollowModal = (props) => {
                             <SvgIcon icon='Close'/>
                         </Pressable>
                     </View>
-                    <ScrollView style={{ marginTop: global.CONSTANTS.SIZE_20 }}>
+                    <ScrollView style={{ marginTop: 36 }}>
                         {
                             props.data.map((item, idx = 0) => {
                                 return (

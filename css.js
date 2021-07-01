@@ -317,4 +317,8 @@ export default StyleSheet.create({
         fontSize: 10,
         color: '#8C8D8E',
     },
+    plusButton: {
+        position: 'absolute',
+        right: 22,
+    },
 });
