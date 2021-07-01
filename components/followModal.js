@@ -1,13 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Pressable, Modal, FlatList } from 'react-native';
+import { StyleSheet, View, Text, Image, Pressable, Modal, ScrollView } from 'react-native';
 import global from '../global';
 import css from '../css';
 import SvgIcon from './svgIcon';
 
 const FollowModal = (props) => {
-
-    const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
 
     return (
         <Modal
@@ -20,11 +17,26 @@ const FollowModal = (props) => {
                 <View style={css.modalContainer801}>
                     <View style={css.modalHeader}>
                         <Text style={css.modalTitleText}>Following</Text>
-                        <Pressable style={css.modalCloseButton}>
+                        <Pressable style={css.modalCloseButton} onPress={() => props.onChangeVisible(false)}>
                             <SvgIcon icon='Close'/>
                         </Pressable>
                     </View>
-
+                    <ScrollView style={{ marginTop: global.CONSTANTS.SIZE_20 }}>
+                        {
+                            props.data.map((item, idx = 0) => {
+                                return (
+                                    <View key={idx++} style={styles.listItemContainer}>
+                                        <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={css.hostAvatar}/>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
+                                            <Text style={styles.locationText}>Paris, France</Text>
+                                            <Text style={styles.runningText}>2 Runs Completed</Text>
+                                        </View>
+                                    </View>
+                                );
+                            })
+                        }
+                    </ScrollView>
                 </View>
             </View>
         </Modal>
@@ -32,7 +44,32 @@ const FollowModal = (props) => {
 }
 
 const styles = StyleSheet.create({
-
+    listItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: global.CONSTANTS.SIZE_20,
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+    },
+    infoContainer: {
+        height: global.CONSTANTS.SQUARE_50,
+        justifyContent: 'space-between',
+        marginLeft: 10,
+    },
+    nameText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 14,
+        color: global.COLOR.PRIMARY100,
+    },
+    locationText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 10,
+        color: global.COLOR.PRIMARY70,
+    },
+    runText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 10,
+        color: global.COLOR.PRIMARY70,
+    },
 });
 
-export default FollowModal;
+export default React.memo(FollowModal);

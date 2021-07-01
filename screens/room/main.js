@@ -5,6 +5,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
+import FollowModal from '../../components/followModal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, joinRun, disjoinRun } from '../../utils/api';
@@ -15,6 +16,10 @@ const RoomMain = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const userId = useSelector(state => state.user.userId);
     const unit = useSelector(state => state.setting.unit);
+
+    const [followVisible, setFollowVisible] = useState(false);
+    const [filterVisible, setFilterVisible] = useState(false);
+    const [follower, setFollower] = useState([]);
 
     const [isEmpty, setEmpty] = useState(false);
     const [data, setData] = useState([]);
@@ -111,7 +116,8 @@ const RoomMain = (props) => {
     }
 
     const pressFollowingAction = (data) => {
-        
+        setFollower(data);
+        setFollowVisible(true);
     }
 
     const renderItem = ({ item, index }) => (
@@ -223,6 +229,11 @@ const RoomMain = (props) => {
                 showBackground={ false }
                 animated={ false }
                 onPressMain={ () => props.navigation.navigate('Create') } 
+            />
+            <FollowModal
+                data={ follower }
+                visible={ followVisible }
+                onChangeVisible={ setFollowVisible }
             />
         </View>
     );

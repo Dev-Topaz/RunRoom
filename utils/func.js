@@ -81,3 +81,14 @@ export function displayRunDateTime(current, target) {
     else
         return moment(target.toString()).format('HH:mm, ddd MMM D');
 }
+
+export function showDateInfo(date) {
+    let dateString = date.toString();
+    let timeString = dateString.split(' ')[4];
+    let weekdayString = dateString.split(' ')[0];
+    let monthString = dateString.split(' ')[1];
+    let dayString = dateString.split(' ')[2];
+    timeString = timeString.slice(0, -3);
+    
+    return timeString + ', ' + weekdayString + ' ' + monthString + ' ' + dayString;
+}
