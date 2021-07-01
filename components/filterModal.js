@@ -35,7 +35,7 @@ const FilterModal = (props) => {
     }
 
     const pressSubmitAction = () => {
-        
+
     }
 
     const renderThumb = useCallback(() => 
@@ -70,7 +70,7 @@ const FilterModal = (props) => {
             onRequestClose={() => {}}
         >
             <View style={css.overlay}>
-                <View style={css.modalContainer801}>
+                <View style={[css.modalContainer801, { paddingHorizontal: global.CONSTANTS.SIZE_20 }]}>
                     <View style={css.modalHeader}>
                         <Text style={css.modalTitleText}>Filter</Text>
                         <Pressable style={css.modalCloseButton} onPress={() => props.onChangeVisible(false)}>
@@ -125,7 +125,7 @@ const FilterModal = (props) => {
                             <Text style={css.labelText}>{lowValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
                             <Text style={css.labelText}>{highValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
                         </View>
-                        <Text style={[css.labelText, { marginTop: 40 }]}>Starting from</Text>
+                        <Text style={[css.labelText, { marginTop: 30 }]}>Starting from</Text>
                         <Pressable style={css.textInputContainer}>
                             <TextInput
                                 style={css.inputText}
@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     checkBoxContainer: {
         backgroundColor: 'transparent',
         borderWidth: 0,
+        marginLeft: 0,
     },
     checkBoxText: {
         fontFamily: 'SFProMedium',
