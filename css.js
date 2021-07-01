@@ -104,7 +104,7 @@ export default StyleSheet.create({
         marginRight: 'auto',
         marginTop: global.CONSTANTS.SIZE_20,
     },
-    thumbnail: {
+    cardThumbnail: {
         height: global.CONSTANTS.THUMB_381,
         width: '100%',
         resizeMode: 'contain',
@@ -231,5 +231,90 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: 'white',
         position: 'absolute',
+    },
+    cardInfoContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+    },
+    hostAvatar: {
+        width: global.CONSTANTS.SQUARE_50,
+        height: global.CONSTANTS.SQUARE_50,
+        resizeMode: 'contain',
+        borderRadius: 12,
+    },
+    hostInfo: {
+        height: global.CONSTANTS.SQUARE_50,
+        marginLeft: 15,
+    },
+    hostName: {
+        fontFamily: 'SFProMedium',
+        fontSize: 14,
+        color: 'black',
+    },
+    hostInvited: {
+        flexDirection: 'row',
+        marginTop: 5,
+    },
+    hostLabel: {
+        fontFamily: 'SFProRegular',
+        fontSize: 12,
+        color: global.COLOR.PRIMARY70,
+    },
+    inviteLabel: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        color: global.COLOR.SECONDARY,
+    },
+    participateStatus: {
+        position: 'absolute',
+        right: global.CONSTANTS.SIZE_20,
+    },
+    participatingContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    participatingText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        color: global.COLOR.PRIMARY100,
+        marginLeft: 6,
+    },
+    participateButton: {
+        width: 105,
+        height: 30,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: global.COLOR.PRIMARY100,
+    },
+    participateText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        color: 'white',
+    },
+    enterLobbyContainer: {
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+    },
+    enterLobbyButton: {
+        width: 120,
+        height: 30,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: global.COLOR.SECONDARY,
+        marginBottom: 5,
+    },
+    enterLobbyText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        color: 'white',
+    },
+    lobbyIndicatorText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 10,
+        color: '#8C8D8E',
     },
 });

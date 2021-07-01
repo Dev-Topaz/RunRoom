@@ -50,6 +50,7 @@ const RoomMain = (props) => {
             }
             setLoading(false);
         });
+        setLoading(false);
     }, [page]);
 
     useEffect(() => {
@@ -70,10 +71,52 @@ const RoomMain = (props) => {
         return () => clearInterval(timer);
     }, [current]);
 
+    useEffect(() => {
+        if(data.length < 1)
+            setEmpty(true);
+        else
+            setEmpty(false);
+    }, [data]);
+
+    const pressParticipateAction = (roomId, index) => {
+        const joinInfo = {
+            runnerId: userId,
+            runRoomId: roomId,
+        };
+        joinRun(joinInfo, accessToken).then(result => {
+            if(result) {
+                let target = [...data];
+                target[index].isParticipating = true;
+                setData(target);
+            } else {
+                Alert.alert('ERROR', 'There is an error in joining a room.');
+            }
+        });
+    }
+
+    const pressParticipatingAction = (roomId, index) => {
+        const disjoinInfo = {
+            runnerId: userId,
+            runRoomId: roomId,
+        };
+        disjoinRun(disjoinInfo, accessToken).then(result => {
+            if(result) {
+                let target = [...data];
+                target[index].isParticipating = false;
+                setData(target);
+            } else {
+                Alert.alert('ERROR', 'There is an error in disjoining a room.');
+            }
+        });
+    }
+
+    const pressFollowingAction = (data) => {
+        
+    }
 
     const renderItem = ({ item, index }) => (
         <View key={item.id} style={css.card}>
-            <ImageBackground source={stockImages[item.stockImageID]} style={css.thumbnail}>
+            <ImageBackground source={stockImages[item.stockImageID]} style={css.cardThumbnail}>
                 <View style={css.thumbOverlay}>
                     <View style={css.leftTop}>
                         <Text style={css.thumbRunnerText}>{item.totalRunnersCount + (item.totalRunnersCount  == 1 ? ' Runner' : ' Runners')}</Text>
@@ -94,7 +137,7 @@ const RoomMain = (props) => {
                         }
                     </View>
                     <View style={css.rightTop}>
-                        <Pressable style={{ flexDirection: 'row' }} onPress={() => {}}>
+                        <Pressable style={{ flexDirection: 'row' }} onPress={() => pressFollowingAction(item.runners)}>
                             {
                                 item.runners.length > 3 ?
                                     <View>
@@ -115,6 +158,35 @@ const RoomMain = (props) => {
                     </View>
                 </View>
             </ImageBackground>
+            <View style={css.cardInfoContainer}>
+                <Image source={item.organizerDetails.runnerPicture == null ? unknown : {uri: item.organizerDetails.runnerPicture}} style={css.hostAvatar}/>
+                <View style={css.hostInfo}>
+                    <Text style={css.hostName}>{item.organizerDetails.runnerFirstName + ' ' + item.organizerDetails.runnerLastName}</Text>
+                    <View style={css.hostInvited}>
+                        <Text style={css.hostLabel}>Host</Text>
+                        <Text style={css.hostLabel}>{item.organizerDetails.invitationType == 1 ? '  •  ' : ''}</Text>
+                        <Text style={css.inviteLabel}>{item.organizerDetails.invitationType == 1 ? 'Invited' : ''}</Text>
+                    </View>
+                </View>
+                <View style={css.participateStatus}>
+                    {
+                        item.isParticipating ? getRemainTimeStyle(current, item.runDateTime) != 3 ?
+                            <TouchableOpacity style={css.participatingContainer} onPress={() => pressParticipatingAction(item.id, index)}>
+                                <SvgIcon icon='CheckCircle'/>
+                                <Text style={css.participatingText}>PARTICIPATING</Text>
+                            </TouchableOpacity>
+                        :   <View style={css.enterLobbyContainer}>
+                                <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime)}>
+                                    <Text style={css.enterLobbyText}>Enter Lobby  ➜</Text>
+                                </TouchableOpacity>
+                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(item.runDateTime)}</Text>
+                            </View>
+                        :   <TouchableOpacity style={css.participateButton} onPress={() => pressParticipateAction(item.id, index)}>
+                                <Text style={css.participateText}>PARTICIPATE</Text>
+                            </TouchableOpacity>
+                    }
+                </View>
+            </View>
         </View>
     );
 
@@ -164,7 +236,7 @@ const styles = StyleSheet.create({
     },
     emptyText: {
         fontFamily: 'SFProBold',
-        fontSize: 24,
+        fontSize: 24, 
         color: global.COLOR.PRIMARY100,
     },
     listFooter: {
