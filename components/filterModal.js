@@ -35,7 +35,26 @@ const FilterModal = (props) => {
     }
 
     const pressSubmitAction = () => {
+        if(dateValue == null) {
+            setWarningVisible(true);
+            return;
+        }
+        const filterOption = {
+            invited: option.invited,
+            participating: option.participating,
+            organized: option.organized,
+            startValue: lowValue,
+            endValue: highValue,
+            unit: unit,
+            dateValue: dateValue,
+        };
+        props.onChangeValue(filterOption);
+        props.onChangeVisible(false);
+    }
 
+    const pressCloseAction = () => {
+        initStateValue();
+        props.onChangeVisible(false);
     }
 
     const renderThumb = useCallback(() => 
@@ -73,7 +92,7 @@ const FilterModal = (props) => {
                 <View style={[css.modalContainer801, { paddingHorizontal: global.CONSTANTS.SIZE_20 }]}>
                     <View style={css.modalHeader}>
                         <Text style={css.modalTitleText}>Filter</Text>
-                        <Pressable style={css.modalCloseButton} onPress={() => props.onChangeVisible(false)}>
+                        <Pressable style={css.modalCloseButton} onPress={pressCloseAction}>
                             <SvgIcon icon='Close'/>
                         </Pressable>
                     </View>
@@ -146,6 +165,21 @@ const FilterModal = (props) => {
                     </View>
                 </View>
             </View>
+            <Modal
+                animationType='slide'
+                transparent
+                visible={warningVisible}
+                onRequestClose={() => {}}
+            >
+                <View style={css.overlay}>
+                    <View style={styles.warningContainer}>
+                        <Text style={styles.warningTitle}>{'Please choose a data and time' + '\n' + 'in the future'}</Text>
+                        <Pressable style={{ marginTop: 30 }} onPress={() => setWarningVisible(false)}>
+                            <Text style={styles.buttonText}>Got it</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </Modal>
     );
 }
@@ -214,7 +248,31 @@ const styles = StyleSheet.create({
         bottom: global.CONSTANTS.SPACE_40,
         left: global.CONSTANTS.SIZE_20,
         right: global.CONSTANTS.SIZE_20,
-    }, 
+    },
+    warningContainer: {
+        width: global.CONSTANTS.MODAL_316,
+        height: global.CONSTANTS.MODAL_157,
+        backgroundColor: 'white',
+        top: (global.CONSTANTS.HEIGHT - global.CONSTANTS.MODAL_157) / 2,
+        left: (global.CONSTANTS.WIDTH - global.CONSTANTS.MODAL_316) / 2,
+        borderRadius: 37,
+        paddingHorizontal: 25,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    warningTitle: {
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+        textAlign: 'center',
+        letterSpacing: -0.8,
+        lineHeight: 24,
+    },
+    buttonText: {
+        fontFamily: 'SFProBold',
+        fontSize: 16,
+        color: global.COLOR.GOT,
+    },
 });
 
 export default React.memo(FilterModal);
