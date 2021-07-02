@@ -145,7 +145,7 @@ const FilterModal = (props) => {
                             <Text style={css.labelText}>{highValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
                         </View>
                         <Text style={[css.labelText, { marginTop: 30 }]}>Starting from</Text>
-                        <Pressable style={css.textInputContainer}>
+                        <Pressable style={css.textInputRowContainer}>
                             <TextInput
                                 style={css.inputText}
                                 editable={false}
@@ -173,7 +173,7 @@ const FilterModal = (props) => {
             >
                 <View style={css.overlay}>
                     <View style={styles.warningContainer}>
-                        <Text style={styles.warningTitle}>{'Please choose a data and time' + '\n' + 'in the future'}</Text>
+                        <Text style={styles.warningTitle}>{'Please choose a date and time' + '\n' + 'in the future'}</Text>
                         <Pressable style={{ marginTop: 30 }} onPress={() => setWarningVisible(false)}>
                             <Text style={styles.buttonText}>Got it</Text>
                         </Pressable>

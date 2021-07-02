@@ -173,3 +173,33 @@ export async function disjoinRun(disjoinInfo, accessToken) {
 
     return result;
 }
+
+export async function createRoom(roomInfo, accessToken) {
+
+    const result = Axios.post('/RunRooms/CreateARoom', {
+        roomType: roomInfo.roomType,
+        runDateTime: roomInfo.runDateTime,
+        runDistance: roomInfo.runDistance,
+        unit: roomInfo.unit,
+        organizerId: roomInfo.organizerId,
+        stockImageID: Math.floor(Math.random() * 19),
+        invitedConnections: [],
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200 && response.data.id != null) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}

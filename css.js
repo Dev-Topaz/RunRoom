@@ -35,6 +35,14 @@ export default StyleSheet.create({
         paddingHorizontal: global.CONSTANTS.SIZE_20,
         marginTop: 5,
     },
+    textInputRowContainer: {
+        height: global.CONSTANTS.SIZE_60,
+        backgroundColor: global.COLOR.BACKGROUND,
+        flexDirection: 'row',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        alignItems: 'center',
+        marginTop: 5,
+    },
     inputText: {
         fontFamily: 'SFProMedium',
         fontSize: 16,
@@ -320,5 +328,15 @@ export default StyleSheet.create({
     plusButton: {
         position: 'absolute',
         right: 22,
+    },
+    bgContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        paddingTop: global.CONSTANTS.SPACE_55,
+    },
+    backButton: {
+        marginLeft: 6,
+        marginBottom: 20,
     },
 });
