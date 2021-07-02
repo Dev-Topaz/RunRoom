@@ -25,7 +25,30 @@ const RoomCreate = (props) => {
     }, []);
 
     const pressSubmitAction = () => {
+        if(distanceValue == 0) {
+            Alert.alert('Please enter the distance.');
+            return;
+        }
 
+        if(dateValue == null) {
+            Alert.alert('Please enter the date and time.');
+            return;
+        }
+
+        const roomInfo = {
+            organizerId: userId,
+            roomType: parseInt(typeValue),
+            runDateTime: dateValue,
+            runDistance: distanceValue,
+            unit: unit,
+        };
+        createRoom(roomInfo, accessToken).then(result => {
+            if(result) {
+                props.navigation.navigate('RoomComplete');
+            } else {
+                Alert.alert('ERROR', 'There is an error in creating a runroom.');
+            }
+        });
     }
 
     return (
