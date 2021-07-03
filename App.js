@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import global from './global';
 import configureStore from './store/configureStore';
 import Splash from './screens/splash';
-import AppNavigator from './components/datePicker';
+import AppNavigator from './components/inviteModal';
 
 const store = configureStore()
 

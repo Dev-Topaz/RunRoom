@@ -69,6 +69,15 @@ export default StyleSheet.create({
         borderTopRightRadius: 40,
         paddingTop: 45,
     },
+    modalContainer854: {
+        width: global.CONSTANTS.WIDTH,
+        height: global.CONSTANTS.SIZE_854,
+        top: global.CONSTANTS.HEIGHT - global.CONSTANTS.SIZE_854,
+        backgroundColor: 'white',
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
+        paddingTop: 45,
+    },
     modalHeader: {
         flexDirection: 'row',
         justifyContent: 'center',
@@ -86,7 +95,7 @@ export default StyleSheet.create({
     },
     modalBackButton: {
         position: 'absolute',
-        left: 6,
+        left: 26,
     },
     mainHeader: {
         height: global.CONSTANTS.SIZE_110,
@@ -339,4 +348,22 @@ export default StyleSheet.create({
         marginLeft: 6,
         marginBottom: 20,
     },
+    searchInputContainer: {
+        flexDirection: 'row',
+        marginHorizontal: global.CONSTANTS.SIZE_20,
+        height: 36,
+        borderRadius: 10,
+        backgroundColor: global.COLOR.BACKGROUND,
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        alignItems: 'center',
+    },
+    toggleContainer: {
+        flexDirection: 'row',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 22,
+        marginBottom: 24,
+    },
+
 });
