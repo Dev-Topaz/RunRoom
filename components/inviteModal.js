@@ -10,6 +10,8 @@ const InviteModal = (props) => {
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    const [isFollower, setFollower] = useState(false);
+    const [isFollowing, setFollowing] = useState(false);
 
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId}>
@@ -43,11 +45,11 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={css.toggleButton}>
-                                <Text style={css.typeText}>Followers</Text>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(!isFollower)}>
+                                <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={css.toggleButton}>
-                                <Text style={css.typeText}>Following</Text>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(!isFollowing)}>
+                                <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>
                         <FlatList

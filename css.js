@@ -365,5 +365,11 @@ export default StyleSheet.create({
         marginTop: 22,
         marginBottom: 24,
     },
-
+    toggleButton: {
+        width: 170,
+        height: 30,
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
