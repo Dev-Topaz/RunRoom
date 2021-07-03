@@ -372,4 +372,20 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    listItemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: global.CONSTANTS.SIZE_20,
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+    },
+    infoContainer: {
+        height: global.CONSTANTS.SQUARE_50,
+        justifyContent: 'space-between',
+        marginLeft: 10,
+    },
+    infoText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 10,
+        color: global.COLOR.PRIMARY70,
+    },
 });
