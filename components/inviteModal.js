@@ -4,7 +4,12 @@ import SvgIcon from './svgIcon';
 import global from '../global';
 import css from '../css';
 
+import { getAllConnections, getAllUsers, getFollowings, getFollowers } from '../utils/api';
+import { useSelector } from 'react-redux';
+
 const InviteModal = (props) => {
+
+    const accessToken = useSelector(state => state.user.accessToken);
 
     const [searchText, setSearchText] = useState('');
     const [data, setData] = useState([]);
@@ -13,9 +18,72 @@ const InviteModal = (props) => {
     const [isFollower, setFollower] = useState(false);
     const [isFollowing, setFollowing] = useState(false);
 
-    const renderItem = ({item, index}) => (
-        <View key={item.connectedUserId}>
+    useEffect(() => {
+        setLoading(true);
+        if(isFollower && isFollowing) {
+            getAllConnections(page, 9, accessToken).then(result => {
+                if(result != null && result.length > 0) {
+                    if(page != 1)
+                        setData([...data, ...result]);
+                    else
+                        setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(isFollower && !isFollowing) {
+            getFollowers(page, 9, accessToken).then(result => {
+                if(result != null && result.length > 0) {
+                    if(page != 1)
+                        setData([...data, ...result]);
+                    else
+                        setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(!isFollower && isFollowing) {
+            getFollowings(page, 9, accessToken).then(result => {
+                if(result != null && result.length > 0) {
+                    if(page != 1)
+                        setData([...data, ...result]);
+                    else
+                        setData(result);
+                }
+                setLoading(false);
+            });
+        } else {
+            getAllUsers(page, 9, accessToken).then(result => {
+                if(result != null && result.length > 0) {
+                    if(page != 1)
+                        setData([...data, ...result]);
+                    else
+                        setData(result);
+                }
+                setLoading(false);
+            });
+        }
+        setLoading(false);
+    }, [page]);
 
+    useEffect(() => {
+        setPage(1);
+    }, [searchText]);
+
+    const renderItem = ({item, index}) => (
+        <View key={item.connectedUserId} style={css.listItemContainer}>
+            <Image source={item.picture} style={css.hostAvatar}/>
+            <View style={css.infoContainer}>
+                <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
+                <Text style={css.infoText}>{item.runningLocation}</Text>
+                <Text style={css.infoText}>{item.runsCompleted}</Text>
+            </View>
+            <View style={css.buttonGroupContainer}>
+                <Pressable style={[css.inviteButton, { marginRight: 5 }]}>
+                    <Text style={css.inviteButtonText}>Invite</Text>
+                </Pressable>
+                <Pressable style={css.inviteButton}>
+                    <Text style={css.inviteButtonText}>Follow</Text>
+                </Pressable>
+            </View>
         </View>
     );
 

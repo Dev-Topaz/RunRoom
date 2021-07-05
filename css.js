@@ -388,4 +388,24 @@ export default StyleSheet.create({
         fontSize: 10,
         color: global.COLOR.PRIMARY70,
     },
+    buttonGroupContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        top: 10,
+    },
+    inviteButton: {
+        width: 85,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: global.COLOR.BACKGROUND,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    inviteButtonText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 12,
+        color: global.COLOR.PRIMARY100,
+        letterSpacing: -0.3,
+    },
 });

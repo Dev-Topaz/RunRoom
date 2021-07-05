@@ -203,3 +203,91 @@ export async function createRoom(roomInfo, accessToken) {
 
     return result;
 }
+
+export async function getFollowings(pageId, pageSize, accessToken) {
+
+    const result = Axios.get('/Connections/GetFollowings', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function getFollowers(pageId, pageSize, accessToken) {
+
+    const result = Axios.get('/Connections/GetFollowers', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function getAllConnections(pageId, pageSize, accessToken) {
+
+    const result = Axios.get('/Connections/GetAllConnections', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function getAllUsers(pageId, pageSize, accessToken) {
+
+    const result = Axios.get('/Connections/GetAllUsersWithConnectionStatus', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
