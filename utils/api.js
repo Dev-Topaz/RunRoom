@@ -183,7 +183,7 @@ export async function createRoom(roomInfo, accessToken) {
         unit: roomInfo.unit,
         organizerId: roomInfo.organizerId,
         stockImageID: Math.floor(Math.random() * 19),
-        invitedConnections: [],
+        invitedConnections: roomInfo.inviteList,
     }, {
         headers: {
             'Authorization': `Bearer ${accessToken}`

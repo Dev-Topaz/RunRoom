@@ -19,6 +19,12 @@ const RoomCreate = (props) => {
     const [typeValue, setTypeValue] = useState('1');
     const [distanceValue, setDistanceValue] = useState(0);
     const [dateValue, setDateValue] = useState(null);
+    const [inviteList, setInviteList] = useState([]);
+
+    const [distanceVisible, setDistanceVisible] = useState(false);
+    const [dateVisible, setDateVisible] = useState(false);
+    const [inviteVisible, setInviteVisible] = useState(false);
+    const [invitedVisible, setInvitedVisible] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -41,6 +47,7 @@ const RoomCreate = (props) => {
             runDateTime: dateValue,
             runDistance: distanceValue,
             unit: unit,
+            inviteList: inviteList,
         };
         createRoom(roomInfo, accessToken).then(result => {
             if(result) {

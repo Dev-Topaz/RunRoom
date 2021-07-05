@@ -68,6 +68,14 @@ const InviteModal = (props) => {
         setPage(1);
     }, [searchText]);
 
+    const pressInviteAction = (index) => {
+
+    }
+
+    const pressFollowAction = (index) => {
+
+    }
+
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId} style={css.listItemContainer}>
             <Image source={item.picture} style={css.hostAvatar}/>
@@ -77,10 +85,10 @@ const InviteModal = (props) => {
                 <Text style={css.infoText}>{item.runsCompleted}</Text>
             </View>
             <View style={css.buttonGroupContainer}>
-                <Pressable style={[css.inviteButton, { marginRight: 5 }]}>
+                <Pressable style={[css.inviteButton, { marginRight: 5 }]} onPress={() => pressInviteAction(index)}>
                     <Text style={css.inviteButtonText}>Invite</Text>
                 </Pressable>
-                <Pressable style={css.inviteButton}>
+                <Pressable style={css.inviteButton} onPress={() => pressFollowAction(index)}>
                     <Text style={css.inviteButtonText}>Follow</Text>
                 </Pressable>
             </View>
