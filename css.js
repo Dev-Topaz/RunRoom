@@ -398,14 +398,12 @@ export default StyleSheet.create({
         width: 85,
         height: 32,
         borderRadius: 16,
-        backgroundColor: global.COLOR.BACKGROUND,
         justifyContent: 'center',
         alignItems: 'center',
     },
     inviteButtonText: {
         fontFamily: 'SFProRegular',
         fontSize: 12,
-        color: global.COLOR.PRIMARY100,
         letterSpacing: -0.3,
     },
 });

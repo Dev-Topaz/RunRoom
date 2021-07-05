@@ -92,3 +92,7 @@ export function showDateInfo(date) {
     
     return timeString + ', ' + weekdayString + ' ' + monthString + ' ' + dayString;
 }
+
+export function findIndex(target, origin) {
+    return origin.findIndex(item => target.connectedUserId === item.connectedUserId);
+}

@@ -4,6 +4,7 @@ import SvgIcon from './svgIcon';
 import global from '../global';
 import css from '../css';
 
+import { findIndex } from '../utils/func';
 import { getAllConnections, getAllUsers, getFollowings, getFollowers } from '../utils/api';
 import { useSelector } from 'react-redux';
 
@@ -102,6 +103,7 @@ const InviteModal = (props) => {
             transparent
             visible={props.visible}
             onRequestClose={() => {}}
+            onShow={() => setInviteList(props.data)}
         >
             <View style={css.overlay}>
                 <View style={css.modalContainer854}>
