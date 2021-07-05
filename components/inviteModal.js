@@ -17,6 +17,7 @@ const InviteModal = (props) => {
     const [loading, setLoading] = useState(false);
     const [isFollower, setFollower] = useState(false);
     const [isFollowing, setFollowing] = useState(false);
+    const [inviteList, setInviteList] = useState([]);
 
     useEffect(() => {
         setLoading(true);
@@ -82,7 +83,7 @@ const InviteModal = (props) => {
             <View style={css.infoContainer}>
                 <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
                 <Text style={css.infoText}>{item.runningLocation}</Text>
-                <Text style={css.infoText}>{item.runsCompleted}</Text>
+                <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
             </View>
             <View style={css.buttonGroupContainer}>
                 <Pressable style={[css.inviteButton, { marginRight: 5 }]} onPress={() => pressInviteAction(index)}>

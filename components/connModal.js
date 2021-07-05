@@ -1,10 +1,12 @@
-import React from 'react';
-import { View, Text, Image, Pressable, Modal, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Image, Text, Pressable, Modal, ScrollView } from 'react-native';
+import SvgIcon from './svgIcon';
 import global from '../global';
 import css from '../css';
-import SvgIcon from './svgIcon';
 
-const FollowModal = (props) => {
+const ConnectionModal = (props) => {
+
+    const [inviteList, setInviteList] = useState([]);
 
     return (
         <Modal
@@ -16,21 +18,26 @@ const FollowModal = (props) => {
             <View style={css.overlay}>
                 <View style={css.modalContainer801}>
                     <View style={css.modalHeader}>
-                        <Text style={css.modalTitleText}>Following</Text>
-                        <Pressable style={css.modalCloseButton} onPress={() => props.onChangeVisible(false)}>
+                        <Text>Connections Invited</Text>
+                        <Pressable style={css.modalCloseButton}>
                             <SvgIcon icon='Close'/>
                         </Pressable>
                     </View>
                     <ScrollView style={{ marginTop: 36 }}>
                         {
-                            props.data.map((item, idx = 0) => {
+                            inviteList.map((item, idx = 0) => {
                                 return (
                                     <View key={idx++} style={css.listItemContainer}>
-                                        <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={css.hostAvatar}/>
+                                        <Image source={item.picture} style={css.hostAvatar}/>
                                         <View style={css.infoContainer}>
-                                            <Text style={css.labelText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
+                                            <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
                                             <Text style={css.infoText}>{item.runningLocation}</Text>
                                             <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
+                                        </View>
+                                        <View style={css.buttonGroupContainer}>
+                                            <Pressable style={css.inviteButton}>
+                                                <Text style={css.inviteButtonText}>Uninvite</Text>
+                                            </Pressable>
                                         </View>
                                     </View>
                                 );
@@ -43,4 +50,4 @@ const FollowModal = (props) => {
     );
 }
 
-export default React.memo(FollowModal);
+export default React.memo(ConnectionModal);

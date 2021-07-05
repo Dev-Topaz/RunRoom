@@ -4,6 +4,10 @@ import SwitchSelector from 'react-native-switch-selector';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
+import DistancePicker from '../../components/distancePicker';
+import DatePicker from '../../components/datePicker';
+import InviteModal from '../../components/inviteModal';
+import ConnectionModal from '../../components/connModal';
 
 import { useSelector } from 'react-redux';
 import { createRoom } from '../../utils/api';
@@ -47,7 +51,7 @@ const RoomCreate = (props) => {
             runDateTime: dateValue,
             runDistance: distanceValue,
             unit: unit,
-            inviteList: inviteList,
+            
         };
         createRoom(roomInfo, accessToken).then(result => {
             if(result) {
@@ -119,6 +123,30 @@ const RoomCreate = (props) => {
                     <Text style={css.submitText}>CREATE RUNROOM</Text>
                 </TouchableOpacity>
             </KeyboardAvoidingView>
+
+            <DistancePicker
+                visible={ distanceVisible }
+                unit={ unit }
+                onChangeVisible={ setDistanceVisible }
+                onChangeValue={ setDistanceValue }
+            />
+            <DatePicker
+                visible={ dateVisible }
+                onChangeVisible={ setDateVisible }
+                onChangeValue={ setDateValue }
+            />
+            <InviteModal
+                data={ inviteList }
+                visible={ inviteVisible }
+                onChangeVisible={ setInviteVisible }
+                onChangeValue={ setInviteList }
+            />
+            <ConnectionModal
+                data={ inviteList }
+                visible={ invitedVisible }
+                onChangeVisible={ setInvitedVisible }
+                onChangeValue = { setInviteList }
+            />
         </View>
     );
 }
