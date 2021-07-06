@@ -1,11 +1,12 @@
-import React from 'react';
-import { StyleSheet, View, Image, Text, Pressable, StatusBar } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, Text, Pressable, Alert, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import global from '../../global';
 import css from '../../css';
 
 import { useSelector } from 'react-redux';
+import { getUserDetails } from '../../utils/api';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -15,15 +16,26 @@ const Profile = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const [userInfo, setUserInfo] = useState({});
 
+    useEffect(() => {
+        StatusBar.setHidden(true);
+        getUserDetails(userId, accessToken).then(result => {
+            if(result == null || result.userId != userId) {
+                Alert.alert('You are not authorized.');
+            } else {
+                setUserInfo(result);
+            }
+        });
+    }, []);
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
                 <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10 }]}>PROFILE</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={} style={css.hostAvatar}/>
+                    <Image source={userInfo.avatar == null ? global.IMAGE.UNKNOWN : { uri: userInfo.avatar }} style={css.hostAvatar}/>
                     <View style={[css.hostInfo, { justifyContent: 'center' }]}>
-                        <Text style={[css.hostName, { color: global.COLOR.PRIMARY100 }]}></Text>
-                        <Text style={[css.hostLabel, { marginTop: 2 }]}></Text>
+                        <Text style={[css.hostName, { color: global.COLOR.PRIMARY100 }]}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
+                        <Text style={[css.hostLabel, { marginTop: 2 }]}>{userInfo.phoneNumber}</Text>
                     </View>
                     <Pressable style={[css.inviteButton, { backgroundColor: global.COLOR.BACKGROUND }]}>
                         <Text style={css.inviteButtonText}>Edit Profile</Text>
