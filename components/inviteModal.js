@@ -80,15 +80,15 @@ const InviteModal = (props) => {
 
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId} style={css.listItemContainer}>
-            <Image source={item.picture} style={css.hostAvatar}/>
+            <Image source={item.picture == null ? global.IMAGE.UNKNOWN : { uri: item.picture }} style={css.hostAvatar}/>
             <View style={css.infoContainer}>
                 <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
-                <Text style={css.infoText}>{item.runningLocation}</Text>
+                <Text style={css.infoText}>{item.runningLocation == null ? '' : item.runningLocation}</Text>
                 <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
             </View>
             <View style={css.buttonGroupContainer}>
-                <Pressable style={[css.inviteButton, { marginRight: 5 }]} onPress={() => pressInviteAction(index)}>
-                    <Text style={css.inviteButtonText}>Invite</Text>
+                <Pressable style={[css.inviteButton, { marginRight: 5, backgroundColor: findIndex(item, inviteList) > -1 ? global.COLOR.SECONDARY : global.COLOR.BACKGROUND }]} onPress={() => pressInviteAction(index)}>
+                    <Text style={[css.inviteButtonText, { color: findIndex(item, inviteList) > -1 ? 'white' : global.COLOR.PRIMARY100 }]}>Invite</Text>
                 </Pressable>
                 <Pressable style={css.inviteButton} onPress={() => pressFollowAction(index)}>
                     <Text style={css.inviteButtonText}>Follow</Text>

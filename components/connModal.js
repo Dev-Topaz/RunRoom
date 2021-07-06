@@ -20,7 +20,8 @@ const ConnectionModal = (props) => {
     }
 
     const pressCloseAction = () => {
-        
+        props.onChangeValue(inviteList);
+        props.onChangeVisible(false);
     }
 
     return (
@@ -44,10 +45,10 @@ const ConnectionModal = (props) => {
                             props.data.map((item, idx = 0) => {
                                 return (
                                     <View key={idx++} style={css.listItemContainer}>
-                                        <Image source={item.picture} style={css.hostAvatar}/>
+                                        <Image source={item.picture == null ? global.IMAGE.UNKNOWN : { uri: item.picture }} style={css.hostAvatar}/>
                                         <View style={css.infoContainer}>
                                             <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
-                                            <Text style={css.infoText}>{item.runningLocation}</Text>
+                                            <Text style={css.infoText}>{item.runningLocation == null ? '' : item.runningLocation}</Text>
                                             <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
                                         </View>
                                         <View style={css.buttonGroupContainer}>
