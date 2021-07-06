@@ -115,6 +115,11 @@ const RoomMain = (props) => {
         });
     }
 
+    const pressLobbyAction = (roomId, runDateTime) => {
+        dispatch(changeRoom(roomId, runDateTime));
+        props.navigation.navigate('EnterLobby');
+    }
+
     const pressFollowingAction = (data) => {
         setFollower(data);
         setFollowVisible(true);
@@ -176,7 +181,7 @@ const RoomMain = (props) => {
                 </View>
                 <View style={css.participateStatus}>
                     {
-                        item.isParticipating ? getRemainTimeStyle(current, item.runDateTime) != 3 ?
+                        item.isParticipating ? getRemainTimeStyle(current, item.runDateTime) < 3 ?
                             <TouchableOpacity style={css.participatingContainer} onPress={() => pressParticipatingAction(item.id, index)}>
                                 <SvgIcon icon='CheckCircle'/>
                                 <Text style={css.participatingText}>PARTICIPATING</Text>
