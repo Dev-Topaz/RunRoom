@@ -301,13 +301,13 @@ export async function follow(followingId, accessToken) {
     }).then(
         async function(response) {
             if(response.status == 200)
-                return response.data;
+                return response.data.success;
             else
-                return null;
+                return false;
         }
     ).catch(err => {
         console.log(err);
-        return null;
+        return false;
     });
 
     return result;
