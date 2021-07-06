@@ -31,7 +31,7 @@ const RunMain = (props) => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [current, setCurrent] = useState(new Date());
-    const [isEmpty, setEmpty] = useState(false);
+    const [isEmpty, setEmpty] = useState(true);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -39,7 +39,7 @@ const RunMain = (props) => {
 
     useEffect(() => {
         setLoading(true);
-        getAllRunRooms(page, 3, filterOption).then(result => {
+        getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
             if(result != null && result.length > 0) {
                 if(page != 1)
                     setData([...data, ...result]);
@@ -178,7 +178,6 @@ const RunMain = (props) => {
                     <Pressable></Pressable>
                 </View>
             </View>
-            <View>
             {
                 isEmpty ?
                     <View style={styles.emptyContainer}>
@@ -197,7 +196,6 @@ const RunMain = (props) => {
                         ListFooterComponent={ () => loading && page != 1 ? <View style={styles.listFooter}><ActivityIndicator animating size='large'/></View> : null }
                     />
             }
-            </View>
         </View>
     );
 }

@@ -6,6 +6,7 @@ import global from '../global';
 
 import Splash from '../screens/splash';
 import RoomMain from '../screens/room/main';
+import RunMain from '../screens/run/main';
 
 export default createAppContainer(
     createMaterialBottomTabNavigator(
@@ -33,7 +34,7 @@ export default createAppContainer(
             ),
             Run: createSwitchNavigator(
                 {
-                    RunMain: { screen: Splash },
+                    RunMain: { screen: RunMain },
                 },
                 {
                     initialRouteName: 'RunMain',
