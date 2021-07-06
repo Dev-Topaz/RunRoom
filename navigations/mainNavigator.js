@@ -8,6 +8,7 @@ import Splash from '../screens/splash';
 import RoomMain from '../screens/room/main';
 import RunMain from '../screens/run/main';
 import Profile from '../screens/profile/profile';
+import EditProfile from '../screens/profile/edit';
 
 export default createAppContainer(
     createMaterialBottomTabNavigator(
@@ -57,6 +58,7 @@ export default createAppContainer(
             Account: createSwitchNavigator(
                 {
                     Profile: { screen: Profile },
+                    Edit: { screen: EditProfile },
                 },
                 {
                     initialRouteName: 'Profile',

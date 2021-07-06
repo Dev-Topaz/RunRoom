@@ -40,7 +40,7 @@ const Profile = (props) => {
                         <Text style={[css.hostName, { color: global.COLOR.PRIMARY100 }]}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
                         <Text style={[css.hostLabel, { marginTop: 2 }]}>{userInfo.phoneNumber}</Text>
                     </View>
-                    <Pressable style={[css.inviteButton, styles.editButton]}>
+                    <Pressable style={[css.inviteButton, styles.editButton]} onPress={() => props.navigation.navigate('Edit')}>
                         <Text style={css.inviteButtonText}>Edit Profile</Text>
                     </Pressable>
                 </View>
