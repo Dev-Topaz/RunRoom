@@ -291,3 +291,45 @@ export async function getAllUsers(pageId, pageSize, accessToken) {
 
     return result;
 }
+
+export async function follow(followingId, accessToken) {
+
+    const result = Axios.post('/Connections/Follow', followingId, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function stopFollowing(followingId, accessToken) {
+
+    const result = Axios.put('/Connections/StopFollowing', followingId, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}

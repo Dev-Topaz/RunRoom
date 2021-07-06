@@ -71,11 +71,22 @@ const InviteModal = (props) => {
     }, [searchText]);
 
     const pressInviteAction = (index) => {
-
+        const target = props.data[index];
+        let idx = findIndex(target, inviteList);
+        if(idx > -1) {
+            inviteList.splice(idx, 1);
+        } else {
+            inviteList.push(target);
+        }
     }
 
     const pressFollowAction = (index) => {
 
+    }
+
+    const pressBackAction = () => {
+        props.onChangeValue(inviteList);
+        props.onChangeVisible(false);
     }
 
     const renderItem = ({item, index}) => (
@@ -109,7 +120,7 @@ const InviteModal = (props) => {
                 <View style={css.modalContainer854}>
                     <View style={css.modalHeader}>
                         <Text style={css.modalTitleText}>Invite Connections</Text>
-                        <Pressable style={css.modalBackButton}>
+                        <Pressable style={css.modalBackButton} onPress={pressBackAction}>
                             <SvgIcon icon='Back'/>
                         </Pressable>
                     </View>
