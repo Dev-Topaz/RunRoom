@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Image, Text, Pressable, TouchableOpacity, TextInput, Modal, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -108,7 +108,7 @@ const EditProfile = (props) => {
                 <Text style={[css.labelText, { marginTop: 15 }]}>Running Location</Text>
                 <View style={css.textInputContainer}>
                     <TextInput
-                        style={css.inputText}
+                        style={[css.inputText, { paddingVertical: 20 }]}
                         placeholder='Enter your running location'
                         value={location}
                         onChangeText={text => setLocation(text)}
@@ -203,3 +203,6 @@ const styles = StyleSheet.create({
 });
 
 export default EditProfile;
+
+const ageGroupList = ['', 'Below 20', '20s', '30s', '40s', '50s', '60s', '70s', '80 or above'];
+const genderList = ['', 'Male', 'Female', 'Other'];
