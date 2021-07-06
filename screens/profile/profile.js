@@ -33,14 +33,14 @@ const Profile = (props) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
-                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10 }]}>PROFILE</Text>
+                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10, letterSpacing: 0.3 }]}>PROFILE</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={userInfo.avatar == null ? global.IMAGE.UNKNOWN : { uri: userInfo.avatar }} style={css.hostAvatar}/>
                     <View style={[css.hostInfo, { justifyContent: 'center' }]}>
                         <Text style={[css.hostName, { color: global.COLOR.PRIMARY100 }]}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
                         <Text style={[css.hostLabel, { marginTop: 2 }]}>{userInfo.phoneNumber}</Text>
                     </View>
-                    <Pressable style={[css.inviteButton, { backgroundColor: global.COLOR.BACKGROUND }]}>
+                    <Pressable style={[css.inviteButton, styles.editButton]}>
                         <Text style={css.inviteButtonText}>Edit Profile</Text>
                     </Pressable>
                 </View>
@@ -51,10 +51,10 @@ const Profile = (props) => {
                         initialRouteName='ProfileFinished'
                         tabBarOptions={{
                             activeTintColor: global.COLOR.PRIMARY100,
-                            inactiveTintColor: global.COLOR.PRIMARY70,
+                            inactiveTintColor: global.COLOR.PRIMARY50,
                             labelStyle: styles.tabText,
-                            style: { backgroundColor: 'white', paddingVertical: 14 },
-                            indicatorStyle: { color: global.COLOR.PRIMARY100 }
+                            style: { backgroundColor: 'white' },
+                            indicatorStyle: { backgroundColor: global.COLOR.PRIMARY100 },
                         }}
                         backBehavior='none'
                     >
@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
         fontFamily: 'SFProMedium',
         fontSize: 14,
         textTransform: 'none',
+    },
+    editButton: {
+        backgroundColor: global.COLOR.BACKGROUND,
+        position: 'absolute',
+        right: 1,
     },
 });
 

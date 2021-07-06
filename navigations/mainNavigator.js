@@ -7,6 +7,7 @@ import global from '../global';
 import Splash from '../screens/splash';
 import RoomMain from '../screens/room/main';
 import RunMain from '../screens/run/main';
+import Profile from '../screens/profile/profile';
 
 export default createAppContainer(
     createMaterialBottomTabNavigator(
@@ -55,7 +56,7 @@ export default createAppContainer(
             ),
             Account: createSwitchNavigator(
                 {
-                    Profile: { screen: Splash },
+                    Profile: { screen: Profile },
                 },
                 {
                     initialRouteName: 'Profile',
