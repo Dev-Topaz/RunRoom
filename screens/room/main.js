@@ -234,7 +234,7 @@ const RoomMain = (props) => {
                 distanceToEdge={ global.CONSTANTS.SIZE_20 }
                 showBackground={ false }
                 animated={ false }
-                onPressMain={ () => props.navigation.navigate('Create') } 
+                onPressMain={ () => props.navigation.navigate('Create') }
             />
             <FollowModal
                 data={ follower }
