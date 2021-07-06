@@ -9,6 +9,7 @@ import FollowModal from '../../components/followModal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, joinRun, disjoinRun } from '../../utils/api';
+import { changeRoom } from '../../store/actions/actions';
 
 const RoomMain = (props) => {
 

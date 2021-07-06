@@ -7,6 +7,7 @@ import css from '../../css';
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, disjoinRun } from '../../utils/api';
+import { changeRoom } from '../../store/actions/actions';
 
 
 const RunMain = (props) => {
