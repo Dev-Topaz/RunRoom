@@ -333,3 +333,34 @@ export async function stopFollowing(followingId, accessToken) {
 
     return result;
 }
+
+export async function updateUserProfile(updateInfo, accessToken) {
+
+    const result = Axios.put('/Users/UpdateUserProfile', {
+        UserId: updateInfo.userId,
+        FirstName: updateInfo.firstName,
+        LastName: updateInfo.lastName,
+        ImageInfo: updateInfo.avatar,
+        RunningLocation: updateInfo.location,
+        Gender: updateInfo.gender,
+        AgeGroup: updateInfo.ageGroup,
+        UnitOfMeasurement: updateInfo.unit,
+        Email: '',
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
