@@ -15,6 +15,7 @@ export default StyleSheet.create({
     titleText: {
         fontFamily: 'FuturaT',
         fontSize: 24,
+        letterSpacing: 0.3,
     },
     authIndicatorText: {
         fontFamily: 'SFProRegular',
@@ -405,5 +406,22 @@ export default StyleSheet.create({
         fontFamily: 'SFProRegular',
         fontSize: 12,
         letterSpacing: -0.3,
+    },
+    switchText: {
+        fontFamily: 'SFProRegular',
+        fontSize: 14,
+        lineHeight: 16,
+        color: global.COLOR.PRIMARY100,
+    },
+    switchTrack: {
+        width: 22,
+        height: 12,
+        borderRadius: 6,
+        padding: 2,
+    },
+    switchThumb: {
+        width: 8,
+        height: 8,
+        borderRadius: 4,
     },
 });

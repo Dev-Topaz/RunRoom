@@ -33,7 +33,7 @@ const Profile = (props) => {
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
-                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10, letterSpacing: 0.3 }]}>PROFILE</Text>
+                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10 }]}>PROFILE</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Image source={userInfo.avatar == null ? global.IMAGE.UNKNOWN : { uri: userInfo.avatar }} style={css.hostAvatar}/>
                     <View style={[css.hostInfo, { justifyContent: 'center' }]}>
