@@ -51,6 +51,15 @@ const EditProfile = (props) => {
         });
     }, []);
 
+    useEffect(() => {
+        if(isToggle) {
+            if(ageGroup == 0 || gender == 0) {
+                setAlertVisible(true);
+                setToggle(false);
+            }
+        }
+    }, [isToggle]);
+
     const selectCountry = (item) => {
         phoneInput.current.selectCountry(item.iso2);
     }
@@ -179,6 +188,21 @@ const EditProfile = (props) => {
                 onChangeVisible={setGenderVisible}
                 onChangeValue={setGender}
             />
+            <Modal
+                animationType='slide'
+                transparent
+                visible={alertVisible}
+                onRequestClose={() => {}}
+            >
+                <View style={css.overlay}>
+                    <View style={styles.alertContainer}>
+                        <Text style={styles.alertTitleText}>{'Please select both your age' + '\n' + 'group and gender to customize' + '\n' + 'rankings across runs and' + '\n' + 'statistics'}</Text>
+                        <Pressable onPress={() => setAlertVisible(false)}>
+                            <Text style={styles.alertButtonText}>Got it</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -213,6 +237,30 @@ const styles = StyleSheet.create({
     toggleContainer: {
         position: 'absolute',
         right: 2,
+    },
+    alertContainer: {
+        width: global.CONSTANTS.MODAL_316,
+        height: global.CONSTANTS.MODAL_194,
+        left: (global.CONSTANTS.WIDTH - global.CONSTANTS.MODAL_316) / 2,
+        top: (global.CONSTANTS.HEIGHT - global.CONSTANTS.MODAL_194) / 2,
+        backgroundColor: 'white',
+        borderRadius: 37,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    alertTitleText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+        letterSpacing: -0.5,
+        lineHeight: 24,
+        marginBottom: global.CONSTANTS.SIZE_20,
+        textAlign: 'center',
+    },
+    alertButtonText: {
+        fontFamily: 'SFProBold',
+        fontSize: 16,
+        color: global.COLOR.GOT,
     },
 });
 

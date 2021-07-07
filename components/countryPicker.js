@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CountryPicker;
+export default React.memo(CountryPicker);
