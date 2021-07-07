@@ -21,8 +21,15 @@ const Setting = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        const value = useSelector(state => state.setting.unit);
-        setUnit(value);
+        (async() => {
+            try {
+                const value = await AsyncStorage.getItem('unit');
+                if(value != null)
+                    setUnit(parseInt(value));
+            } catch(err) {
+                console.log(err);
+            }
+        })();
     }, []);
 
     const pressSubmitAction = () => {
@@ -41,7 +48,7 @@ const Setting = (props) => {
     }
 
     const pressLogoutAction = () => {
-        Alert.alert('Do you really want to logout?',
+        Alert.alert('Are you sure?', 'Do you really want to logout?',
         [
             {
                 text: 'No',
@@ -59,13 +66,13 @@ const Setting = (props) => {
                         }
                     });
                 }
-            }
+            },
         ]);
     }
 
     return (
         <View style={css.bgContainer}>
-            <Text style={[css.titleText, { marginBottom: 65 }]}>SETTINGS</Text>
+            <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 65 }]}>SETTINGS</Text>
             <Pressable style={styles.item}>
                 <Icon name='star-circle' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
                 <View style={styles.indicatorContainer}>
@@ -124,7 +131,7 @@ const Setting = (props) => {
             >
                 <View style={css.overlay}>
                     <View style={styles.modalContainer}>
-                        <Text style={css.modalTitleText}>Select preferred unit of measurement</Text>
+                        <Text style={[css.modalTitleText, { alignSelf: 'center' }]}>Select preferred unit of measurement</Text>
                         <View style={styles.buttonGroup}>
                             <Pressable style={unit == 1 ? styles.groupActiveButton : styles.groupInactiveButton} onPress={() => setUnit(1)}>
                                 <Text style={unit == 1 ? styles.activeText : styles.inactiveText}>Miles</Text>
