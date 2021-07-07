@@ -4,11 +4,11 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import { Icon } from 'react-native-elements';
 import global from '../global';
 
-import Splash from '../screens/splash';
 import RoomMain from '../screens/room/main';
 import RunMain from '../screens/run/main';
 import Profile from '../screens/profile/profile';
 import EditProfile from '../screens/profile/edit';
+import Setting from '../screens/setting/setting';
 
 export default createAppContainer(
     createMaterialBottomTabNavigator(
@@ -79,7 +79,7 @@ export default createAppContainer(
             ),
             Settings: createSwitchNavigator(
                 {
-                    Setting: { screen: Splash },
+                    Setting: { screen: Setting },
                 },
                 {
                     initialRouteName: 'Setting',

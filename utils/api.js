@@ -97,7 +97,7 @@ export async function getUserDetails(userId, accessToken) {
 
 export async function getAllRunRooms(pageId, pageSize, accessToken, filterOption) {
 
-    const result = Axios.get('/RunRooms/GetAllRunRooms', {
+    const result = await Axios.get('/RunRooms/GetAllRunRooms', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
@@ -126,7 +126,7 @@ export async function getAllRunRooms(pageId, pageSize, accessToken, filterOption
 
 export async function joinRun(joinInfo, accessToken) {
 
-    const result = Axios.post('/RunRooms/JoinARace', {
+    const result = await Axios.post('/RunRooms/JoinARace', {
         runnerId: joinInfo.runnerId,
         runRoomId: joinInfo.runRoomId,
     }, {
@@ -151,7 +151,7 @@ export async function joinRun(joinInfo, accessToken) {
 
 export async function disjoinRun(disjoinInfo, accessToken) {
 
-    const result = Axios.put('/RunRooms/OptOutFromARace', {
+    const result = await Axios.put('/RunRooms/OptOutFromARace', {
         runnerId: disjoinInfo.runnerId,
         runRoomId: disjoinInfo.runRoomId,
     }, {
@@ -176,7 +176,7 @@ export async function disjoinRun(disjoinInfo, accessToken) {
 
 export async function createRoom(roomInfo, accessToken) {
 
-    const result = Axios.post('/RunRooms/CreateARoom', {
+    const result = await Axios.post('/RunRooms/CreateARoom', {
         roomType: roomInfo.roomType,
         runDateTime: roomInfo.runDateTime,
         runDistance: roomInfo.runDistance,
@@ -206,7 +206,7 @@ export async function createRoom(roomInfo, accessToken) {
 
 export async function getFollowings(pageId, pageSize, accessToken) {
 
-    const result = Axios.get('/Connections/GetFollowings', {
+    const result = await Axios.get('/Connections/GetFollowings', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
@@ -228,7 +228,7 @@ export async function getFollowings(pageId, pageSize, accessToken) {
 
 export async function getFollowers(pageId, pageSize, accessToken) {
 
-    const result = Axios.get('/Connections/GetFollowers', {
+    const result = await Axios.get('/Connections/GetFollowers', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
@@ -250,7 +250,7 @@ export async function getFollowers(pageId, pageSize, accessToken) {
 
 export async function getAllConnections(pageId, pageSize, accessToken) {
 
-    const result = Axios.get('/Connections/GetAllConnections', {
+    const result = await Axios.get('/Connections/GetAllConnections', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
@@ -272,7 +272,7 @@ export async function getAllConnections(pageId, pageSize, accessToken) {
 
 export async function getAllUsers(pageId, pageSize, accessToken) {
 
-    const result = Axios.get('/Connections/GetAllUsersWithConnectionStatus', {
+    const result = await Axios.get('/Connections/GetAllUsersWithConnectionStatus', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
@@ -294,7 +294,7 @@ export async function getAllUsers(pageId, pageSize, accessToken) {
 
 export async function follow(followingId, accessToken) {
 
-    const result = Axios.post('/Connections/Follow', followingId, {
+    const result = await Axios.post('/Connections/Follow', followingId, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -315,7 +315,7 @@ export async function follow(followingId, accessToken) {
 
 export async function stopFollowing(followingId, accessToken) {
 
-    const result = Axios.put('/Connections/StopFollowing', followingId, {
+    const result = await Axios.put('/Connections/StopFollowing', followingId, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -336,7 +336,7 @@ export async function stopFollowing(followingId, accessToken) {
 
 export async function updateUserProfile(updateInfo, accessToken) {
 
-    const result = Axios.put('/Users/UpdateUserProfile', {
+    const result = await Axios.put('/Users/UpdateUserProfile', {
         UserId: updateInfo.userId,
         FirstName: updateInfo.firstName,
         LastName: updateInfo.lastName,
@@ -354,6 +354,30 @@ export async function updateUserProfile(updateInfo, accessToken) {
         async function(response) {
             if(response.status == 200)
                 return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function logOut(accessToken, refreshToken) {
+
+    const result = await Axios.post('/Users/RevokeRefreshToken', {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return true;
             else
                 return false;
         }

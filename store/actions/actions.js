@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER } from '../constants';
+import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT } from '../constants';
 
 export function changeMobileNumber(phoneNumber) {
     
@@ -30,7 +30,15 @@ export function changeRoom(roomId, runDateTime) {
         type: ROOM_ENTER,
         payload: {
             roomId: roomId,
-            runDateTime: runDateTime,
+            runDateTime: runDateTime
         }
+    }
+}
+
+export function userLogout() {
+
+    return {
+        type: LOG_OUT,
+        payload: true
     }
 }
