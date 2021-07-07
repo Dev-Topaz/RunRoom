@@ -6,6 +6,7 @@ import global from '../../global';
 import css from '../../css';
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import FollowModal from '../../components/followModal';
+import FilterModal from '../../components/filterModal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, joinRun, disjoinRun } from '../../utils/api';
@@ -240,6 +241,11 @@ const RoomMain = (props) => {
                 data={ follower }
                 visible={ followVisible }
                 onChangeVisible={ setFollowVisible }
+            />
+            <FilterModal
+                visible={ filterVisible }
+                onChangeVisible={ setFilterVisible }
+                onChangeValue={ setFilterOption }
             />
         </View>
     );
