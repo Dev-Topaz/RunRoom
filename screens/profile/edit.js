@@ -4,6 +4,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import SwitchToggle from 'react-native-switch-toggle';
 import PhoneInput from 'react-native-phone-input';
 import CountryPicker from '../../components/countryPicker';
+import AgePicker from '../../components/agePicker';
+import GenderPicker from '../../components/genderPicker';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
@@ -115,7 +117,7 @@ const EditProfile = (props) => {
                     />
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Age Group</Text>
-                <Pressable style={css.textInputRowContainer}>
+                <Pressable style={css.textInputRowContainer} onPress={() => setAgeVisible(true)}>
                     <TextInput
                         style={css.inputText}
                         placeholder='Select your age group'
@@ -128,7 +130,7 @@ const EditProfile = (props) => {
                     </View>
                 </Pressable>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Gender</Text>
-                <Pressable style={css.textInputRowContainer}>
+                <Pressable style={css.textInputRowContainer} onPress={() => setGenderVisible(true)}>
                     <TextInput
                         style={css.inputText}
                         placeholder='Select your gender'
@@ -164,6 +166,18 @@ const EditProfile = (props) => {
                 data={countryData}
                 onChangeCountry={selectCountry}
                 onChangeVisible={setCountryVisible}
+            />
+            <AgePicker
+                visible={ageVisible}
+                data={ageGroup}
+                onChangeVisible={setAgeVisible}
+                onChangeValue={setAgeGroup}
+            />
+            <GenderPicker
+                visible={genderVisible}
+                data={gender}
+                onChangeVisible={setGenderVisible}
+                onChangeValue={setGender}
             />
         </View>
     );
