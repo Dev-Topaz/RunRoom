@@ -6,6 +6,7 @@ import global from '../global';
 import css from '../css';
 import SvgIcon from './svgIcon';
 import { showDateInfo } from '../utils/func';
+import DatePicker from './datePicker';
 
 import { useSelector } from 'react-redux';
 
@@ -145,7 +146,7 @@ const FilterModal = (props) => {
                             <Text style={css.labelText}>{highValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
                         </View>
                         <Text style={[css.labelText, { marginTop: 30 }]}>Starting from</Text>
-                        <Pressable style={css.textInputRowContainer}>
+                        <Pressable style={css.textInputRowContainer} onPress={() => setDateVisible(true)}>
                             <TextInput
                                 style={css.inputText}
                                 editable={false}
@@ -165,6 +166,11 @@ const FilterModal = (props) => {
                     </View>
                 </View>
             </View>
+            <DatePicker
+                visible={dateVisible}
+                onChangeVisible={setDateVisible}
+                onChangeValue={setDateValue}
+            />
             <Modal
                 animationType='slide'
                 transparent

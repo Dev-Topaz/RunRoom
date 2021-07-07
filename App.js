@@ -38,6 +38,7 @@ export default function App() {
     global.IMAGE.STOCK.STOCK_17,
     global.IMAGE.STOCK.STOCK_18,
     global.IMAGE.STOCK.STOCK_19,
+    global.IMAGE.UNKNOWN,
   ]);
 
   if(!fontsLoaded || !imagesLoaded)
