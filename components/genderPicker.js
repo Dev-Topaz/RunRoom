@@ -8,6 +8,19 @@ const GenderPicker = (props) => {
 
     const [gender, setGender] = useState(0);
 
+    const pressGroupButton = (index) => {
+        if(index == gender) {
+            setGender(0);
+        } else {
+            setGender(index);
+        }
+    }
+
+    const pressSubmitAction = () => {
+        props.onChangeValue(gender);
+        props.onChangeVisible(false);
+    }
+
     return (
         <Modal
             animationType='slide'
@@ -19,7 +32,7 @@ const GenderPicker = (props) => {
             <View style={css.overlay}>
                 <View style={styles.modalContainer}>
                     <Text style={css.modalTitleText}>Select your gender</Text>
-                    <Pressable style={styles.closeButton}>
+                    <Pressable style={styles.closeButton} onPress={() => props.onChangeVisible(false)}>
                         <SvgIcon icon='Close'/>
                     </Pressable>
                     <View style={styles.buttonGroup}>
@@ -34,14 +47,14 @@ const GenderPicker = (props) => {
                             </Pressable>
                         </View>
                         <View style={styles.column}>
-                            <Pressable style={gender == 2 ? styles.groupActiveButton : styles.groupInactiveButton} onPress={() => pressGroupButton(1)}>
+                            <Pressable style={gender == 2 ? styles.groupActiveButton : styles.groupInactiveButton} onPress={() => pressGroupButton(2)}>
                                 <Text style={gender == 2 ? styles.activeText : styles.inactiveText}>Female</Text>
                                 { gender == 2 ? <View style={{position: 'absolute', left: 20}}><SvgIcon icon='SmallCheck'/></View> : null }
                             </Pressable>
                         </View>
                     </View>
                     <View style={styles.footer}>
-                        <TouchableOpacity style={css.submitButton}>
+                        <TouchableOpacity style={css.submitButton} onPress={pressSubmitAction}>
                             <Text style={css.submitText}>UPDATE</Text>
                         </TouchableOpacity>
                     </View>
@@ -108,6 +121,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: global.CONSTANTS.SPACE_40,
         width: '100%',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
     },
 });
 
