@@ -393,3 +393,24 @@ export async function logOut(accessToken, refreshToken) {
 
     return result;
 }
+
+export async function getLobbyRunners(roomId, pageId, pageSize, accessToken) {
+
+    const result = await Axios.get('/RunRooms/GetLobbyRunners', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            RunRoomId: roomId,
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            return response.data.data;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+}
