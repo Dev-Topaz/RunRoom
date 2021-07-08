@@ -79,11 +79,43 @@ const Running = (props) => {
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { letterSpacing: 1.5 }]}></Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}></Text>
+                            <Text style={[styles.indexText, { marginLeft: 23 }]}>min / mile</Text>
                         </View>
                     </View>
-                    <View></View>
+                    <View style={styles.cell}>
+                        <Text style={styles.indexText}>Average Pace</Text>
+                        <View style={styles.valueContainer}>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}></Text>
+                            <Text style={[styes.indexText, { marginLeft: 23 }]}>min / mile</Text>
+                        </View>
+                    </View>
                 </View>
+            </View>
+            <View style={styles.rankSwitchContainer}>
+                <Text style={styles.rankSwitchText}>Customized Rankings</Text>
+                <SwitchToggle
+                    switchOn={isToggle}
+                    onPress={() => setToggle(!isToggle)}
+                    circleColorOn='white'
+                    circleColorOff='white'
+                    backgroundColorOn={global.COLOR.SECONDARY}
+                    backgroundColorOff={global.COLOR.PRIMARY50}
+                    containerStyle={styles.switchTrack}
+                    circleStyle={styles.switchThumb}
+                />
+            </View>
+            <View style={styles.listContainer}>
+                <ScrollView>
+                    {
+                        data.map((item, index) => {
+                            return (
+                                <View key={item.runnerId} style={[styles.listItemContainer, { backgroundColor: item.runnerId == userId ? global.COLOR.STATUS_INACTIVE : 'white' }]}>
+
+                                </View>
+                            );
+                        })
+                    }
+                </ScrollView>
             </View>
         </View>
     );
