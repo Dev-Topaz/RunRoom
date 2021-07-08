@@ -31,10 +31,13 @@ const RunMain = (props) => {
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [current, setCurrent] = useState(new Date());
-    const [isEmpty, setEmpty] = useState(true);
+    const [isEmpty, setEmpty] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        props.navigation.addListener('didFocus', () => {
+            setPage(1);
+        });
     }, []);
 
     useEffect(() => {

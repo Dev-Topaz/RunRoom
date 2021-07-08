@@ -41,6 +41,7 @@ export default createAppContainer(
                 {
                     initialRouteName: 'RunMain',
                     headerMode: 'none',
+                    resetOnBlur: true,
                     navigationOptions: {
                         tabBarLabel: 'My Runs',
                         tabBarIcon: ({ tintColor }) => (

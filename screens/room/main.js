@@ -40,6 +40,9 @@ const RoomMain = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        props.navigation.addListener('didFocus', () => {
+            setPage(1);
+        });
     }, []);
 
     useEffect(() => {

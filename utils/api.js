@@ -135,8 +135,8 @@ export async function joinRun(joinInfo, accessToken) {
         }
     }).then(
         async function(response) {
-            if(response.data.success) {
-                return true;
+            if(response.status == 200) {
+                return response.data.success;
             } else {
                 return false;
             }
@@ -160,8 +160,8 @@ export async function disjoinRun(disjoinInfo, accessToken) {
         }
     }).then(
         async function(response) {
-            if(response.data.success) {
-                return true;
+            if(response.status == 200) {
+                return response.data.success;
             } else {
                 return false;
             }
