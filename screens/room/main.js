@@ -4,7 +4,7 @@ import { FloatingAction } from 'react-native-floating-action';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
-import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
+import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime, displayLobbyTime } from '../../utils/func';
 import FollowModal from '../../components/followModal';
 import FilterModal from '../../components/filterModal';
 
@@ -195,7 +195,7 @@ const RoomMain = (props) => {
                                 <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime)}>
                                     <Text style={css.enterLobbyText}>Enter Lobby  ➜</Text>
                                 </TouchableOpacity>
-                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(item.runDateTime)}</Text>
+                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(current, item.runDateTime)}</Text>
                             </View>
                         :   <TouchableOpacity style={css.participateButton} onPress={() => pressParticipateAction(item.id, index)}>
                                 <Text style={css.participateText}>PARTICIPATE</Text>

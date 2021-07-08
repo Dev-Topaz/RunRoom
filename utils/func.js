@@ -82,6 +82,13 @@ export function displayRunDateTime(current, target) {
         return moment(target.toString()).format('HH:mm, ddd MMM D');
 }
 
+export function displayLobbyTime(current, target) {
+    const dateObject = new Date(target);
+    let ts = (dateObject.getTime() - current.getTime()) / 1000;
+    let tm = Math.floor(ts % 3600 / 60) - 1;
+    return tm + ' minutes';
+}
+
 export function showDateInfo(date) {
     let dateString = date.toString();
     let timeString = dateString.split(' ')[4];

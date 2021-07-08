@@ -51,7 +51,7 @@ const RoomCreate = (props) => {
             runDateTime: dateValue,
             runDistance: distanceValue,
             unit: unit,
-            
+            inviteList: [],
         };
         createRoom(roomInfo, accessToken).then(result => {
             if(result) {
@@ -64,7 +64,7 @@ const RoomCreate = (props) => {
 
     return (
         <View style={css.bgContainer}>
-            <Pressable style={css.backButton}>
+            <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Room')}>
                 <SvgIcon icon='Back'/>
             </Pressable>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>CREATE A RUNROOM</Text>
@@ -87,7 +87,7 @@ const RoomCreate = (props) => {
                 style={{ marginTop: 36, marginBottom: 25 }}
             />
             <Text style={css.labelText}>Run Distance</Text>
-            <Pressable style={[css.textInputRowContainer, { marginBottom: 15 }]}>
+            <Pressable style={[css.textInputRowContainer, { marginBottom: 15 }]} onPress={() => setDistanceVisible(true)}>
                 <TextInput
                     style={css.inputText}
                     placeholder='Pick a distance'
@@ -100,7 +100,7 @@ const RoomCreate = (props) => {
                 </View>
             </Pressable>
             <Text style={css.labelText}>Set Time and Date</Text>
-            <Pressable style={[css.textInputRowContainer, { marginBottom: 15 }]}>
+            <Pressable style={[css.textInputRowContainer, { marginBottom: 15 }]} onPress={() => setDateVisible(true)}>
                 <TextInput
                     style={css.inputText}
                     placeholder='Select time and date'
@@ -135,18 +135,7 @@ const RoomCreate = (props) => {
                 onChangeVisible={ setDateVisible }
                 onChangeValue={ setDateValue }
             />
-            <InviteModal
-                data={ inviteList }
-                visible={ inviteVisible }
-                onChangeVisible={ setInviteVisible }
-                onChangeValue={ setInviteList }
-            />
-            <ConnectionModal
-                data={ inviteList }
-                visible={ invitedVisible }
-                onChangeVisible={ setInvitedVisible }
-                onChangeValue = { setInviteList }
-            />
+            
         </View>
     );
 }

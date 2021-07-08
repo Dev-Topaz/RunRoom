@@ -4,7 +4,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
-import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
+import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime, displayLobbyTime } from '../../utils/func';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, disjoinRun } from '../../utils/api';
 import { changeRoom } from '../../store/actions/actions';
@@ -165,7 +165,7 @@ const RunMain = (props) => {
                                 <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime)}>
                                     <Text style={css.enterLobbyText}>Enter Lobby  ➜</Text>
                                 </TouchableOpacity>
-                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(item.runDateTime)}</Text>
+                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(current, item.runDateTime)}</Text>
                             </View>
                     }
                 </View>
