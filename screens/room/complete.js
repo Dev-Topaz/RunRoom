@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: 'FuturaT',
         fontSize: 24,
+        letterSpacing: 0.3,
         color: 'white',
         marginTop: 25,
     },
