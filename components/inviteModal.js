@@ -89,16 +89,6 @@ const InviteModal = (props) => {
         props.onChangeVisible(false);
     }
 
-    const pressGroupButton = (index) => {
-        if(index == 1) {
-            if(isFollowing)
-                setFollower(!isFollower);
-        } else {
-            if(isFollower)
-                setFollowing(!isFollowing);
-        }
-    }
-
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId} style={css.listItemContainer}>
             <Image source={item.picture == null ? global.IMAGE.UNKNOWN : { uri: item.picture }} style={css.hostAvatar}/>
@@ -145,10 +135,10 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(1)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(!isFollower)}>
                                 <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(2)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(!isFollowing)}>
                                 <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>
