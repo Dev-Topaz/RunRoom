@@ -95,9 +95,10 @@ const RunMain = (props) => {
         });
     }
 
-    const pressLobbyAction = (roomId, runDateTime) => {
-        dispatch(changeRoom(roomId, runDateTime));
-        props.navigation.navigate('EnterLobby');
+    const pressLobbyAction = (roomId, runDateTime, distMile, distKilo) => {
+        const distance = unit == 1 ? distMile : distKilo;
+        dispatch(changeRoom(roomId, runDateTime, distance, 'Run'));
+        props.navigation.navigate('Race');
     }
 
     const renderItem = ({item, index}) => (
@@ -162,7 +163,7 @@ const RunMain = (props) => {
                                 <Text style={css.participatingText}>PARTICIPATING</Text>
                             </TouchableOpacity>
                         :   <View style={css.enterLobbyContainer}>
-                                <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime)}>
+                                <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime, item.runDistanceMiles, item.runDistanceKilometers)}>
                                     <Text style={css.enterLobbyText}>Enter Lobby  ➜</Text>
                                 </TouchableOpacity>
                                 <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(current, item.runDateTime)}</Text>

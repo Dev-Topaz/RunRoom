@@ -3,6 +3,8 @@ import { ROOM_ENTER } from '../constants';
 const initialState = {
     roomId: null,
     runDateTime: new Date(),
+    distance: 0,
+    page: null,
 };
 
 const runReducer = (state = initialState, action) => {
@@ -11,7 +13,9 @@ const runReducer = (state = initialState, action) => {
             return {
                 ...state,
                 roomId: action.payload.roomId,
-                runDateTime: action.payload.runDateTime
+                runDateTime: action.payload.runDateTime,
+                distance: action.payload.distance,
+                page: action.payload.page
             };
 
         default:

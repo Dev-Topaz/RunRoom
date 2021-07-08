@@ -24,13 +24,15 @@ export function codeVerified(userInfo) {
     }
 }
 
-export function changeRoom(roomId, runDateTime) {
+export function changeRoom(roomId, runDateTime, distance, page) {
 
     return {
         type: ROOM_ENTER,
         payload: {
             roomId: roomId,
-            runDateTime: runDateTime
+            runDateTime: runDateTime,
+            distance: distance,
+            page: page,
         }
     }
 }

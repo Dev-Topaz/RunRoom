@@ -15,13 +15,18 @@ const Lobby = (props) => {
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.roomId);
     const runDateTime = useSelector(state => state.run.runDateTime);
+    const distance = useSelector(state => state.run.distance);
+    const previousPage = useSelector(state => state.run.page);
 
     const [isToggle, setToggle] = useState(false);
-    const [page, setPage] = useState(1);
     const [data, setData] = useState([]);
     const [current, setCurrent] = useState(new Date());
     const [remainMin, setRemainMin] = useState(0);
     const [remainSec, setRemainSec] = useState(0);
+
+    useEffect(() => {
+        StatusBar.setHidden(true);
+    }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
