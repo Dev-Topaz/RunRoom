@@ -103,3 +103,8 @@ export function showDateInfo(date) {
 export function findIndex(target, origin) {
     return origin.findIndex(item => target.connectedUserId === item.connectedUserId);
 }
+
+export function getDistancePercent(currentDistance, totalDistance) {
+    let percent = currentDistance / totalDistance * 100;
+    return Math.floor(percent * 10) / 10;
+}

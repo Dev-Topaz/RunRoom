@@ -136,7 +136,7 @@ const Lobby = (props) => {
                                         {
                                             item.runnerId == userId ? null :
                                             <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge}>
-                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}></Text>
+                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
                                             </Pressable>
                                         }
                                         <View style={[styles.rankBadge, { backgroundColor: item.runnerId == userId ? global.COLOR.PRIMARY100 : global.COLOR.STATUS_INACTIVE }]}>
@@ -325,3 +325,5 @@ const styles = StyleSheet.create({
 });
 
 export default Lobby;
+
+const followType = [ '', 'Follow', 'Following', 'Follow back' ];
