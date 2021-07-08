@@ -17,7 +17,7 @@ const FollowModal = (props) => {
                 <View style={css.modalContainer801}>
                     <View style={css.modalHeader}>
                         <Text style={css.modalTitleText}>Following</Text>
-                        <Pressable style={css.modalCloseButton} onPress={() => props.onChangeVisible(false)}>
+                        <Pressable style={[css.modalCloseButton, { right: global.CONSTANTS.SIZE_20 }]} onPress={() => props.onChangeVisible(false)}>
                             <SvgIcon icon='Close'/>
                         </Pressable>
                     </View>

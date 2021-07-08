@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, Pressable, ActivityIndicator, ScrollView, Alert, StatusBar } from 'react-native';
+import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -21,6 +21,7 @@ const Lobby = (props) => {
     const [isToggle, setToggle] = useState(false);
     const [data, setData] = useState([]);
     const [current, setCurrent] = useState(new Date());
+    const [now, setNow] = useState(new Date());
     const [remainMin, setRemainMin] = useState(0);
     const [remainSec, setRemainSec] = useState(0);
 
@@ -28,11 +29,40 @@ const Lobby = (props) => {
         StatusBar.setHidden(true);
     }, []);
 
+    useEffect(() => {
+        const timer = setInterval(() => {setCurrent(new Date())}, 500);
+
+        const dateObject = new Date(runDateTime);
+        let ts = (dateObject.getTime() - current.getTime()) / 1000;
+        let tm = Math.floor(ts % 3600 / 60);
+        if(tm < 1 && ts < 12) {
+            clearInterval(timer);
+            props.navigation.navigate('RunPrepare');
+        } else {
+            setRemainMin(tm);
+            setRemainSec(Math.floor(ts % 60));
+        }
+
+        return () => clearInterval(timer);
+    }, [current]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {setNow(new Date())}, 10000);
+
+        getLobbyRunners(roomId, 1, 500, accessToken).then(result => {
+            if(result != null) {
+                setData(result);
+            }
+        });
+
+        return () => clearInterval(timer);
+    }, [now]);
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <Pressable style={{ paddingLeft: 6 }}>
+                    <Pressable style={{ paddingLeft: 6 }} onPress={() => props.navigation.navigate(previousPage)}>
                         <SvgIcon icon='Back'/>
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
@@ -138,6 +168,17 @@ const styles = StyleSheet.create({
         height: '100%',
         justifyContent: 'space-between',
         paddingBottom: 12,
+    },
+    titleText: {
+        fontFamily: 'SFProBold',
+        fontSize: 10,
+        color: global.COLOR.PRIMARY70,
+        marginBottom: 2,
+    },
+    titleDistance: {
+        fontFamily: 'FuturaT',
+        fontSize: 24,
+        color: global.COLOR.PRIMARY100,
     },
     headerRight: {
         justifyContent: 'flex-end',

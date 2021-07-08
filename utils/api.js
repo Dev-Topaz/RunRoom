@@ -413,4 +413,6 @@ export async function getLobbyRunners(roomId, pageId, pageSize, accessToken) {
         console.log(err);
         return null;
     });
+
+    return result;
 }
