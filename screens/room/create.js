@@ -114,7 +114,7 @@ const RoomCreate = (props) => {
             </Pressable>
             <Text style={css.labelText}>Invite Connection</Text>
             <View style={styles.connectionContainer}>
-                <Pressable style={styles.addButton}>
+                <Pressable style={styles.addButton} onPress={() => setInviteVisible(true)}>
                     <SvgIcon icon='Plus'/>
                 </Pressable>
             </View>
@@ -135,7 +135,18 @@ const RoomCreate = (props) => {
                 onChangeVisible={ setDateVisible }
                 onChangeValue={ setDateValue }
             />
-            
+            <ConnectionModal
+                data={ inviteList }
+                visible={ invitedVisible }
+                onChangeVisible={ setInvitedVisible }
+                onChangeValue={ setInviteList }
+            />
+            <InviteModal
+                data={ inviteList }
+                visible={ inviteVisible }
+                onChangeVisible={ setInviteVisible }
+                onChangeValue={ setInviteList }
+            />
         </View>
     );
 }

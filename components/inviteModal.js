@@ -13,17 +13,17 @@ const InviteModal = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
 
     const [searchText, setSearchText] = useState('');
+    const [isFollower, setFollower] = useState(true);
+    const [isFollowing, setFollowing] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [isFollower, setFollower] = useState(false);
-    const [isFollowing, setFollowing] = useState(false);
     const [inviteList, setInviteList] = useState([]);
 
     useEffect(() => {
         setLoading(true);
         if(isFollower && isFollowing) {
-            getAllConnections(page, 9, accessToken).then(result => {
+            getAllConnections(page, 9, searchText, accessToken).then(result => {
                 if(result != null && result.length > 0) {
                     if(page != 1)
                         setData([...data, ...result]);
@@ -33,7 +33,7 @@ const InviteModal = (props) => {
                 setLoading(false);
             });
         } else if(isFollower && !isFollowing) {
-            getFollowers(page, 9, accessToken).then(result => {
+            getFollowers(page, 9, searchText, accessToken).then(result => {
                 if(result != null && result.length > 0) {
                     if(page != 1)
                         setData([...data, ...result]);
@@ -43,7 +43,7 @@ const InviteModal = (props) => {
                 setLoading(false);
             });
         } else if(!isFollower && isFollowing) {
-            getFollowings(page, 9, accessToken).then(result => {
+            getFollowings(page, 9, searchText, accessToken).then(result => {
                 if(result != null && result.length > 0) {
                     if(page != 1)
                         setData([...data, ...result]);
@@ -53,7 +53,7 @@ const InviteModal = (props) => {
                 setLoading(false);
             });
         } else {
-            getAllUsers(page, 9, accessToken).then(result => {
+            getAllUsers(page, 9, searchText, accessToken).then(result => {
                 if(result != null && result.length > 0) {
                     if(page != 1)
                         setData([...data, ...result]);
@@ -68,7 +68,7 @@ const InviteModal = (props) => {
 
     useEffect(() => {
         setPage(1);
-    }, [searchText]);
+    }, [searchText, isFollower, isFollowing]);
 
     const pressInviteAction = (index) => {
         const target = props.data[index];
@@ -87,6 +87,16 @@ const InviteModal = (props) => {
     const pressBackAction = () => {
         props.onChangeValue(inviteList);
         props.onChangeVisible(false);
+    }
+
+    const pressGroupButton = (index) => {
+        if(index == 1) {
+            if(isFollowing)
+                setFollower(!isFollower);
+        } else {
+            if(isFollower)
+                setFollowing(!isFollowing);
+        }
     }
 
     const renderItem = ({item, index}) => (
@@ -135,10 +145,10 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(!isFollower)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(1)}>
                                 <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(!isFollowing)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(2)}>
                                 <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>

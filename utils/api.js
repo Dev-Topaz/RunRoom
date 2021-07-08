@@ -204,13 +204,14 @@ export async function createRoom(roomInfo, accessToken) {
     return result;
 }
 
-export async function getFollowings(pageId, pageSize, accessToken) {
+export async function getFollowings(pageId, pageSize, searchKey, accessToken) {
 
     const result = await Axios.get('/Connections/GetFollowings', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
         params: {
+            Name: searchKey,
             PageNumber: pageId,
             PageSize: pageSize,
         }
@@ -226,13 +227,14 @@ export async function getFollowings(pageId, pageSize, accessToken) {
     return result;
 }
 
-export async function getFollowers(pageId, pageSize, accessToken) {
+export async function getFollowers(pageId, pageSize, searchKey, accessToken) {
 
     const result = await Axios.get('/Connections/GetFollowers', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
         params: {
+            Name: searchKey,
             PageNumber: pageId,
             PageSize: pageSize,
         }
@@ -248,18 +250,20 @@ export async function getFollowers(pageId, pageSize, accessToken) {
     return result;
 }
 
-export async function getAllConnections(pageId, pageSize, accessToken) {
+export async function getAllConnections(pageId, pageSize, searchKey, accessToken) {
 
     const result = await Axios.get('/Connections/GetAllConnections', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
         params: {
+            Name: searchKey,
             PageNumber: pageId,
             PageSize: pageSize,
         }
     }).then(
         async function(response) {
+            console.log(response);
             return response.data.data;
         }
     ).catch(err => {
@@ -270,13 +274,14 @@ export async function getAllConnections(pageId, pageSize, accessToken) {
     return result;
 }
 
-export async function getAllUsers(pageId, pageSize, accessToken) {
+export async function getAllUsers(pageId, pageSize, searchKey, accessToken) {
 
     const result = await Axios.get('/Connections/GetAllUsersWithConnectionStatus', {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         },
         params: {
+            Name: searchKey,
             PageNumber: pageId,
             PageSize: pageSize,
         }
