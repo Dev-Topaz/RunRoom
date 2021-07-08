@@ -7,6 +7,7 @@ import global from '../../global';
 import * as Location from 'expo-location';
 
 import { convertFloat, getDistancePercent } from '../../utils/func';
+import { updateRun, getRaceRunners } from '../../utils/api';
 import { useSelector } from 'react-redux';
 
 const Running = (props) => {
@@ -16,8 +17,9 @@ const Running = (props) => {
     const roomId = useSelector(state => state.run.roomId);
     const unit = useSelector(state => state.setting.unit);
     const distance = useSelector(state => state.run.distance);
+    const startTime = new Date();
 
-    const [isExit, setExit] = useState(false);
+    const [status, setStatus] = useState(1);
     const [isToggle, setToggle] = useState(false);
     const [dist, setDist] = useState(0);
     const [current, setCurrent] = useState(new Date());
@@ -25,9 +27,10 @@ const Running = (props) => {
     const [data, setData] = useState([]);
     const [lastPoint, setLastPoint] = useState(null);
     const [sec, setSec] = useState(0);
-    const [min, seMin] = useState(0);
+    const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
     const [rank, setRank] = useState(1);
+    const [elapse, setElapsed] = useState(0);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -42,6 +45,71 @@ const Running = (props) => {
         })();
     }, []);
 
+    useEffect(() => {
+        const timer = setInterval(() => {setCurrent(new Date())}, 500);
+
+        let ts = (current.getTime() - startTime.getTime()) / 1000;
+        let tm = Math.floor(ts % 3600 / 60);
+        let th = Math.floor(ts % (3600 * 24) / 3600);
+
+        if(dist >= distance) {
+            clearInterval(timer);
+            //props.navigation.navigate('RoomMain');
+        } else {
+            setHour(th);
+            setMin(tm);
+            setSec(Math.floor(ts % 60));
+        }
+
+        return () => clearInterval(timer);
+    }, [current]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {setNow(new Date())}, 10000);
+
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+              console.log('Access was denied.');
+            } else {
+                let location = await Location.getCurrentPositionAsync({});
+                const haversine = require('haversine');
+                let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
+                let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
+                if(start.latitude == end.latitude && start.longitude == end.longitude) {
+
+                } else {
+                    let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                    setLastPoint(location);
+                    setDist(dist => dist + betweenDistance);
+                }
+                //console.log('Location Track: ', start, end, dist);
+            }
+        })();
+
+        const updateInfo = {
+            roomId: roomId,
+            distance: dist,
+            unit: unit,
+            elapsedTime: (now.getTime() - startTime.getTime()) / 1000,
+            currentPace: 1,
+            averagePace: 1,
+            status: status,
+        };
+        updateRun(updateInfo, accessToken).then(result => {
+            if(result) {
+                getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                    if(res != null) {
+                        setData(res);
+                    }
+                })
+            } else {
+                return;
+            }
+        });
+
+        return () => clearInterval(timer);
+    }, [now]);
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -52,7 +120,7 @@ const Running = (props) => {
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Text style={styles.titleText}>YOUR RUN</Text>
-                        <Text style={styles.titleDistance}>{convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
+                        <Text style={styles.titleDistance}>{status > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>
@@ -71,7 +139,7 @@ const Running = (props) => {
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { width: 63, textAlign: 'right' }]}>0.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'kilos'}</Text>
-                            <Text style={styles.valueText}>0.0</Text>
+                            <Text style={[styles.valueText, { width: 63, textAlign: 'right' }]}>0.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
                     </View>
@@ -80,14 +148,14 @@ const Running = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}></Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
                             <Text style={[styles.indexText, { marginLeft: 23 }]}>min / mile</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Average Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}></Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
                             <Text style={[styes.indexText, { marginLeft: 23 }]}>min / mile</Text>
                         </View>
                     </View>
@@ -127,13 +195,13 @@ const Running = (props) => {
                                         </View>
                                         <View style={styles.stateContainer}>
                                             <View style={styles.runInfo}>
-                                                <View style={styles.infoItem}>
-                                                    <Text>Dist:</Text>
-                                                    <Text>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' kilos'}</Text>
+                                                <View style={[styles.infoItem, { marginBottom: 6 }]}>
+                                                    <Text style={styles.indexText}>Dist:</Text>
+                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' kilos'}</Text>
                                                 </View>
-                                                <View>
-                                                    <Text>Avg pace:</Text>
-                                                    <Text>{unit == 1 ? convertFloat(item.averagePaceMiles) : convertFloat(item.averagePaceKilometers)}</Text>
+                                                <View style={style.infoItem}>
+                                                    <Text style={styles.indexText}>Avg pace:</Text>
+                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.averagePaceMiles) : convertFloat(item.averagePaceKilometers)}</Text>
                                                 </View>
                                             </View>
                                             <View style={[styles.rankBadge, { backgroundColor: item.runnerId == userId ? global.COLOR.PRIMARY100 : global.COLOR.STATUS_INACTIVE }]}>
@@ -242,6 +310,11 @@ const styles = StyleSheet.create({
         height: 8,
         borderRadius: 4,
     },
+    listContainer: {
+        flex: 1,
+        borderColor: global.COLOR.HEADER_BORDER,
+        borderWidth: 0.5,
+    },
     listItemContainer: {
         flexDirection: 'row',
         width: global.CONSTANTS.WIDTH,
@@ -265,11 +338,28 @@ const styles = StyleSheet.create({
         fontFamily: 'SFProMedium',
         fontSize: 14,
         color: global.COLOR.PRIMARY100,
+        marginBottom: 3,
     },
     stateContainer: {
         position: 'absolute',
         right: global.CONSTANTS.SIZE_20,
         flexDirection: 'row',
+    },
+    runInfo: {
+        justifyContent: 'center',
+        marginRight: global.CONSTANTS.SIZE_20,
+    },
+    infoItem: {
+        flexDirection: 'row',
+        width: 100,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    infoText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        fontStyle: 'italic',
+        color: global.COLOR.PRIMARY100,
     },
     followBadge: {
         width: 85,

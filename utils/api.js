@@ -416,3 +416,58 @@ export async function getLobbyRunners(roomId, pageId, pageSize, accessToken) {
 
     return result;
 }
+
+export async function updateRun(updateInfo, accessToken) {
+
+    const result = await Axios.put('/RunRooms/UpdateRun', {
+        runRoomId: updateInfo.roomId,
+        runDistance: updateInfo.distance,
+        unit: updateInfo.unit,
+        runTimeInSeconds: updateInfo.elapsedTime,
+        currentPace: updateInfo.currentPace,
+        averagePace: updateInfo.averagePace,
+        status: updateInfo.status,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}
+
+export async function getRaceRunners(roomId, pageId, pageSize, accessToken) {
+
+    const result = await Axios.get('/RunRooms/GetRaceRunners', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            RunRoomId: roomId,
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}

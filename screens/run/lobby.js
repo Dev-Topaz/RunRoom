@@ -271,6 +271,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SFProRegular',
         fontSize: 12,
         color: global.COLOR.PRIMARY70,
+        marginTop: 2,
     },
     stateContainer: {
         position: 'absolute',
