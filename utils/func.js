@@ -108,3 +108,18 @@ export function getDistancePercent(currentDistance, totalDistance) {
     let percent = currentDistance / totalDistance * 100;
     return Math.floor(percent * 10) / 10;
 }
+
+export function convertUnit(target, unit) {
+    if(unit == 1) {
+        return 1609.344 / target;
+    } else {
+        return 1000 / target;
+    }
+}
+
+export function displayPace(target) {
+    let time = Math.floor(target);
+    let ts = time % 60;
+    let tm = time / 60;
+    return tm + ':' + ts;
+}

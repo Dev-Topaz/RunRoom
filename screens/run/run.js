@@ -6,7 +6,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import * as Location from 'expo-location';
 
-import { convertFloat, getDistancePercent } from '../../utils/func';
+import { convertFloat, getDistancePercent, convertUnit, displayPace } from '../../utils/func';
 import { updateRun, getRaceRunners } from '../../utils/api';
 import { useSelector } from 'react-redux';
 
@@ -30,7 +30,9 @@ const Running = (props) => {
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
     const [rank, setRank] = useState(1);
-    const [elapse, setElapsed] = useState(0);
+    const [elapsed, setElapsed] = useState(0);
+    const [averagePace, setAveragePace] = useState(0);
+    const [currentPace, setCurrentPace] = useState(0);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -39,7 +41,7 @@ const Running = (props) => {
             if (status !== 'granted') {
               console.log('Access was denied.');
             } else {
-                let location = await Location.getCurrentPositionAsync({});
+                let location = await Location.getCurrentPositionAsync({accuracy: Accuracy.BestForNavigation});
                 setLastPoint(location);
             }
         })();
@@ -54,6 +56,7 @@ const Running = (props) => {
 
         if(dist >= distance) {
             clearInterval(timer);
+            setStatus(3);
             //props.navigation.navigate('RoomMain');
         } else {
             setHour(th);
@@ -72,13 +75,15 @@ const Running = (props) => {
             if (status !== 'granted') {
               console.log('Access was denied.');
             } else {
-                let location = await Location.getCurrentPositionAsync({});
+                let location = await Location.getCurrentPositionAsync({accuracy: Accuracy.BestForNavigation});
                 const haversine = require('haversine');
                 let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                 let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
+                setCurrentPace(convertUnit(location['coords']['speed'], unit));
                 if(start.latitude == end.latitude && start.longitude == end.longitude) {
-
+                    setElapsed(elapsed => elapsed + 1);
                 } else {
+                    setElapsed(0);
                     let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
                     setLastPoint(location);
                     setDist(dist => dist + betweenDistance);
@@ -87,13 +92,16 @@ const Running = (props) => {
             }
         })();
 
+        const avgPace = (now.getTime() - startTime.getTime()) / 1000 / dist;
+        setAveragePace(avgPace);
+
         const updateInfo = {
             roomId: roomId,
             distance: dist,
             unit: unit,
             elapsedTime: (now.getTime() - startTime.getTime()) / 1000,
-            currentPace: 1,
-            averagePace: 1,
+            currentPace: currentPace,
+            averagePace: averagePace,
             status: status,
         };
         updateRun(updateInfo, accessToken).then(result => {
@@ -103,8 +111,6 @@ const Running = (props) => {
                         setData(res);
                     }
                 })
-            } else {
-                return;
             }
         });
 
@@ -138,7 +144,7 @@ const Running = (props) => {
                         <Text style={[styles.indexText, { paddingLeft: global.CONSTANTS.SIZE_20 }]}>Distance</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { width: 63, textAlign: 'right' }]}>0.0</Text>
-                            <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'kilos'}</Text>
+                            <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
                             <Text style={[styles.valueText, { width: 63, textAlign: 'right' }]}>0.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
@@ -148,15 +154,15 @@ const Running = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}>min / mile</Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(currentPace)}</Text>
+                            <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Average Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
-                            <Text style={[styes.indexText, { marginLeft: 23 }]}>min / mile</Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(averagePace)}</Text>
+                            <Text style={[styes.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                 </View>
