@@ -117,9 +117,8 @@ export function convertUnit(target, unit) {
     }
 }
 
-export function displayPace(target) {
-    let time = Math.floor(target);
-    let ts = time % 60;
-    let tm = time / 60;
+export function displayPace(time) {
+    let ts = Math.floor(time % 60);
+    let tm = Math.floor(time / 60);
     return tm + ':' + ts;
 }

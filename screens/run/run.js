@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar, Modal } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView, StatusBar, Modal } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import * as Location from 'expo-location';
@@ -8,7 +8,7 @@ import global from '../../global';
 
 import { useSelector } from 'react-redux';
 import { updateRun, getRaceRunners } from '../../utils/api';
-import { convertFloat } from '../../utils/func';
+import { convertFloat, convertUnit, displayPace, getDistancePercent } from '../../utils/func';
 
 const Running = (props) => {
 
@@ -25,17 +25,137 @@ const Running = (props) => {
     const [dist, setDist] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
+    const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
     const [elapsed, setElapsed] = useState(0);
     const [sec, setSec] = useState(0);
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
+    const [current, setCurrent] = useState(new Date());
+    const [now, setNow] = useState(new Date());
+    const [isExit, setExit] = useState(false);
+    
+    useEffect(() => {
+        StatusBar.setHidden(true);
+        (async () => {
+            let { permissionStatus } = await Location.requestForegroundPermissionsAsync();
+            if (permissionStatus !== 'granted') {
+              console.log('Access was denied.');
+            } else {
+                let location = await Location.getCurrentPositionAsync({ accuracy: Accuracy.BestForNavigation });
+                setLastPoint(location);
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        const timer = setInterval(() => {setCurrent(new Date())}, 500);
+
+        let ts = (current.getTime() - startTime.getTime()) / 1000;
+        let tm = Math.floor(ts % 3600 / 60);
+        let th = Math.floor(ts % (3600 * 24) / 3600);
+
+        if(dist >= distance) {
+            clearInterval(timer);
+            setStatus(3);
+        } else {
+            setHour(th);
+            setMin(tm);
+            setSec(Math.floor(ts % 60));
+        }
+
+        return () => clearInterval(timer);
+    }, [current]);
+
+    useEffect(() => {
+        const timer = setInterval(() => {setNow(new Date())}, 10000);
+
+        if(status > 1) {
+            setCurPace(0);
+        } else {
+            (async () => {
+                let { permissionStatus } = await Location.requestForegroundPermissionsAsync();
+                if (permissionStatus !== 'granted') {
+                  console.log('Access was denied.');
+                } else {
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Accuracy.BestForNavigation });
+                    const haversine = require('haversine');
+                    let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
+                    let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
+                    setCurPace(convertUnit(location['coords']['speed'], unit));
+                    if(start.latitude == end.latitude && start.longitude == end.longitude) {
+                        setElapsed(elapsed => elapsed + 1);
+                    } else {
+                        setElapsed(0);
+                        let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                        setLastPoint(location);
+                        setDist(dist => dist + betweenDistance);
+                    }
+                    //console.log('Location Track: ', start, end, dist);
+                }
+            })();
+        }
+
+        const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
+        setAvgPace(averagePace);
+
+        const updateInfo = {
+            roomId: roomId,
+            distance: dist,
+            unit: unit,
+            elapsedTime: (now.getTime() - startTime.getTime()) / 1000,
+            currentPace: curPace,
+            averagePace: avgPace,
+            status: status,
+        };
+        updateRun(updateInfo, accessToken).then(result => {
+            if(result) {
+                getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                    if(res != null) {
+                        setData(res);
+                        const idx = res.findIndex(item => userId === item.runnerId );
+                        setRank(idx + 1);
+                    }
+                });
+            }
+        });
+
+        return () => clearInterval(timer);
+    }, [now]);
+
+    useEffect(() => {
+        if(elapsed > 100) {
+            Alert.alert('Notification', 'Are you still participating in the run?',
+            [
+                {
+                    text: 'No',
+                    onPress: () => { setStatus(2); }
+                },
+                {
+                    text: 'Yes',
+                    onPress: () => { return; }
+                }
+            ]);
+        }
+    }, [elapsed]);
+
+    const pressBackAction = () => {
+        if(status == 1)
+            setExit(true);
+        else
+            props.navigation.navigate('Account');
+    }
+
+    const pressExitAction = () => {
+        setStatus(2);
+        setExit(false);
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <Pressable style={{ paddingLeft: 6 }} onPress={() => {}}>
+                    <Pressable style={{ paddingLeft: 6 }} onPress={pressBackAction}>
                         <SvgIcon icon='Back'/>
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
@@ -57,9 +177,9 @@ const Running = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={styles.valueText}>99.9</Text>
+                            <Text style={styles.valueText}>{convertFloat(dist)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
-                            <Text style={styles.valueText}>99.9</Text>
+                            <Text style={styles.valueText}>{getDistancePercent(dist, distance)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
                     </View>
@@ -68,14 +188,14 @@ const Running = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(currentPace)}</Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(curPace)}</Text>
                             <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Average Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(averagePace)}</Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(avgPace)}</Text>
                             <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
@@ -135,6 +255,29 @@ const Running = (props) => {
                     }
                 </ScrollView>
             </View>
+            <Modal
+                animationType='slide'
+                transparent
+                visible={isExit}
+                onRequestClose={() => {}}
+            >
+                <View style={styles.overlay}>
+                    <View style={styles.modalContainer}>
+                        <View>
+                            <Text style={styles.modalTitle}>{'Are you sure you want to' + '\n' + 'exit race?'}</Text>
+                            <Text style={styles.modalIndicator}>{'You will not be able to re-enter the run' + '\n' + 'and performance will not be recorded'}</Text>
+                        </View>
+                        <View>
+                            <TouchableOpacity style={styles.submitButton} onPress={pressExitAction}>
+                                <Text style={styles.submitText}>EXIT RACE</Text>
+                            </TouchableOpacity>
+                            <Pressable onPress={() => setExit(false)}>
+                                <Text style={[styles.submitText, { color: global.COLOR.PRIMARY70 }]}>CANCEL</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -326,6 +469,53 @@ const styles = StyleSheet.create({
     rankText: {
         fontFamily: 'SFProMedium',
         fontSize: 12,
+    },
+    overlay: {
+        width: global.CONSTANTS.WIDTH,
+        height: global.CONSTANTS.HEIGHT,
+        backgroundColor: global.COLOR.BLACK40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalContainer: {
+        width: global.CONSTANTS.WIDTH * 0.9,
+        height: global.CONSTANTS.WIDTH * 0.9,
+        backgroundColor: 'white',
+        borderRadius: 35,
+        paddingHorizontal: 32,
+        paddingTop: 60,
+        paddingBottom: 30,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    modalTitle: {
+        fontFamily: 'SFProBold',
+        fontSize: 24,
+        letterSpacing: -0.7,
+        lineHeight: 28,
+        color: global.COLOR.PRIMARY100,
+        textAlign: 'center',
+    },
+    modalIndicator: {
+        fontFamily: 'SFProRegular',
+        fontSize: 16,
+        color: global.COLOR.PRIMARY70,
+        lineHeight: 24,
+        textAlign: 'center',
+    },
+    submitButton: {
+        width: '100%',
+        height: global.CONSTANTS.SIZE_60,
+        backgroundColor: global.COLOR.PRIMARY100,
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 25,
+    },
+    submitText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 16,
+        color: 'white',
     },
 });
 
