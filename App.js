@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import global from './global';
 import configureStore from './store/configureStore';
 import Splash from './screens/splash';
-import AppNavigator from './screens/run/run';
+import AppNavigator from './navigations/appNavigator';
 
 const store = configureStore()
 
