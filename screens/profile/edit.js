@@ -129,15 +129,19 @@ const EditProfile = (props) => {
             Alert.alert('WARNING', 'Please fill in the Running Location');
             return;
         }
+        if(avatar == null) {
+            Alert.alert('WARNING', 'Please select an image for your avatar');
+            return;
+        }
 
         const updateInfo = {
             userId: userId,
             firstName: name.firstName,
             lastName: name.lastName,
-            avatar: avatar,
+            avatar: avatar == null ? '' : avatar,
             location: location,
-            gender: gender,
-            ageGroup: ageGroup,
+            gender: gender == 0 ? null : gender,
+            ageGroup: ageGroup == 0 ? null : ageGroup,
             unit: unit,
         };
         console.log(updateInfo);

@@ -299,9 +299,10 @@ export async function getAllUsers(pageId, pageSize, searchKey, accessToken) {
 
 export async function follow(followingId, accessToken) {
 
-    const result = await Axios.post('/Connections/Follow', followingId, {
+    const result = await Axios.post('/Connections/Follow', '' + JSON.stringify(followingId), {
         headers: {
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
         }
     }).then(
         async function(response) {
@@ -320,20 +321,21 @@ export async function follow(followingId, accessToken) {
 
 export async function stopFollowing(followingId, accessToken) {
 
-    const result = await Axios.put('/Connections/StopFollowing', followingId, {
+    const result = await Axios.put('/Connections/StopFollowing', JSON.stringify(followingId), {
         headers: {
-            'Authorization': `Bearer ${accessToken}`
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
         }
     }).then(
         async function(response) {
-            if(response.status == 200)
-                return response.data.success;
+            if(response.status == 200 && response.data.success)
+                return response.data.followingStatus;
             else
-                return false;
+                return null;
         }
     ).catch(err => {
         console.log(err);
-        return false;
+        return null;
     });
 
     return result;

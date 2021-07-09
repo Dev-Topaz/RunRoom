@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, KeyboardAvoidingView, TouchableOpacity, Pressable, TextInput, StatusBar, Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, KeyboardAvoidingView, TouchableOpacity, Pressable, TextInput, StatusBar, Alert } from 'react-native';
 import SwitchSelector from 'react-native-switch-selector';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -117,6 +117,24 @@ const RoomCreate = (props) => {
                 <Pressable style={styles.addButton} onPress={() => setInviteVisible(true)}>
                     <SvgIcon icon='Plus'/>
                 </Pressable>
+                <Pressable style={{ flexDirection: 'row', width: 100, justifyContent: 'flex-end' }} onPress={() => setInvitedVisible(true)}>
+                    {
+                        inviteList.length > 3 ?
+                            <View>
+                                <View style={[css.badge, {right: 0}]}>
+                                    <Text style={css.badgeText}>{'+' + (inviteList.length - 3)}</Text>
+                                </View>
+                                <Image source={inviteList[2].picture == null ? unknown : {uri: inviteList[2].picture}} style={[css.followAvatar, {right: 25}]}/>
+                                <Image source={inviteList[1].picture == null ? unknown : {uri: inviteList[1].picture}} style={[css.followAvatar, {right: 48}]}/>
+                                <Image source={inviteList[0].picture == null ? unknown : {uri: inviteList[0].picture}} style={[css.followAvatar, {right: 70}]}/>
+                            </View>
+                        : inviteList.map((runner, idx = 0) => {
+                            return (
+                                <Image key={idx} source={runner.picture == null ? unknown : {uri: runner.picture}} style={[css.followAvatar, {right: 25*idx++}]}/>
+                            );
+                        })
+                    }
+                </Pressable>
             </View>
             <KeyboardAvoidingView style={styles.submitContainer} behavior='position'>
                 <TouchableOpacity style={css.submitButton} onPress={pressSubmitAction}>
@@ -170,7 +188,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 18,
+        justifyContent: 'space-between'
     },
 });
 
 export default RoomCreate;
+
+const unknown = global.IMAGE.UNKNOWN;

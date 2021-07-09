@@ -20,7 +20,7 @@ const RunMain = (props) => {
     const filterOption = {
         invited: false,
         participating: true,
-        organized: false,
+        organized: true,
         startValue: 0,
         endValue: 20,
         unit: 1,

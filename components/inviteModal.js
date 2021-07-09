@@ -5,7 +5,7 @@ import global from '../global';
 import css from '../css';
 
 import { findIndex } from '../utils/func';
-import { getAllConnections, getAllUsers, getFollowings, getFollowers } from '../utils/api';
+import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, stopFollowing } from '../utils/api';
 import { useSelector } from 'react-redux';
 
 const InviteModal = (props) => {
@@ -13,8 +13,8 @@ const InviteModal = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
 
     const [searchText, setSearchText] = useState('');
-    const [isFollower, setFollower] = useState(true);
-    const [isFollowing, setFollowing] = useState(true);
+    const [isFollower, setFollower] = useState(false);
+    const [isFollowing, setFollowing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
@@ -71,17 +71,49 @@ const InviteModal = (props) => {
     }, [searchText, isFollower, isFollowing]);
 
     const pressInviteAction = (index) => {
-        const target = props.data[index];
-        let idx = findIndex(target, inviteList);
+        const target = data[index];
+        const inviteGroup = [...inviteList];
+        let idx = findIndex(target, inviteGroup);
         if(idx > -1) {
-            inviteList.splice(idx, 1);
+            inviteGroup.splice(idx, 1);
+            setInviteList(inviteGroup);
         } else {
-            inviteList.push(target);
+            inviteGroup.push(target);
+            setInviteList(inviteGroup);
         }
     }
 
     const pressFollowAction = (index) => {
-
+        let target = [...data];
+        
+        switch(target[index].followingStatus) {
+            case 1:
+                follow(target[index].connectedUserId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            case 2:
+                stopFollowing(target[index].connectedUserId, accessToken).then(result => {
+                    if(result != null) {
+                        target[index].followingStatus = result;
+                        setData(target);
+                    }
+                });
+                return;
+            case 3:
+                follow(target[index].connectedUserId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            default:
+                return;
+        }
     }
 
     const pressBackAction = () => {
@@ -101,8 +133,8 @@ const InviteModal = (props) => {
                 <Pressable style={[css.inviteButton, { marginRight: 5, backgroundColor: findIndex(item, inviteList) > -1 ? global.COLOR.SECONDARY : global.COLOR.BACKGROUND }]} onPress={() => pressInviteAction(index)}>
                     <Text style={[css.inviteButtonText, { color: findIndex(item, inviteList) > -1 ? 'white' : global.COLOR.PRIMARY100 }]}>Invite</Text>
                 </Pressable>
-                <Pressable style={css.inviteButton} onPress={() => pressFollowAction(index)}>
-                    <Text style={css.inviteButtonText}>Follow</Text>
+                <Pressable style={[css.inviteButton, { backgroundColor: item.followingStatus == 1 ? global.COLOR.STATUS_INACTIVE : item.followingStatus == 2 ? global.COLOR.SECONDARY : 'transparent', borderWidth: 1, borderColor: item.followingStatus  == 1 ? global.COLOR.STATUS_INACTIVE : global.COLOR.SECONDARY }]} onPress={() => pressFollowAction(index)}>
+                    <Text style={[css.inviteButtonText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
                 </Pressable>
             </View>
         </View>
@@ -199,3 +231,5 @@ const styles = StyleSheet.create({
 });
 
 export default React.memo(InviteModal);
+
+const followType = [ '', 'Follow', 'Following', 'Follow back'];

@@ -42,7 +42,7 @@ const Running = (props) => {
             if (permissionStatus !== 'granted') {
               console.log('Access was denied.');
             } else {
-                let location = await Location.getCurrentPositionAsync({ accuracy: Accuracy.BestForNavigation });
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
             }
         })();
@@ -78,7 +78,7 @@ const Running = (props) => {
                 if (permissionStatus !== 'granted') {
                   console.log('Access was denied.');
                 } else {
-                    let location = await Location.getCurrentPositionAsync({ accuracy: Accuracy.BestForNavigation });
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                     const haversine = require('haversine');
                     let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                     let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
