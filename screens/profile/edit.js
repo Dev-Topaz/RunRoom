@@ -3,6 +3,8 @@ import { StyleSheet, View, Image, Text, Pressable, TouchableOpacity, TextInput, 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SwitchToggle from 'react-native-switch-toggle';
 import PhoneInput from 'react-native-phone-input';
+import * as ImagePicker from 'expo-image-picker';
+import { Icon } from 'react-native-elements';
 import CountryPicker from '../../components/countryPicker';
 import AgePicker from '../../components/agePicker';
 import GenderPicker from '../../components/genderPicker';
@@ -18,6 +20,7 @@ const EditProfile = (props) => {
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const phoneNumber = useSelector(state => state.user.phoneNumber);
+    const unit = useSelector(state => state.setting.unit);
     const dispatch = useDispatch();
     const phoneInput = useRef(null);
 
@@ -33,6 +36,7 @@ const EditProfile = (props) => {
     const [alertVisible, setAlertVisible] = useState(false);
     const [ageVisible, setAgeVisible] = useState(false);
     const [genderVisible, setGenderVisible] = useState(false);
+    const [pickerVisible, setPickerVisible] = useState(false);
 
     useEffect(() => {
         setCountryData(phoneInput.current.getPickerData());
@@ -64,8 +68,88 @@ const EditProfile = (props) => {
         phoneInput.current.selectCountry(item.iso2);
     }
 
-    const pressSubmitAction = () => {
+    const pressCameraAction = () => {
+        setPickerVisible(false);
+        (async () => {
+            let result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+            });
 
+            if(!result.cancelled)
+                setAvatar(result.uri);
+        })();
+    }
+
+    const pressGalleryAction = () => {
+        setPickerVisible(false);
+        (async () => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 1,
+            });
+
+            if(!result.cancelled)
+                setAvatar(result.uri);
+        })();
+    }
+
+    const pressPickerAction = () => {
+        (async () => {
+            const { status } = await ImagePicker.requestCameraPermissionsAsync();
+            if (status !== 'granted') {
+              Alert.alert('Sorry, we need camera roll permissions to make this work!');
+              return;
+            }
+        })();
+        (async () => {
+            const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            if (status !== 'granted') {
+              Alert.alert('Sorry, we need camera roll permissions to make this work!');
+              return;
+            }
+        })();
+        setPickerVisible(true);
+    }
+
+    const pressSubmitAction = () => {
+        if(name.firstName == '' || name.lastName == '') {
+            Alert.alert('WARNING', 'Fill in the first name and last name correctly');
+            return;
+        }
+        if(!phoneInput.current.isValidNumber()) {
+            Alert.alert('WARNING', 'Your phone number is invalid');
+            return;
+        }
+        if(location == null || location == '') {
+            Alert.alert('WARNING', 'Please fill in the Running Location');
+            return;
+        }
+
+        const updateInfo = {
+            userId: userId,
+            firstName: name.firstName,
+            lastName: name.lastName,
+            avatar: avatar,
+            location: location,
+            gender: gender,
+            ageGroup: ageGroup,
+            unit: unit,
+        };
+        console.log(updateInfo);
+        updateUserProfile(updateInfo, accessToken).then(result => {
+            if(result) {
+                Alert.alert('Your profile was updated successfully');
+                props.navigation.navigate('Profile');
+            } else {
+                //Alert.alert('There is an error in updating your profile.');
+                props.navigation.navigate('Profile');
+            }
+        });
     }
 
     return (
@@ -79,7 +163,7 @@ const EditProfile = (props) => {
                     <Image source={avatar == null ? global.IMAGE.UNKNOWN : { uri: avatar }} style={styles.avatar}/>
                     <View style={{ justifyContent: 'center', marginLeft: 15 }}>
                         <Text style={css.inputText}>Profile Photo</Text>
-                        <Pressable style={styles.uploadButton}>
+                        <Pressable style={styles.uploadButton} onPress={pressPickerAction}>
                             <SvgIcon icon='Camera'/>
                             <Text style={styles.uploadText}>Upload new photo</Text>
                         </Pressable>
@@ -203,6 +287,31 @@ const EditProfile = (props) => {
                     </View>
                 </View>
             </Modal>
+            <Modal
+                animationType='slide'
+                transparent
+                visible={pickerVisible}
+                onRequestClose={() => {}}
+            >
+                <View style={css.overlay}>
+                    <View style={styles.pickerContainer}>
+                        <Text style={styles.pickerTitle}>Select an image from</Text>
+                        <View style={styles.selectorContainer}>
+                            <Pressable style={styles.selector} onPress={pressCameraAction}>
+                                <Icon name='camera' type='material-community' size={50} color={global.COLOR.SETTING_ICON}/>
+                                <Text style={styles.selectorText}>CAMERA</Text>
+                            </Pressable>
+                            <Pressable style={styles.selector} onPress={pressGalleryAction}>
+                                <Icon name='image' type='material-community' size={50} color={global.COLOR.SETTING_ICON}/>
+                                <Text style={styles.selectorText}>GALLERY</Text>
+                            </Pressable>
+                        </View>
+                        <Pressable onPress={() => setPickerVisible(false)}>
+                            <Text style={styles.alertButtonText}>Close</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -262,6 +371,40 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: global.COLOR.GOT,
     },
+    pickerContainer: {
+        width: global.CONSTANTS.MODAL_316,
+        height: global.CONSTANTS.MODAL_194,
+        left: (global.CONSTANTS.WIDTH - global.CONSTANTS.MODAL_316) / 2,
+        top: (global.CONSTANTS.HEIGHT - global.CONSTANTS.MODAL_194) / 2,
+        backgroundColor: 'white',
+        borderRadius: 37,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    pickerTitle: {
+        fontFamily: 'SFProBold',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+        marginBottom: 15,
+        textAlign: 'center',
+    },
+    selectorContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 15,
+    },
+    selector: {
+        paddingHorizontal: 30,
+        alignItems: 'center',
+    },
+    selectorText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 12,
+        color: global.COLOR.PRIMARY100,
+        marginTop: 1,
+        textAlign: 'center',
+    }
 });
 
 export default EditProfile;

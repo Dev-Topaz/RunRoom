@@ -350,7 +350,6 @@ export async function updateUserProfile(updateInfo, accessToken) {
         Gender: updateInfo.gender,
         AgeGroup: updateInfo.ageGroup,
         UnitOfMeasurement: updateInfo.unit,
-        Email: '',
     }, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
