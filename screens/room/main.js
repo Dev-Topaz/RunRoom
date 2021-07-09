@@ -123,7 +123,7 @@ const RoomMain = (props) => {
     const pressLobbyAction = (roomId, runDateTime, distMile, distKilo) => {
         const distance = unit == 1 ? distMile : distKilo;
         dispatch(changeRoom(roomId, runDateTime, distance, 'Room'));
-        props.navigation.navigate('Race');
+        props.navigation.navigate('Running');
     }
 
     const pressFollowingAction = (data) => {

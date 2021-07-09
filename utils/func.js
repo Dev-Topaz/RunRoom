@@ -110,6 +110,8 @@ export function getDistancePercent(currentDistance, totalDistance) {
 }
 
 export function convertUnit(target, unit) {
+    if(target == 0)
+        return 0;
     if(unit == 1) {
         return 1609.344 / target;
     } else {

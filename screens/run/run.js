@@ -17,9 +17,9 @@ const Running = (props) => {
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.roomId);
     const distance = useSelector(state => state.run.distance);
-    const startTime = new Date();
+    const [startTime, setStartTime] = useState(new Date());
 
-    const [status, setStatus] = useState(1);
+    const [raceStatus, setRaceStatus] = useState(1);
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
     const [dist, setDist] = useState(0);
@@ -38,11 +38,11 @@ const Running = (props) => {
     useEffect(() => {
         StatusBar.setHidden(true);
         (async () => {
-            let { permissionStatus } = await Location.requestForegroundPermissionsAsync();
-            if (permissionStatus !== 'granted') {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
               console.log('Access was denied.');
             } else {
-                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                let location = await Location.getCurrentPositionAsync({});
                 setLastPoint(location);
             }
         })();
@@ -57,7 +57,7 @@ const Running = (props) => {
 
         if(dist >= distance) {
             clearInterval(timer);
-            setStatus(3);
+            setRaceStatus(3);
         } else {
             setHour(th);
             setMin(tm);
@@ -70,15 +70,18 @@ const Running = (props) => {
     useEffect(() => {
         const timer = setInterval(() => {setNow(new Date())}, 10000);
 
-        if(status > 1) {
+        if(raceStatus > 1) {
             setCurPace(0);
         } else {
             (async () => {
-                let { permissionStatus } = await Location.requestForegroundPermissionsAsync();
-                if (permissionStatus !== 'granted') {
+                let { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
                   console.log('Access was denied.');
                 } else {
-                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                    let location = await Location.getCurrentPositionAsync({});
+                    if(lastPoint == null) {
+                        setLastPoint(location);
+                    }
                     const haversine = require('haversine');
                     let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                     let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
@@ -97,7 +100,7 @@ const Running = (props) => {
         }
 
         const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
-        setAvgPace(averagePace);
+        setAvgPace(dist == 0 ? 0 : averagePace);
 
         const updateInfo = {
             roomId: roomId,
@@ -106,8 +109,9 @@ const Running = (props) => {
             elapsedTime: (now.getTime() - startTime.getTime()) / 1000,
             currentPace: curPace,
             averagePace: avgPace,
-            status: status,
+            status: raceStatus,
         };
+        
         updateRun(updateInfo, accessToken).then(result => {
             if(result) {
                 getRaceRunners(roomId, 1, 500, accessToken).then(res => {
@@ -129,7 +133,7 @@ const Running = (props) => {
             [
                 {
                     text: 'No',
-                    onPress: () => { setStatus(2); }
+                    onPress: () => { setRaceStatus(2); }
                 },
                 {
                     text: 'Yes',
@@ -140,14 +144,14 @@ const Running = (props) => {
     }, [elapsed]);
 
     const pressBackAction = () => {
-        if(status == 1)
+        if(raceStatus == 1)
             setExit(true);
         else
             props.navigation.navigate('Account');
     }
 
     const pressExitAction = () => {
-        setStatus(2);
+        setRaceStatus(2);
         setExit(false);
     }
 
@@ -160,7 +164,7 @@ const Running = (props) => {
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Text style={styles.titleText}>YOUR RUN</Text>
-                        <Text style={styles.titleDistance}>{status > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
+                        <Text style={styles.titleDistance}>{raceStatus > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>
@@ -267,7 +271,7 @@ const Running = (props) => {
                             <Text style={styles.modalTitle}>{'Are you sure you want to' + '\n' + 'exit race?'}</Text>
                             <Text style={styles.modalIndicator}>{'You will not be able to re-enter the run' + '\n' + 'and performance will not be recorded'}</Text>
                         </View>
-                        <View>
+                        <View style={{ width: '100%', alignItems: 'center' }}>
                             <TouchableOpacity style={styles.submitButton} onPress={pressExitAction}>
                                 <Text style={styles.submitText}>EXIT RACE</Text>
                             </TouchableOpacity>
@@ -500,8 +504,10 @@ const styles = StyleSheet.create({
         fontFamily: 'SFProRegular',
         fontSize: 16,
         color: global.COLOR.PRIMARY70,
+        letterSpacing: -0.6,
         lineHeight: 24,
         textAlign: 'center',
+        marginTop: 17,
     },
     submitButton: {
         width: '100%',
