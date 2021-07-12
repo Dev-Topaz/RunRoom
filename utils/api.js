@@ -472,3 +472,49 @@ export async function getRaceRunners(roomId, pageId, pageSize, accessToken) {
 
     return result;
 }
+
+export async function getFinishedRuns(pageId, pageSize, accessToken) {
+
+    const result = await Axios.get('/RunRooms/GetFinishedRuns', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
+
+export async function getUserStatistics(userId, accessToken) {
+
+    const result = await Axios.get('/Users/GetUserStatistics' + userId, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
