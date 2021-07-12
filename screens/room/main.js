@@ -123,7 +123,7 @@ const RoomMain = (props) => {
     const pressLobbyAction = (roomId, runDateTime, distMile, distKilo) => {
         const distance = unit == 1 ? distMile : distKilo;
         dispatch(changeRoom(roomId, runDateTime, distance, 'Room'));
-        props.navigation.navigate('Running');
+        props.navigation.navigate('Race');
     }
 
     const pressFollowingAction = (data) => {
@@ -212,7 +212,7 @@ const RoomMain = (props) => {
             <View style={css.mainHeader}>
                 <View style={css.mainTitleContainer}>
                     <Text style={[css.titleText, { color: global.COLOR.HEADER_TITLE }]}>RUNROOMS</Text>
-                    <Pressable>
+                    <Pressable onPress={() => setFilterVisible(true)}>
                         <SvgIcon icon='Filter'/>
                     </Pressable>
                 </View>

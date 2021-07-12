@@ -67,6 +67,7 @@ const InviteModal = (props) => {
     }, [page]);
 
     useEffect(() => {
+        setData([]);
         setPage(1);
     }, [searchText, isFollower, isFollowing]);
 

@@ -44,6 +44,7 @@ const Running = (props) => {
             } else {
                 let location = await Location.getCurrentPositionAsync({});
                 setLastPoint(location);
+                //console.log(location);
             }
         })();
     }, []);
@@ -79,13 +80,19 @@ const Running = (props) => {
                   console.log('Access was denied.');
                 } else {
                     let location = await Location.getCurrentPositionAsync({});
+                    //console.log(location);
                     if(lastPoint == null) {
                         setLastPoint(location);
                     }
                     const haversine = require('haversine');
                     let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                     let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
-                    setCurPace(convertUnit(location['coords']['speed'], unit));
+
+                    if(location['coords']['speed'] > 0)
+                        setCurPace(convertUnit(location['coords']['speed'], unit));
+                    else
+                        setCurPace(0);
+                    
                     if(start.latitude == end.latitude && start.longitude == end.longitude) {
                         setElapsed(elapsed => elapsed + 1);
                     } else {
@@ -111,7 +118,7 @@ const Running = (props) => {
             averagePace: avgPace,
             status: raceStatus,
         };
-        
+        console.log(updateInfo);
         updateRun(updateInfo, accessToken).then(result => {
             if(result) {
                 getRaceRunners(roomId, 1, 500, accessToken).then(res => {
