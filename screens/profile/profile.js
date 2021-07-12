@@ -4,8 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import global from '../../global';
 import css from '../../css';
-import ProfileFinished from '../splash';
-import ProfileStatistics from '../splash';
+import ProfileFinished from './finished';
+import ProfileStatistics from './statistics';
 import ProfileConnection from '../splash';
 
 import { useSelector } from 'react-redux';
