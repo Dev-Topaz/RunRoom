@@ -82,7 +82,7 @@ const ProfileFinished = (props) => {
     );
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             {
                 isEmpty ?
                     <View style={styles.emptyContainer}>

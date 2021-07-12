@@ -13,11 +13,7 @@ const ProfileStatistics = (props) => {
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
-        getUserStatistics(userId, accessToken).then(result => {
-            if(result != null) {
-                setUserInfo(result);
-            }
-        });
+        
     }, []);
 
     return (
@@ -40,7 +36,7 @@ const ProfileStatistics = (props) => {
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'Distance' + '\n' + 'Covered'}</Text>
-                        <Text style={[styles.headerText, { fontStyle: 'italic' }]}>{unit == 1 ? 'miles' : 'kilometers'}</Text>
+                        <Text style={styles.unitText}>{unit == 1 ? 'miles' : 'kilometers'}</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>324.5</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>42.3</Text></View>
@@ -50,7 +46,7 @@ const ProfileStatistics = (props) => {
                 <View style={[styles.row, { borderBottomWidth: 1, borderBottomColor: 'rgba(173, 174, 181, 0.5)' }]}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>Running Time</Text>
-                        <Text style={[styles.headerText], { fontStyle: 'italic' }}>hours</Text>
+                        <Text style={styles.unitText}>hours</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>12.5</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>2.5</Text></View>
@@ -61,12 +57,12 @@ const ProfileStatistics = (props) => {
             <View style={{ flex: 697 }}>
                 <View style={{ marginTop: 20 }}>
                     <Text style={styles.secondHeaderText}>Average Pace</Text>
-                    <Text style={styles.headerText}>{'Minutes / ' + (unit == 1 ? 'mile' : 'km')}</Text>
+                    <Text style={[styles.headerText, { textAlign: 'left', marginTop: 5 }]}>{'Minutes / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                 </View>
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'< 5 ' + (unit == 1 ? 'mile' : 'km')}</Text>
-                        <Text style={[styles.headerText, { fontStyle: 'italic' }]}>Runs</Text>
+                        <Text style={styles.unitText}>Runs</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>6:24</Text></View>
@@ -76,7 +72,7 @@ const ProfileStatistics = (props) => {
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'5 to 10 ' + (unit == 1 ? 'mile' : 'km')}</Text>
-                        <Text style={[styles.headerText, { fontStyle: 'italic' }]}>Runs</Text>
+                        <Text style={styles.unitText}>Runs</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>16:24</Text></View>
@@ -86,7 +82,7 @@ const ProfileStatistics = (props) => {
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'10 to 15 ' + (unit == 1 ? 'mile' : 'km')}</Text>
-                        <Text style={[styles.headerText, { fontStyle: 'italic' }]}>Runs</Text>
+                        <Text style={styles.unitText}>Runs</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
@@ -96,7 +92,7 @@ const ProfileStatistics = (props) => {
                 <View style={styles.row}>
                 <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'> 15 ' + (unit == 1 ? 'mile' : 'km')}</Text>
-                        <Text style={[styles.headerText, { fontStyle: 'italic' }]}>Runs</Text>
+                        <Text style={styles.unitText}>Runs</Text>
                     </View>
                     <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
@@ -144,6 +140,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: global.COLOR.PRIMARY100,
         textAlign: 'center',
+    },
+    unitText: {
+        fontFamily: 'SFProRegular',
+        fontStyle: 'italic',
+        fontSize: 10,
+        color: global.COLOR.PRIMARY70,
     },
 });
 
