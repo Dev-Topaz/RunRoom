@@ -8,9 +8,15 @@ import { useSelector } from 'react-redux';
 import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
 import { findIndex } from '../../utils/func';
 
+function useForceUpdate() {
+    const [isUpdate, setUpdate] = useState(0);
+    return () => setUpdate(isUpdate => isUpdate + 1);
+}
+
 const ProfileConnection = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
+    const forceUpdate = useForceUpdate();
 
     const [searchText, setSearchText] = useState('');
     const [isFollower, setFollower] = useState(false);
@@ -20,7 +26,6 @@ const ProfileConnection = (props) => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
-        console.log('ddd');
         setLoading(true);
         if(isFollower && isFollowing) {
             getAllConnections(page, 8, searchText, accessToken).then(result => {
@@ -68,7 +73,42 @@ const ProfileConnection = (props) => {
 
     useEffect(() => {
         setPage(1);
+        setLoading(true);
+        if(isFollower && isFollowing) {
+            getAllConnections(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(isFollower && !isFollowing) {
+            getFollowers(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(!isFollower && isFollowing) {
+            getFollowings(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else {
+            getAllUsers(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        }
+        setLoading(false);
     }, [searchText, isFollower, isFollowing]);
+
+    useEffect(() => {
+        forceUpdate();
+    }, [data]);
 
     const pressFollowAction = (index) => {
         let target = [...data];

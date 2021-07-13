@@ -67,8 +67,38 @@ const InviteModal = (props) => {
     }, [page]);
 
     useEffect(() => {
-        setData([]);
         setPage(1);
+        setLoading(true);
+        if(isFollower && isFollowing) {
+            getAllConnections(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(isFollower && !isFollowing) {
+            getFollowers(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else if(!isFollower && isFollowing) {
+            getFollowings(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        } else {
+            getAllUsers(page, 8, searchText, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+                setLoading(false);
+            });
+        }
+        setLoading(false);
     }, [searchText, isFollower, isFollowing]);
 
     const pressInviteAction = (index) => {
@@ -168,10 +198,10 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(!isFollower)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(isFollower => !isFollower)}>
                                 <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(!isFollowing)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(isFollowing => !isFollowing)}>
                                 <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>
