@@ -8,15 +8,10 @@ import { useSelector } from 'react-redux';
 import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
 import { findIndex } from '../../utils/func';
 
-function useForceUpdate() {
-    const [isUpdate, setUpdate] = useState(0);
-    return () => setUpdate(isUpdate => isUpdate + 1);
-}
 
 const ProfileConnection = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
-    const forceUpdate = useForceUpdate();
 
     const [searchText, setSearchText] = useState('');
     const [isFollower, setFollower] = useState(false);
@@ -105,10 +100,6 @@ const ProfileConnection = (props) => {
         }
         setLoading(false);
     }, [searchText, isFollower, isFollowing]);
-
-    useEffect(() => {
-        forceUpdate();
-    }, [data]);
 
     const pressFollowAction = (index) => {
         let target = [...data];
