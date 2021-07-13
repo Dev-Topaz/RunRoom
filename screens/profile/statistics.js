@@ -17,7 +17,7 @@ const ProfileStatistics = (props) => {
     }, []);
 
     return (
-        <View style={{ flex: 1, paddingHorizontal: global.CONSTANTS.SIZE_20 }}>
+        <View style={{ flex: 1, paddingHorizontal: global.CONSTANTS.SIZE_20, backgroundColor: 'white' }}>
             <View style={{ flex: 529 }}>
                 <View style={[styles.row, { borderBottomWidth: 1, borderBottomColor: 'rgba(173, 174, 181, 0.5)' }]}>
                     <View style={styles.cell}><Text style={styles.headerText}></Text></View>

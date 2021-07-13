@@ -20,6 +20,7 @@ const ProfileConnection = (props) => {
     const [page, setPage] = useState(1);
 
     useEffect(() => {
+        console.log('ddd');
         setLoading(true);
         if(isFollower && isFollowing) {
             getAllConnections(page, 8, searchText, accessToken).then(result => {
@@ -119,7 +120,7 @@ const ProfileConnection = (props) => {
     );
 
     return (
-        <View style={{ flex: 1, paddingTop: global.CONSTANTS.SIZE_20 }}>
+        <View style={{ flex: 1, paddingTop: global.CONSTANTS.SIZE_20, backgroundColor: 'white' }}>
             <View style={css.searchInputContainer}>
                 <SvgIcon icon='Search'/>
                 <TextInput
@@ -130,10 +131,10 @@ const ProfileConnection = (props) => {
                 />
             </View>
             <View style={css.toggleContainer}>
-                <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(!isFollower)}>
+                <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(isFollower => !isFollower)}>
                     <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                 </Pressable>
-                <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(!isFollowing)}>
+                <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(isFollowing => !isFollowing)}>
                     <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                 </Pressable>
             </View>

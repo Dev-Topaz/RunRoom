@@ -263,7 +263,6 @@ export async function getAllConnections(pageId, pageSize, searchKey, accessToken
         }
     }).then(
         async function(response) {
-            console.log(response.data.data);
             return response.data.data;
         }
     ).catch(err => {
