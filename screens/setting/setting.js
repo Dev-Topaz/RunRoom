@@ -83,7 +83,7 @@ const Setting = (props) => {
                     <SvgIcon icon='Forward'/>
                 </View>
             </Pressable>
-            <Pressable style={styles.item}>
+            <Pressable style={styles.item} onPress={() => props.navigation.navigate('Feedback')}>
                 <Icon name='email' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
                 <View style={styles.indicatorContainer}>
                     <Text style={styles.indicatorTitle}>Feedback</Text>
