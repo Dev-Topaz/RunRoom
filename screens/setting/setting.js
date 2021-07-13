@@ -93,7 +93,7 @@ const Setting = (props) => {
                     <SvgIcon icon='Forward'/>
                 </View>
             </Pressable>
-            <Pressable style={styles.item}>
+            <Pressable style={styles.item} onPress={() => props.navigation.navigate('InviteFriend')}>
                 <Icon name='account-plus' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
                 <View style={styles.indicatorContainer}>
                     <Text style={styles.indicatorTitle}>Invite Friends</Text>

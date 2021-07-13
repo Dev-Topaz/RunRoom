@@ -1,11 +1,12 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import Splash from '../screens/splash';
+import InviteFriends from '../screens/setting/invite';
+import Feedback from '../screens/splash';
 
 export default createAppContainer(
     createSwitchNavigator(
         {
-            InviteFriend: { screen: Splash },
-            Feedback: { screen: Splash },
+            InviteFriend: { screen: InviteFriends },
+            Feedback: { screen: Feedback },
         },
         {
             initialRouteName: 'InviteFriend',
