@@ -43,7 +43,7 @@ const RunMain = (props) => {
     useEffect(() => {
         setLoading(true);
         getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
-            if(result != null && result.length > 0) {
+            if(result != null) {
                 if(page != 1)
                     setData([...data, ...result]);
                 else

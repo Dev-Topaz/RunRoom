@@ -24,7 +24,7 @@ const InviteModal = (props) => {
         setLoading(true);
         if(isFollower && isFollowing) {
             getAllConnections(page, 9, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -34,7 +34,7 @@ const InviteModal = (props) => {
             });
         } else if(isFollower && !isFollowing) {
             getFollowers(page, 9, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -44,7 +44,7 @@ const InviteModal = (props) => {
             });
         } else if(!isFollower && isFollowing) {
             getFollowings(page, 9, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -54,7 +54,7 @@ const InviteModal = (props) => {
             });
         } else {
             getAllUsers(page, 9, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else

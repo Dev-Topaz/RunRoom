@@ -24,7 +24,7 @@ const ProfileConnection = (props) => {
         setLoading(true);
         if(isFollower && isFollowing) {
             getAllConnections(page, 8, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -34,7 +34,7 @@ const ProfileConnection = (props) => {
             });
         } else if(isFollower && !isFollowing) {
             getFollowers(page, 8, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -44,7 +44,7 @@ const ProfileConnection = (props) => {
             });
         } else if(!isFollower && isFollowing) {
             getFollowings(page, 8, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
@@ -54,7 +54,7 @@ const ProfileConnection = (props) => {
             });
         } else {
             getAllUsers(page, 8, searchText, accessToken).then(result => {
-                if(result != null && result.length > 0) {
+                if(result != null) {
                     if(page != 1)
                         setData([...data, ...result]);
                     else
