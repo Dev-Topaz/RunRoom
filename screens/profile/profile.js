@@ -6,7 +6,7 @@ import global from '../../global';
 import css from '../../css';
 import ProfileFinished from './finished';
 import ProfileStatistics from './statistics';
-import ProfileConnection from '../splash';
+import ProfileConnection from './connect';
 
 import { useSelector } from 'react-redux';
 import { getUserDetails } from '../../utils/api';
