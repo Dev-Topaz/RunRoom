@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Modal, TouchableOpacity, Pressable } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
 import HorizontalPicker from '@vseslav/react-native-horizontal-picker';
@@ -11,6 +11,11 @@ const DatePicker = (props) => {
     const [selectedDate, selectDate] = useState(new Date());
     const [selectedTime, selectTime] = useState(12);
     const [isPM, setPM] = useState(false);
+    const [selIndex, setSelIndex] = useState(21);
+
+    useEffect(() => {
+        getNearestTime();
+    }, []);
 
     const initStateValues = () => {
         selectDate(new Date());
@@ -47,6 +52,26 @@ const DatePicker = (props) => {
         initStateValues();
     }
 
+    const getNearestTime = () => {
+        let dateString = (new Date()).toString();
+        let timeString = dateString.split(' ')[4];
+        timeString = timeString.slice(0, -3);
+        let hour = timeString.split(':')[0];
+        let min = timeString.split(':')[1];
+        let pm = Math.floor(hour / 12) > 0 ? true : false;
+        hour = hour % 12;
+        if(hour == 0)
+            hour = 12;
+        const idx = 4 * (hour - 1) + Math.ceil(min / 15);
+        if(idx > 47) {
+            setPM(!pm);
+            setSelIndex(0);
+        } else {
+            setPM(pm);
+            setSelIndex(idx);
+        }
+    }
+
     const renderItem = (item, index) => (
         <View style={styles.itemContainer}>
             <Text style={css.modalTitleText}>{ item }</Text>
@@ -59,6 +84,7 @@ const DatePicker = (props) => {
             transparent
             visible={props.visible}
             onRequestClose={() => {}}
+            onShow={() => getNearestTime()}
         >
             <View style={css.overlay}>
                 <View style={[css.modalContainer801, { paddingHorizontal: 20 }]}>
@@ -94,7 +120,7 @@ const DatePicker = (props) => {
                                 renderItem={ renderItem }
                                 itemWidth={ 60 }
                                 onChange={ selectTime }
-                                defaultIndex={ 12 }
+                                defaultIndex={ selIndex }
                             />
                             <View style={styles.indicatorContainer}>
                                 <Pressable onPress={() => setPM(false)}>
@@ -143,4 +169,4 @@ const styles = StyleSheet.create({
 
 export default React.memo(DatePicker);
 
-const timeItems = [ '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', '4:00', '4:30', '5:00', '5:30', '6:00', '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30' ];
+const timeItems = [ '1:00', '1:15', '1:30', '1:45', '2:00', '2:15', '2:30', '2:45', '3:00', '3:15', '3:30', '3:45', '4:00', '4:15', '4:30', '4:45', '5:00', '5:15', '5:30', '5:45', '6:00', '6:15', '6:30', '6:45', '7:00', '7:15', '7:30', '7:45', '8:00', '8:15', '8:30', '8:45', '9:00', '9:15', '9:30', '9:45', '10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30', '11:45', '12:00', '12:15', '12:30', '12:45' ];
