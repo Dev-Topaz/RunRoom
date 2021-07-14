@@ -349,8 +349,8 @@ export async function updateUserProfile(updateInfo, accessToken) {
         }
     }).then(
         async function(response) {
-            if(response.status == 200)
-                return response.data.success;
+            if(response.status == 200 && response.data != null)
+                return true;
             else
                 return false;
         }

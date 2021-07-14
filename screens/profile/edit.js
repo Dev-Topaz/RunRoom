@@ -4,6 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import SwitchToggle from 'react-native-switch-toggle';
 import PhoneInput from 'react-native-phone-input';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { Icon } from 'react-native-elements';
 import CountryPicker from '../../components/countryPicker';
 import AgePicker from '../../components/agePicker';
@@ -46,8 +47,9 @@ const EditProfile = (props) => {
             } else if(userId != result.userId || phoneNumber != result.phoneNumber) {
                 Alert.alert('You are a fake user.');
             } else {
+                console.log(result.avatar);
                 setName({ firstName: result.firstName, lastName: result.lastName });
-                setLocation(result.location);
+                setLocation(result.location == null ? '' : result.location);
                 setAgeGroup(result.ageGroup);
                 setAvatar(result.avatar);
                 setGender(result.gender);
@@ -79,7 +81,9 @@ const EditProfile = (props) => {
             });
 
             if(!result.cancelled)
-                setAvatar(result.uri);
+                compressImage(result.uri).then(res => {
+                    setAvatar(res.uri);
+                });
         })();
     }
 
@@ -94,7 +98,9 @@ const EditProfile = (props) => {
             });
 
             if(!result.cancelled)
-                setAvatar(result.uri);
+                compressImage(result.uri).then(res => {
+                    setAvatar(res.uri);
+                });
         })();
     }
 
@@ -116,6 +122,15 @@ const EditProfile = (props) => {
         setPickerVisible(true);
     }
 
+    const compressImage = async(uri) => {
+        const manipResult = await ImageManipulator.manipulateAsync(
+            uri,
+            [{ resize: { width: 100, height: 100 } }],
+            { compress: 1, format: ImageManipulator.SaveFormat.PNG }
+        );
+        return manipResult;
+    }
+
     const pressSubmitAction = () => {
         if(name.firstName == '' || name.lastName == '') {
             Alert.alert('WARNING', 'The first name and last name cannot be empty');
@@ -130,20 +145,28 @@ const EditProfile = (props) => {
         updateInfo.append('UserId', userId);
         updateInfo.append('FirstName', name.firstName);
         updateInfo.append('LastName', name.lastName);
+        updateInfo.append('AgeGroup', ageGroup);
+        updateInfo.append('Gender', gender);
+        updateInfo.append('RunningLocation', location);
         updateInfo.append('UnitOfMeasurement', unit);
-
-        if(location != null && location != '') {
-            updateInfo.append('RunningLocation', location);
-        }
-        if(ageGroup > 0) {
-            updateInfo.append('AgeGroup', ageGroup);
-        }
-        if(gender > 0) {
-            updateInfo.append('Gender', gender);
-        }
+        
         if(avatar != null) {
-            
+            let localUri = avatar;
+            let filename = localUri.split('/').pop();
+            let match = /\.(\w+)$/.exec(filename);
+            let type = match ? `image/${match[1]}` : `image`;
+
+            updateInfo.append('ImageInfo', { uri: localUri, name: filename, type });
         }
+
+        updateUserProfile(updateInfo, accessToken).then(result => {
+            if(result) {
+                Alert.alert('Your profile is updated successfully');
+                props.navigation.navigate('Profile');
+            } else {
+                Alert.alert('There is an error in updating your profile');
+            }
+        });
     }
 
     return (
