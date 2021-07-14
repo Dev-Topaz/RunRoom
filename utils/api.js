@@ -342,7 +342,24 @@ export async function stopFollowing(followingId, accessToken) {
 
 export async function updateUserProfile(updateInfo, accessToken) {
 
-    
+    const result = await Axios.put('/Users/UpdateUserProfile', updateInfo, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/form-data',
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    })
+
+    return result;
 }
 
 export async function logOut(accessToken, refreshToken) {

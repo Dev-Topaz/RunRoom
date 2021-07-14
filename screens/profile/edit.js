@@ -126,6 +126,24 @@ const EditProfile = (props) => {
             return;
         }
         
+        const updateInfo = new FormData();
+        updateInfo.append('UserId', userId);
+        updateInfo.append('FirstName', name.firstName);
+        updateInfo.append('LastName', name.lastName);
+        updateInfo.append('UnitOfMeasurement', unit);
+
+        if(location != null && location != '') {
+            updateInfo.append('RunningLocation', location);
+        }
+        if(ageGroup > 0) {
+            updateInfo.append('AgeGroup', ageGroup);
+        }
+        if(gender > 0) {
+            updateInfo.append('Gender', gender);
+        }
+        if(avatar != null) {
+            
+        }
     }
 
     return (
@@ -165,7 +183,7 @@ const EditProfile = (props) => {
                         onChangeText={text => setName({ ...name, lastName: text })}
                     />
                 </View>
-                <Text style={[css.labelText, { marginTop: 15 }]}>Last Name</Text>
+                <Text style={[css.labelText, { marginTop: 15 }]}>Phone Number</Text>
                 <View style={css.textInputContainer}>
                     <PhoneInput
                         ref={phoneInput}
@@ -174,6 +192,7 @@ const EditProfile = (props) => {
                         textProps={{ placeholder: 'Enter your mobile number' }}
                         textStyle={css.inputText}
                         initialValue={phoneNumber}
+                        disabled={true}
                     />
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Running Location</Text>
