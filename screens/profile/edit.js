@@ -47,7 +47,6 @@ const EditProfile = (props) => {
             } else if(userId != result.userId || phoneNumber != result.phoneNumber) {
                 Alert.alert('You are a fake user.');
             } else {
-                console.log(result.avatar);
                 setName({ firstName: result.firstName, lastName: result.lastName });
                 setLocation(result.location == null ? '' : result.location);
                 setAgeGroup(result.ageGroup);
