@@ -118,42 +118,14 @@ const EditProfile = (props) => {
 
     const pressSubmitAction = () => {
         if(name.firstName == '' || name.lastName == '') {
-            Alert.alert('WARNING', 'Fill in the first name and last name correctly');
+            Alert.alert('WARNING', 'The first name and last name cannot be empty');
             return;
         }
         if(!phoneInput.current.isValidNumber()) {
             Alert.alert('WARNING', 'Your phone number is invalid');
             return;
         }
-        if(location == null || location == '') {
-            Alert.alert('WARNING', 'Please fill in the Running Location');
-            return;
-        }
-        if(avatar == null) {
-            Alert.alert('WARNING', 'Please select an image for your avatar');
-            return;
-        }
-
-        const updateInfo = {
-            userId: userId,
-            firstName: name.firstName,
-            lastName: name.lastName,
-            avatar: avatar == null ? '' : avatar,
-            location: location,
-            gender: gender == 0 ? null : gender,
-            ageGroup: ageGroup == 0 ? null : ageGroup,
-            unit: unit,
-        };
-        console.log(updateInfo);
-        updateUserProfile(updateInfo, accessToken).then(result => {
-            if(result) {
-                Alert.alert('Your profile was updated successfully');
-                props.navigation.navigate('Profile');
-            } else {
-                //Alert.alert('There is an error in updating your profile.');
-                props.navigation.navigate('Profile');
-            }
-        });
+        
     }
 
     return (
