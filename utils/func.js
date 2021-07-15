@@ -106,7 +106,14 @@ export function findIndex(target, origin) {
 
 export function getDistancePercent(currentDistance, totalDistance) {
     let percent = currentDistance / totalDistance * 100;
-    return Math.floor(percent * 10) / 10;
+    let result = Math.floor(percent * 10) / 10;
+    if(result > 100)
+        result = 100;
+
+    if(isInteger(result))
+        return result + '.0';
+    else
+        return result + '';
 }
 
 export function convertUnit(target, unit) {
@@ -122,5 +129,5 @@ export function convertUnit(target, unit) {
 export function displayPace(time) {
     let ts = Math.floor(time % 60);
     let tm = Math.floor(time / 60);
-    return tm + ':' + ts;
+    return tm + ':' + (ts < 10 ? '0' + ts : ts);
 }
