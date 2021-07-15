@@ -45,14 +45,20 @@ const RoomCreate = (props) => {
             return;
         }
 
+        let invitedGroup = [];
+        inviteList.forEach(item => {
+            invitedGroup.push(item.connectedUserId);
+        });
+
         const roomInfo = {
             organizerId: userId,
             roomType: parseInt(typeValue),
             runDateTime: dateValue,
             runDistance: distanceValue,
             unit: unit,
-            inviteList: [],
+            inviteList: invitedGroup,
         };
+
         createRoom(roomInfo, accessToken).then(result => {
             if(result) {
                 props.navigation.navigate('RoomComplete');
