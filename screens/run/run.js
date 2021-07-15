@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView, StatusBar, Modal } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView, StatusBar, Modal, Alert } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import * as Location from 'expo-location';
