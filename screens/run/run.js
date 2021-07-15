@@ -93,15 +93,16 @@ const Running = (props) => {
                     else
                         setCurPace(0);
                     
-                    if(start.latitude == end.latitude && start.longitude == end.longitude) {
+                    let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                    if(betweenDistance < 0.001)
                         setElapsed(elapsed => elapsed + 1);
-                    } else {
+                    else {
                         setElapsed(0);
-                        let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
                         setLastPoint(location);
                         setDist(dist => dist + betweenDistance);
+                        //console.log('Location Track: ', start, end, dist);
                     }
-                    //console.log('Location Track: ', start, end, dist);
+                    
                 }
             })();
         }
@@ -135,7 +136,7 @@ const Running = (props) => {
     }, [now]);
 
     useEffect(() => {
-        if(elapsed > 100) {
+        if(elapsed > 60) {
             Alert.alert('Notification', 'Are you still participating in the run?',
             [
                 {
