@@ -36,8 +36,12 @@ const Lobby = (props) => {
         let ts = (dateObject.getTime() - current.getTime()) / 1000;
         let tm = Math.floor(ts % 3600 / 60);
         if(tm < 1 && ts < 12) {
-            clearInterval(timer);
-            props.navigation.navigate('RunPrepare');
+            if(ts < 1) {
+                props.navigation.navigate('Running');
+            } else {
+                clearInterval(timer);
+                props.navigation.navigate('RunPrepare');
+            }
         } else {
             setRemainMin(tm);
             setRemainSec(Math.floor(ts % 60));
