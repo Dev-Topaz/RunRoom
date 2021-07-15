@@ -20,7 +20,7 @@ const RunMain = (props) => {
     const filterOption = {
         invited: false,
         participating: true,
-        organized: true,
+        organized: false,
         startValue: 0,
         endValue: 20,
         unit: 1,
@@ -35,9 +35,11 @@ const RunMain = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        props.navigation.addListener('didFocus', () => {
+        const listener = props.navigation.addListener('didFocus', () => {
             setPage(1);
         });
+
+        return () => listener.remove();
     }, []);
 
     useEffect(() => {
