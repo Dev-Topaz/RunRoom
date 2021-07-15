@@ -26,7 +26,6 @@ const DatePicker = (props) => {
     const pressSaveAction = () => {
         let yourDate = new Date(selectedDate);
         let yourTime = timeItems[selectedTime];
-        console.log(yourTime);
         let yourHour = parseInt(yourTime.split(':')[0]);
         let yourMin = parseInt(yourTime.split(':')[1]);
         

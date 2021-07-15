@@ -118,7 +118,7 @@ const Running = (props) => {
             averagePace: avgPace,
             status: raceStatus,
         };
-        console.log(updateInfo);
+        
         updateRun(updateInfo, accessToken).then(result => {
             if(result) {
                 getRaceRunners(roomId, 1, 500, accessToken).then(res => {
@@ -240,12 +240,9 @@ const Running = (props) => {
                                         <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={styles.avatar}/>
                                         <View style={styles.infoContainer}>
                                             <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
-                                            {
-                                                item.runnerId == userId ? null :
-                                                <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
-                                                    <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
-                                                </Pressable>
-                                            }
+                                            <Pressable style={item.runnerId == userId ? [styles.followBadge, { backgroundColor: 'transparent' }] : item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
+                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
+                                            </Pressable>
                                         </View>
                                         <View style={styles.stateContainer}>
                                             <View style={styles.runInfo}>
