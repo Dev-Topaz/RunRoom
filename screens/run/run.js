@@ -104,10 +104,10 @@ const Running = (props) => {
                     }
                 }
             })();
-        }
 
-        const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
-        setAvgPace(dist == 0 ? 0 : averagePace);
+            const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
+            setAvgPace(dist == 0 ? 0 : averagePace);
+        }
 
         const updateInfo = {
             roomId: roomId,

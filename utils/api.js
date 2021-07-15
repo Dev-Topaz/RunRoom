@@ -431,7 +431,7 @@ export async function updateRun(updateInfo, accessToken) {
                 return false;
         }
     ).catch(err => {
-        console.log(err);
+        console.log('Update Error: ', err);
         return false;
     });
 
@@ -457,7 +457,7 @@ export async function getRaceRunners(roomId, pageId, pageSize, accessToken) {
                 return null;
         }
     ).catch(err => {
-        console.log(err);
+        console.log('Get Error: ', err);
         return null;
     });
 

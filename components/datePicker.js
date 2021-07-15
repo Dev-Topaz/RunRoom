@@ -11,7 +11,7 @@ const DatePicker = (props) => {
     const [selectedDate, selectDate] = useState(new Date());
     const [selectedTime, selectTime] = useState(12);
     const [isPM, setPM] = useState(false);
-    const [selIndex, setSelIndex] = useState(21);
+    const [selIndex, setSelIndex] = useState(27);
 
     useEffect(() => {
         getNearestTime();
@@ -26,6 +26,7 @@ const DatePicker = (props) => {
     const pressSaveAction = () => {
         let yourDate = new Date(selectedDate);
         let yourTime = timeItems[selectedTime];
+        console.log(yourTime);
         let yourHour = parseInt(yourTime.split(':')[0]);
         let yourMin = parseInt(yourTime.split(':')[1]);
         
@@ -66,9 +67,11 @@ const DatePicker = (props) => {
         if(idx > 47) {
             setPM(!pm);
             setSelIndex(0);
+            selectTime(0);
         } else {
             setPM(pm);
             setSelIndex(idx);
+            selectTime(idx);
         }
     }
 
