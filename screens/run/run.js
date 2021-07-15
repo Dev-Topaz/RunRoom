@@ -102,7 +102,6 @@ const Running = (props) => {
                         setDist(dist => dist + betweenDistance);
                         //console.log('Location Track: ', start, end, dist);
                     }
-                    
                 }
             })();
         }
@@ -241,9 +240,12 @@ const Running = (props) => {
                                         <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={styles.avatar}/>
                                         <View style={styles.infoContainer}>
                                             <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
-                                            <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
-                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
-                                            </Pressable>
+                                            {
+                                                item.runnerId == userId ? null :
+                                                <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
+                                                    <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
+                                                </Pressable>
+                                            }
                                         </View>
                                         <View style={styles.stateContainer}>
                                             <View style={styles.runInfo}>
