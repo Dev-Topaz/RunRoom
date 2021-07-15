@@ -251,7 +251,7 @@ const Running = (props) => {
                                                     <Text style={styles.indexText}>Dist:</Text>
                                                     <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' kilos'}</Text>
                                                 </View>
-                                                <View style={style.infoItem}>
+                                                <View style={styles.infoItem}>
                                                     <Text style={styles.indexText}>Avg pace:</Text>
                                                     <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.averagePaceMiles) : convertFloat(item.averagePaceKilometers)}</Text>
                                                 </View>

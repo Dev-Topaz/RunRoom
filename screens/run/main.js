@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, FlatList, ImageBackground, TouchableOpac
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
+import FollowModal from '../../components/followModal';
 
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime, displayLobbyTime } from '../../utils/func';
 import { useSelector, useDispatch } from 'react-redux';
@@ -32,6 +33,9 @@ const RunMain = (props) => {
     const [loading, setLoading] = useState(false);
     const [current, setCurrent] = useState(new Date());
     const [isEmpty, setEmpty] = useState(false);
+
+    const [follower, setFollower] = useState([]);
+    const [followVisible, setFollowVisible] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -101,6 +105,11 @@ const RunMain = (props) => {
         const distance = unit == 1 ? distMile : distKilo;
         dispatch(changeRoom(roomId, runDateTime, distance, 'Run'));
         props.navigation.navigate('Race');
+    }
+
+    const pressFollowingAction = (data) => {
+        setFollower(data);
+        setFollowVisible(true);
     }
 
     const renderItem = ({item, index}) => (
@@ -202,6 +211,11 @@ const RunMain = (props) => {
                         ListFooterComponent={ () => loading && page != 1 ? <View style={styles.listFooter}><ActivityIndicator animating size='large'/></View> : null }
                     />
             }
+            <FollowModal
+                data={ follower }
+                visible={ followVisible }
+                onChangeVisible={ setFollowVisible }
+            />
         </View>
     );
 }
