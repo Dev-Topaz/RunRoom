@@ -71,7 +71,7 @@ const Lobby = (props) => {
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Text style={styles.titleText}>YOUR RUN</Text>
-                        <Text style={styles.titleDistance}>{convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
+                        <Text style={styles.titleDistance}>{convertFloat(distance) + (unit == 1 ? ' MILES' : ' KM')}</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>
@@ -89,7 +89,7 @@ const Lobby = (props) => {
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
                             <Text style={styles.valueText}>0.0</Text>
-                            <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>miles</Text>
+                            <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
                             <Text style={styles.valueText}>0.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
@@ -100,14 +100,14 @@ const Lobby = (props) => {
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}>min / mile</Text>
+                            <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Average Pace</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}>min / mile</Text>
+                            <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                 </View>

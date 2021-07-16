@@ -84,25 +84,25 @@ const Running = (props) => {
                         setLastPoint(location);
                     }
 
-                    if(lastPoint == null || location == null)
-                        return;
+                    if(lastPoint != null && location != null) {
+                        console.log(location['coords']['speed']);
+                        if(location['coords']['speed'] > 0)
+                            setCurPace(convertUnit(location['coords']['speed'], unit));
+                        else
+                            setCurPace(0);
 
-                    const haversine = require('haversine');
-                    let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
-                    let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
-                    let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
-                    setLastPoint(location);
-                    setDist(dist => dist + betweenDistance);
-        
-                    if(betweenDistance < 0.001)
-                        setElapsed(elapsed => elapsed + 1);
-                    else
-                        setElapsed(0);
-        
-                    if(location['coords']['speed'] > 0)
-                        setCurPace(convertUnit(location['coords']['speed'], unit));
-                    else
-                        setCurPace(0);
+                        const haversine = require('haversine');
+                        let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
+                        let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
+                        let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                        setLastPoint(location);
+                        setDist(dist => dist + betweenDistance);
+                        
+                        if(betweenDistance < 0.001)
+                            setElapsed(elapsed => elapsed + 1);
+                        else
+                            setElapsed(0);
+                    }
                 }
             })();
             
@@ -172,7 +172,7 @@ const Running = (props) => {
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Text style={styles.titleText}>YOUR RUN</Text>
-                        <Text style={styles.titleDistance}>{raceStatus > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KILOMETERS')}</Text>
+                        <Text style={styles.titleDistance}>{raceStatus > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KM')}</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>
@@ -201,14 +201,14 @@ const Running = (props) => {
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(curPace)}</Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
+                            <Text style={[styles.indexText, { marginLeft: 5 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Average Pace</Text>
                         <View style={styles.valueContainer}>
                             <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(avgPace)}</Text>
-                            <Text style={[styles.indexText, { marginLeft: 23 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
+                            <Text style={[styles.indexText, { marginLeft: 5 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                 </View>
