@@ -131,3 +131,17 @@ export function displayPace(time) {
     let tm = Math.floor(time / 60);
     return tm + ':' + (ts < 10 ? '0' + ts : ts);
 }
+
+export function renderMaxValue(value) {
+    if(value > 20)
+        return '20+';
+    else
+        return value + '';
+}
+
+export function renderMinValue(value) {
+    if(value > 20)
+        return '20';
+    else
+        return value + '';
+}

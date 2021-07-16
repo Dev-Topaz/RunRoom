@@ -8,6 +8,7 @@ import SvgIcon from './svgIcon';
 import { showDateInfo } from '../utils/func';
 import DatePicker from './datePicker';
 
+import { renderMaxValue, renderMinValue } from '../utils/func';
 import { useSelector } from 'react-redux';
 
 const FilterModal = (props) => {
@@ -45,7 +46,7 @@ const FilterModal = (props) => {
             participating: option.participating,
             organized: option.organized,
             startValue: lowValue,
-            endValue: highValue,
+            endValue: highValue > 20 ? 100 : highValue,
             unit: unit,
             dateValue: dateValue,
         };
@@ -72,7 +73,7 @@ const FilterModal = (props) => {
 
     const renderLabel = useCallback((value) =>
         <View style={styles.sliderLabelContainer}>
-            <Text style={styles.sliderLabelText}>{Math.round(value*10)/10 + (unit == 1 ? ' miles' : ' kilometers')}</Text>
+            <Text style={styles.sliderLabelText}>{renderMaxValue(Math.round(value*10)/10) + (unit == 1 ? ' miles' : ' kilometers')}</Text>
         </View>
     ,[unit]);
 
@@ -129,7 +130,7 @@ const FilterModal = (props) => {
                         <RangeSlider
                             style={{ marginTop: 5 }}
                             min={0.0}
-                            max={20.0}
+                            max={20.1}
                             step={0.1}
                             low={lowValue}
                             high={highValue}
@@ -142,8 +143,8 @@ const FilterModal = (props) => {
                             onValueChanged={handleValueChange}
                         />
                         <View style={styles.rangeIndicator}>
-                            <Text style={css.labelText}>{lowValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
-                            <Text style={css.labelText}>{highValue + (unit == 1 ? ' miles' : ' kilometers')}</Text>
+                            <Text style={css.labelText}>{renderMinValue(lowValue) + (unit == 1 ? ' miles' : ' kilometers')}</Text>
+                            <Text style={css.labelText}>{renderMaxValue(highValue) + (unit == 1 ? ' miles' : ' kilometers')}</Text>
                         </View>
                         <Text style={[css.labelText, { marginTop: 30 }]}>Starting from</Text>
                         <Pressable style={css.textInputRowContainer} onPress={() => setDateVisible(true)}>
