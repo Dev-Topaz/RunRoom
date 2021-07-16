@@ -54,15 +54,15 @@ const InviteModal = (props) => {
                 setLoading(false);
             });
         } else {
-            getAllUsers(page, 9, searchText, accessToken).then(result => {
-                if(result != null) {
-                    if(page != 1)
-                        setData([...data, ...result]);
-                    else
-                        setData(result);
-                }
-                setLoading(false);
-            });
+            //getAllUsers(page, 9, searchText, accessToken).then(result => {
+            //    if(result != null) {
+            //        if(page != 1)
+            //            setData([...data, ...result]);
+            //        else
+            //            setData(result);
+            //    }
+            //    setLoading(false);
+            //});
         }
         setLoading(false);
     }, [page]);

@@ -40,6 +40,7 @@ const Running = (props) => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
+                Alert.alert('Your Location Permission is denied');
                 props.navigation.navigate('Room');
             } else {
                 let location = await Location.getCurrentPositionAsync({});
@@ -68,7 +69,7 @@ const Running = (props) => {
     }, [current]);
 
     useEffect(() => {
-        const timer = setInterval(() => {setNow(new Date())}, 5000);
+        const timer = setInterval(() => {setNow(new Date())}, 1000);
 
         if(raceStatus > 1) {
             setCurPace(0);
@@ -85,7 +86,7 @@ const Running = (props) => {
                     }
 
                     if(lastPoint != null && location != null) {
-                        console.log(location['coords']['speed']);
+                        //console.log(location['coords']['speed']);
                         if(location['coords']['speed'] > 0)
                             setCurPace(convertUnit(location['coords']['speed'], unit));
                         else
@@ -98,7 +99,7 @@ const Running = (props) => {
                         setLastPoint(location);
                         setDist(dist => dist + betweenDistance);
                         
-                        if(betweenDistance < 0.001)
+                        if(betweenDistance < 0.0005)
                             setElapsed(elapsed => elapsed + 1);
                         else
                             setElapsed(0);
@@ -148,6 +149,7 @@ const Running = (props) => {
                     onPress: () => { return; }
                 }
             ]);
+            setElapsed(0);
         }
     }, [elapsed]);
 

@@ -50,10 +50,18 @@ const RunMain = (props) => {
         setLoading(true);
         getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
             if(result != null) {
+
+                let res = [...result];
+                res.forEach(item => {
+                    const idx = item.runners.findIndex(element => userId == element.runnerId);
+                    if(idx > -1)
+                        item.runners.splice(idx, 1);
+                });
+
                 if(page != 1)
-                    setData([...data, ...result]);
+                    setData([...data, ...res]);
                 else
-                    setData(result);
+                    setData(res);
             }
             setLoading(false);
         });
@@ -177,7 +185,6 @@ const RunMain = (props) => {
                                 <TouchableOpacity style={css.enterLobbyButton} onPress={() => pressLobbyAction(item.id, item.runDateTime, item.runDistanceMiles, item.runDistanceKilometers)}>
                                     <Text style={css.enterLobbyText}>Enter Lobby  ➜</Text>
                                 </TouchableOpacity>
-                                <Text style={css.lobbyIndicatorText}>{'Lobby closes in ' + displayLobbyTime(current, item.runDateTime)}</Text>
                             </View>
                     }
                 </View>

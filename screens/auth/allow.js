@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 20,
         lineHeight: 24,
-        letterSpacing: -0.8,
+        letterSpacing: -0.5,
     },
     submitContainer: {
         position: 'absolute',
