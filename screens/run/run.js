@@ -68,7 +68,7 @@ const Running = (props) => {
     }, [current]);
 
     useEffect(() => {
-        const timer = setInterval(() => {setNow(new Date())}, 10000);
+        const timer = setInterval(() => {setNow(new Date())}, 5000);
 
         if(raceStatus > 1) {
             setCurPace(0);
@@ -249,7 +249,7 @@ const Running = (props) => {
                                             <View style={styles.runInfo}>
                                                 <View style={[styles.infoItem, { marginBottom: 6 }]}>
                                                     <Text style={styles.indexText}>Dist:</Text>
-                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' kilos'}</Text>
+                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' km'}</Text>
                                                 </View>
                                                 <View style={styles.infoItem}>
                                                     <Text style={styles.indexText}>Avg pace:</Text>

@@ -13,12 +13,13 @@ const InviteModal = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
 
     const [searchText, setSearchText] = useState('');
-    const [isFollower, setFollower] = useState(false);
-    const [isFollowing, setFollowing] = useState(false);
+    const [isFollower, setFollower] = useState(true);
+    const [isFollowing, setFollowing] = useState(true);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [inviteList, setInviteList] = useState([]);
+    const [isSelected, setSelected] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -91,15 +92,22 @@ const InviteModal = (props) => {
                 setLoading(false);
             });
         } else {
-            getAllUsers(page, 8, searchText, accessToken).then(result => {
-                if(result != null) {
-                    setData(result);
-                }
-                setLoading(false);
-            });
+            //getAllUsers(page, 8, searchText, accessToken).then(result => {
+            //    if(result != null) {
+            //        setData(result);
+            //    }
+            //    setLoading(false);
+            //});
         }
         setLoading(false);
     }, [searchText, isFollower, isFollowing]);
+
+    useEffect(() => {
+        if(inviteList.length > 0)
+            setSelected(true);
+        else
+            setSelected(false);
+    }, [inviteList]);
 
     const pressInviteAction = (index) => {
         const target = data[index];
@@ -148,8 +156,27 @@ const InviteModal = (props) => {
     }
 
     const pressBackAction = () => {
-        props.onChangeValue(inviteList);
         props.onChangeVisible(false);
+    }
+
+    const pressGroupButton = (index) => {
+        if(index == 1) {
+            if(isFollowing)
+                setFollower(isFollower => !isFollower);
+        } else {
+            if(isFollower)
+                setFollowing(isFollowing => !isFollowing);
+        }
+    }
+
+    const pressInviteAllAction = () => {
+        if(isSelected) {
+            props.onChangeValue(inviteList);
+            props.onChangeVisible(false);
+        } else {
+            props.onChangeValue(data);
+            props.onChangeVisible(false);
+        }
     }
 
     const renderItem = ({item, index}) => (
@@ -198,13 +225,15 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollower(isFollower => !isFollower)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(1)}>
                                 <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => setFollowing(isFollowing => !isFollowing)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(2)}>
                                 <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>
+                    </View>
+                    <View style={{ flex: 1 }}>
                         <FlatList
                             data={data}
                             renderItem={renderItem}
@@ -218,8 +247,8 @@ const InviteModal = (props) => {
                         />
                     </View>
                     <View style={styles.modalFooter}>
-                        <TouchableOpacity style={[css.submitButton, { width: '100%' }]}>
-                            <Text style={css.submitText}>INVITE ALL</Text>
+                        <TouchableOpacity style={[css.submitButton, { width: '100%' }]} onPress={pressInviteAllAction}>
+                            <Text style={css.submitText}>{isSelected ? 'INVITE SELECTION' : 'INVITE ALL'}</Text>
                         </TouchableOpacity>
                         <View style={styles.indicatorContainer}>
                             <Text style={[css.hostLabel, { letterSpacing: -0.3 }]}>Cannot find connection? Invite a friend by clicking</Text>
@@ -236,7 +265,6 @@ const InviteModal = (props) => {
 
 const styles = StyleSheet.create({
     modalFooter: {
-        position: 'absolute',
         width: global.CONSTANTS.WIDTH,
         alignItems: 'center',
         bottom: 0,
