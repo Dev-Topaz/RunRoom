@@ -114,7 +114,7 @@ const Running = (props) => {
             runRoomId: roomId,
             runDistance: dist,
             unit: unit,
-            runTimeInSeconds: (now.getTime() - startTime.getTime()) / 1000,
+            runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
             currentPace: curPace,
             averagePace: avgPace,
             status: raceStatus,
@@ -233,7 +233,7 @@ const Running = (props) => {
                             return (
                                 <View key={item.runnerId}>
                                     <ProgressBar
-                                        progress={ getDistancePercent(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers, distance) }
+                                        progress={ unit == 1 ? item.runDistanceMiles / distance : item.runDistanceKilometers / distance }
                                         color={ global.COLOR.SECONDARY }
                                         style={{ backgroundColor: item.runnerId == userId ? global.COLOR.STATUS_INACTIVE : 'white' }}
                                     />
@@ -253,7 +253,7 @@ const Running = (props) => {
                                                 </View>
                                                 <View style={styles.infoItem}>
                                                     <Text style={styles.indexText}>Avg pace:</Text>
-                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.averagePaceMiles) : convertFloat(item.averagePaceKilometers)}</Text>
+                                                    <Text style={styles.infoText}>{unit == 1 ? displayPace(item.averagePaceMiles) : displayPace(item.averagePaceKilometers)}</Text>
                                                 </View>
                                             </View>
                                             <View style={[styles.rankBadge, { backgroundColor: item.runnerId == userId ? global.COLOR.PRIMARY100 : global.COLOR.STATUS_INACTIVE }]}>
