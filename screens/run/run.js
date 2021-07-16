@@ -40,7 +40,7 @@ const Running = (props) => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-              console.log('Access was denied.');
+                props.navigation.navigate('Room');
             } else {
                 let location = await Location.getCurrentPositionAsync({});
                 setLastPoint(location);
@@ -57,7 +57,6 @@ const Running = (props) => {
         let th = Math.floor(ts % (3600 * 24) / 3600);
 
         if(dist >= distance) {
-            clearInterval(timer);
             setRaceStatus(3);
         } else {
             setHour(th);
@@ -81,39 +80,41 @@ const Running = (props) => {
                 } else {
                     let location = await Location.getCurrentPositionAsync({});
                     //console.log(location);
-                    if(lastPoint == null) {
+                    if(lastPoint == null && location != null) {
                         setLastPoint(location);
                     }
+
+                    if(lastPoint == null || location == null)
+                        return;
+
                     const haversine = require('haversine');
                     let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                     let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
-
+                    let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                    setLastPoint(location);
+                    setDist(dist => dist + betweenDistance);
+        
+                    if(betweenDistance < 0.001)
+                        setElapsed(elapsed => elapsed + 1);
+                    else
+                        setElapsed(0);
+        
                     if(location['coords']['speed'] > 0)
                         setCurPace(convertUnit(location['coords']['speed'], unit));
                     else
                         setCurPace(0);
-                    
-                    let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
-                    if(betweenDistance < 0.001)
-                        setElapsed(elapsed => elapsed + 1);
-                    else {
-                        setElapsed(0);
-                        setLastPoint(location);
-                        setDist(dist => dist + betweenDistance);
-                        //console.log('Location Track: ', start, end, dist);
-                    }
                 }
             })();
-
+            
             const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
             setAvgPace(dist == 0 ? 0 : averagePace);
         }
 
         const updateInfo = {
-            roomId: roomId,
-            distance: dist,
+            runRoomId: roomId,
+            runDistance: dist,
             unit: unit,
-            elapsedTime: (now.getTime() - startTime.getTime()) / 1000,
+            runTimeInSeconds: (now.getTime() - startTime.getTime()) / 1000,
             currentPace: curPace,
             averagePace: avgPace,
             status: raceStatus,
@@ -241,7 +242,7 @@ const Running = (props) => {
                                         <View style={styles.infoContainer}>
                                             <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
                                             <Pressable style={item.runnerId == userId ? [styles.followBadge, { backgroundColor: 'transparent' }] : item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
-                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
+                                                <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{item.runnerId == userId ? '' : followType[item.followingStatus]}</Text>
                                             </Pressable>
                                         </View>
                                         <View style={styles.stateContainer}>

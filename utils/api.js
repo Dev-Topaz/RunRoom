@@ -411,15 +411,8 @@ export async function getLobbyRunners(roomId, pageId, pageSize, accessToken) {
 
 export async function updateRun(updateInfo, accessToken) {
     console.log(updateInfo);
-    const result = await Axios.put('/RunRooms/UpdateRun', {
-        runRoomId: updateInfo.roomId,
-        runDistance: updateInfo.distance,
-        unit: updateInfo.unit,
-        runTimeInSeconds: updateInfo.elapsedTime,
-        currentPace: updateInfo.currentPace,
-        averagePace: updateInfo.averagePace,
-        status: updateInfo.status,
-    }, {
+    const result = await Axios.put('/RunRooms/UpdateRun', updateInfo,
+    {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
