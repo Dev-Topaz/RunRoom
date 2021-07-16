@@ -357,7 +357,7 @@ export async function updateUserProfile(updateInfo, accessToken) {
     ).catch(err => {
         console.log(err);
         return false;
-    })
+    });
 
     return result;
 }
@@ -410,9 +410,8 @@ export async function getLobbyRunners(roomId, pageId, pageSize, accessToken) {
 }
 
 export async function updateRun(updateInfo, accessToken) {
-    console.log(updateInfo);
-    const result = await Axios.put('/RunRooms/UpdateRun', updateInfo,
-    {
+    
+    const result = await Axios.put('/RunRooms/UpdateRun', updateInfo, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -424,7 +423,7 @@ export async function updateRun(updateInfo, accessToken) {
                 return false;
         }
     ).catch(err => {
-        console.log('Update Error: ', err);
+        console.log(err);
         return false;
     });
 
