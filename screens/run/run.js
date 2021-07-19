@@ -29,6 +29,7 @@ const Running = (props) => {
     const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
     const [elapsed, setElapsed] = useState(0);
+    const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
@@ -107,7 +108,8 @@ const Running = (props) => {
                         else
                             setElapsed(0);
 
-                        setCurPace(betweenDistance > 0 ? 1 / betweenDistance : 0);
+                        let currentPace = 1 / betweenDistance;
+                        setCurPace(currentPace > 59999 ? 0 : currentPace);
                     }
                 }
             })();
@@ -143,20 +145,21 @@ const Running = (props) => {
     }, [now]);
 
     useEffect(() => {
-        if(elapsed > 60) {
-            Alert.alert('Notification', 'Are you still participating in the run?',
-            [
-                {
-                    text: 'No',
-                    onPress: () => { setRaceStatus(2); }
-                },
-                {
-                    text: 'Yes',
-                    onPress: () => { return; }
-                }
-            ]);
-            setElapsed(0);
-        }
+        if(!isWarning)
+            if(elapsed > 600) {
+                setWarning(true);
+                Alert.alert('Notification', 'Are you still participating in the run?',
+                [
+                    {
+                        text: 'No',
+                        onPress: () => { setRaceStatus(2); }
+                    },
+                    {
+                        text: 'Yes',
+                        onPress: () => { setWarning(false); setElapsed(0); }
+                    }
+                ]);
+            }
     }, [elapsed]);
 
     const pressBackAction = () => {
