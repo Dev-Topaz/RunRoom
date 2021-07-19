@@ -17,7 +17,12 @@ const Profile = (props) => {
 
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useState({
+        avatar: null,
+        firstName: '',
+        lastName: '',
+        phoneNumber: '',
+    });
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -25,7 +30,13 @@ const Profile = (props) => {
             if(result == null || result.userId != userId) {
                 Alert.alert('You are not authorized.');
             } else {
-                setUserInfo(result);
+                const currentUser = {
+                    avatar: result.avatar,
+                    firstName: result.firstName,
+                    lastName: result.lastName,
+                    phoneNumber: result.phoneNumber,
+                };
+                setUserInfo(currentUser);
             }
         });
     }, []);
