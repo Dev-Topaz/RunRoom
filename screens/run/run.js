@@ -23,6 +23,7 @@ const Running = (props) => {
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
     const [dist, setDist] = useState(0);
+    const [distData, setDistData] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
@@ -43,7 +44,7 @@ const Running = (props) => {
                 Alert.alert('Your Location Permission is denied');
                 props.navigation.navigate('Room');
             } else {
-                let location = await Location.getCurrentPositionAsync({});
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //console.log(location);
             }
@@ -55,11 +56,11 @@ const Running = (props) => {
 
         let ts = (current.getTime() - startTime.getTime()) / 1000;
         if(ts < 0)
-            ts = 0.1;
+            ts = 0;
         let tm = Math.floor(ts % 3600 / 60);
         let th = Math.floor(ts % (3600 * 24) / 3600);
 
-        if(dist >= distance) {
+        if(distData >= distance) {
             setRaceStatus(3);
         } else {
             setHour(th);
@@ -81,8 +82,8 @@ const Running = (props) => {
                 if (status !== 'granted') {
                   console.log('Access was denied.');
                 } else {
-                    let location = await Location.getCurrentPositionAsync({});
-                    //console.log(location);
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                    console.log(location);
                     if(lastPoint == null && location != null) {
                         setLastPoint(location);
                     }
@@ -101,7 +102,7 @@ const Running = (props) => {
                         setLastPoint(location);
                         setDist(dist => dist + betweenDistance);
                         
-                        if(betweenDistance < 0.0005)
+                        if(betweenDistance < 0.0001)
                             setElapsed(elapsed => elapsed + 1);
                         else
                             setElapsed(0);
@@ -131,7 +132,8 @@ const Running = (props) => {
                         setData(res);
                         const idx = res.findIndex(item => userId === item.runnerId );
                         setRank(idx + 1);
-                        setAvgPace(dist == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+                        setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                        setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
                     }
                 });
             }
@@ -195,9 +197,9 @@ const Running = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={styles.valueText}>{convertFloat(dist)}</Text>
+                            <Text style={styles.valueText}>{convertFloat(distData)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
-                            <Text style={styles.valueText}>{getDistancePercent(dist, distance)}</Text>
+                            <Text style={styles.valueText}>{getDistancePercent(distData, distance)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
                     </View>
