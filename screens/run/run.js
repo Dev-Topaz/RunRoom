@@ -17,7 +17,7 @@ const Running = (props) => {
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.roomId);
     const distance = useSelector(state => state.run.distance);
-    const [startTime, setStartTime] = useState(new Date());
+    const startTime = new Date(useSelector(state => state.run.runDateTime));
 
     const [raceStatus, setRaceStatus] = useState(1);
     const [data, setData] = useState([]);
@@ -54,6 +54,8 @@ const Running = (props) => {
         const timer = setInterval(() => {setCurrent(new Date())}, 500);
 
         let ts = (current.getTime() - startTime.getTime()) / 1000;
+        if(ts < 0)
+            ts = 0.1;
         let tm = Math.floor(ts % 3600 / 60);
         let th = Math.floor(ts % (3600 * 24) / 3600);
 
@@ -87,10 +89,10 @@ const Running = (props) => {
 
                     if(lastPoint != null && location != null) {
                         //console.log(location['coords']['speed']);
-                        if(location['coords']['speed'] > 0)
-                            setCurPace(convertUnit(location['coords']['speed'], unit));
-                        else
-                            setCurPace(0);
+                        //if(location['coords']['speed'] > 0)
+                        //    setCurPace(convertUnit(location['coords']['speed'], unit));
+                        //else
+                        //    setCurPace(0);
 
                         const haversine = require('haversine');
                         let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
@@ -103,13 +105,14 @@ const Running = (props) => {
                             setElapsed(elapsed => elapsed + 1);
                         else
                             setElapsed(0);
+
+                        setCurPace(betweenDistance > 0 ? 1 / betweenDistance : 0);
                     }
                 }
             })();
-            
-            const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
-            setAvgPace(dist == 0 ? 0 : averagePace);
         }
+
+        const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
 
         const updateInfo = {
             runRoomId: roomId,
@@ -117,7 +120,7 @@ const Running = (props) => {
             unit: unit,
             runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
             currentPace: curPace,
-            averagePace: avgPace,
+            averagePace: dist > 0 ? averagePace : 0,
             status: raceStatus,
         };
         
@@ -128,6 +131,7 @@ const Running = (props) => {
                         setData(res);
                         const idx = res.findIndex(item => userId === item.runnerId );
                         setRank(idx + 1);
+                        setAvgPace(dist == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
                     }
                 });
             }
