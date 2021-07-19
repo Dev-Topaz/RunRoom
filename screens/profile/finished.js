@@ -53,8 +53,8 @@ const ProfileFinished = (props) => {
                     </View>
                     <View style={css.leftBottom}>
                         <Text style={[css.thumbRemainText2, { marginBottom: 1 }]}>{item.roomType == 1 ? 'Public' : 'Private'}</Text>
-                        <Text style={css.thumbDateText}>{'Ranked ' + ''}</Text>
-                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + '' + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
+                        <Text style={css.thumbDateText}>{'Ranked ' + item.currenUserDetails.rank}</Text>
+                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + item.currenUserDetails.averagePace + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
                     </View>
                     <View style={css.rightTop}>
                         <View style={{ flexDirection: 'row' }}>
