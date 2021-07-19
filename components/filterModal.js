@@ -37,10 +37,9 @@ const FilterModal = (props) => {
     }
 
     const pressSubmitAction = () => {
-        if(dateValue == null) {
-            setWarningVisible(true);
-            return;
-        }
+        //if(dateValue == null) {
+        //    setWarningVisible(true);
+        //}
         const filterOption = {
             invited: option.invited,
             participating: option.participating,
@@ -48,7 +47,7 @@ const FilterModal = (props) => {
             startValue: lowValue,
             endValue: highValue > 20 ? 100 : highValue,
             unit: unit,
-            dateValue: dateValue,
+            dateValue: dateValue == null ? new Date() : dateValue,
         };
         props.onChangeValue(filterOption);
         props.onChangeVisible(false);
