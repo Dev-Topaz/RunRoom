@@ -5,7 +5,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
 import { useSelector } from 'react-redux';
-import { getLobbyRunners } from '../../utils/api';
+import { getLobbyRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat } from '../../utils/func';
 
 const Lobby = (props) => {
@@ -61,6 +61,39 @@ const Lobby = (props) => {
 
         return () => clearInterval(timer);
     }, [now]);
+
+    const pressFollowAction = (index) => {
+        let target = [...data];
+
+        switch(target[index].followingStatus) {
+            case 1:
+                follow(target[index].runnerId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            case 2:
+                stopFollowing(target[index].runnerId, accessToken).then(result => {
+                    if(result != null) {
+                        target[index].followingStatus = result;
+                        setData(target);
+                    }
+                });
+                return;
+            case 3:
+                follow(target[index].runnerId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            default:
+                return;
+        }
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -139,7 +172,7 @@ const Lobby = (props) => {
                                     <View style={styles.stateContainer}>
                                         {
                                             item.runnerId == userId ? null :
-                                            <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge}>
+                                            <Pressable style={item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge} onPress={() => pressFollowAction(index)}>
                                                 <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
                                             </Pressable>
                                         }
