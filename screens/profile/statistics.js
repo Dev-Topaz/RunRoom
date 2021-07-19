@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import global from '../../global';
 
 import { useSelector } from 'react-redux';
+import { displayStatisticsValue } from '../../utils/func';
 import { getUserStatistics } from '../../utils/api';
 
 const ProfileStatistics = (props) => {
@@ -10,10 +11,58 @@ const ProfileStatistics = (props) => {
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useState({
+        runsCompletedAllTime: 0,
+        runsCompletedThisMonth: 0,
+        runsCompletedThisWeek: 0,
+        runsCompletedAllTimeGlobalTop: 0,
+        distanceCoveredMilesAllTime: 0,
+        distanceCoveredKilometerAllTime: 0,
+        distanceCoveredMilesThisMonth: 0,
+        distanceCoveredKilometerThisMonth: 0,
+        distanceCoveredMilesThisWeek: 0,
+        distanceCoveredKilometerThisWeek: 0,
+        distanceCoverdAllTimeGlobalTop: 0,
+        runningTimeHoursAllTime: 0,
+        runningTimeHoursThisMonth: 0,
+        runningTimeHoursThisWeek: 0,
+        runningTimeAllTimeGlobalTop: 0,
+        uptoFiveMilesAveragePaceSecondsPerMileAllTime: 0,
+        uptoFiveMilesAveragePaceSecondsPerKilometreAllTime: 0,
+        uptoFiveMilesAveragePaceSecondsPerMileThisMonth: 0,
+        uptoFiveMilesAveragePaceSecondsPerKilometreThisMonth: 0,
+        uptoFiveMilesAveragePaceSecondsPerMileThisWeek: 0,
+        uptoFiveMilesAveragePaceSecondsPerKilometreThisWeek: 0,
+        uptoFiveMilesAveragePaceAllTimeGlobalTop: 0,
+        fiveToTenMilesAveragePaceSecondsPerMileAllTime: 0,
+        fiveToTenMilesAveragePaceSecondsPerKilometreAllTime: 0,
+        fiveToTenMilesAveragePaceSecondsPerMileThisMonth: 0,
+        fiveToTenMilesAveragePaceSecondsPerKilometreThisMonth: 0,
+        fiveToTenMilesAveragePaceSecondsPerMileThisWeek: 0,
+        fiveToTenMilesAveragePaceSecondsPerKilometreThisWeek: 0,
+        fiveToTenMilesAveragePaceAllTimeGlobalTop: 0,
+        tenToFifteenMilesAveragePaceSecondsPerMileAllTime: 0,
+        tenToFifteenMilesAveragePaceSecondsPerKilometreAllTime: 0,
+        tenToFifteenMilesAveragePaceSecondsPerMileThisMonth: 0,
+        tenToFifteenMilesAveragePaceSecondsPerKilometreThisMonth: 0,
+        tenToFifteenMilesAveragePaceSecondsPerMileThisWeek: 0,
+        tenToFifteenMilesAveragePaceSecondsPerKilometreThisWeek: 0,
+        tenToFifteenMilesAveragePaceAllTimeGlobalTop: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerMileAllTime: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerKilometreAllTime: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerMileThisMonth: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerKilometreThisMonth: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerMileThisWeek: 0,
+        moreThanFifteenMilesAveragePaceSecondsPerKilometreThisWeek: 0,
+        moreThanFifteenMilesAveragePaceAllTimeGlobalTop: 0,
+    });
 
     useEffect(() => {
-        
+        getUserStatistics(userId, accessToken).then(result => {
+            if(result != null && userId == result.userId) {
+                setUserInfo(result);
+            }
+        });
     }, []);
 
     return (
@@ -28,30 +77,30 @@ const ProfileStatistics = (props) => {
                 </View>
                 <View style={styles.row}>
                     <View style={styles.rowHeader}><Text style={styles.rowText}>{'Runs' + '\n' + 'Completed'}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>76</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>4</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>1</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>4.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedAllTime, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedThisMonth, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedThisWeek, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'Distance' + '\n' + 'Covered'}</Text>
                         <Text style={styles.unitText}>{unit == 1 ? 'miles' : 'kilometers'}</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>324.5</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>42.3</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>12.6</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>8.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesAllTime : userInfo.distanceCoveredKilometerAllTime, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisMonth : userInfo.distanceCoveredKilometerThisMonth, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisWeek : userInfo.distanceCoveredKilometerThisWeek, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.distanceCoverdAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={[styles.row, { borderBottomWidth: 1, borderBottomColor: 'rgba(173, 174, 181, 0.5)' }]}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>Running Time</Text>
                         <Text style={styles.unitText}>hours</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>12.5</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>2.5</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>1.5</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>12.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursAllTime, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursThisMonth, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursThisWeek, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedAllTimeGlobalTop, 2)}</Text></View>
                 </View>
             </View>
             <View style={{ flex: 697 }}>
@@ -64,40 +113,40 @@ const ProfileStatistics = (props) => {
                         <Text style={styles.rowText}>{'< 5 ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         <Text style={styles.unitText}>Runs</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>6:24</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>5:15</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>5.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.uptoFiveMilesAveragePaceSecondsPerMileAllTime : userInfo.uptoFiveMilesAveragePaceSecondsPerKilometreAllTime, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.uptoFiveMilesAveragePaceSecondsPerMileThisMonth : userInfo.uptoFiveMilesAveragePaceSecondsPerKilometreThisMonth, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.uptoFiveMilesAveragePaceSecondsPerMileThisWeek : userInfo.uptoFiveMilesAveragePaceSecondsPerKilometreThisWeek, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.uptoFiveMilesAveragePaceAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'5 to 10 ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         <Text style={styles.unitText}>Runs</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>16:24</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>5:15</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>12.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.fiveToTenMilesAveragePaceSecondsPerMileAllTime : userInfo.fiveToTenMilesAveragePaceSecondsPerKilometreAllTime, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.fiveToTenMilesAveragePaceSecondsPerMileThisMonth : userInfo.fiveToTenMilesAveragePaceSecondsPerKilometreThisMonth, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.fiveToTenMilesAveragePaceSecondsPerMileThisWeek : userInfo.fiveToTenMilesAveragePaceSecondsPerKilometreThisWeek, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.fiveToTenMilesAveragePaceAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={styles.row}>
                     <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'10 to 15 ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         <Text style={styles.unitText}>Runs</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>7:23</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>24.3%</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.tenToFifteenMilesAveragePaceSecondsPerMileAllTime : userInfo.tenToFifteenMilesAveragePaceSecondsPerKilometreAllTime, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.tenToFifteenMilesAveragePaceSecondsPerMileThisMonth: userInfo.tenToFifteenMilesAveragePaceSecondsPerKilometreThisMonth, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.tenToFifteenMilesAveragePaceSecondsPerMileThisWeek : userInfo.tenToFifteenMilesAveragePaceSecondsPerKilometreThisWeek, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.tenToFifteenMilesAveragePaceAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={styles.row}>
                 <View style={styles.rowHeader}>
                         <Text style={styles.rowText}>{'> 15 ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         <Text style={styles.unitText}>Runs</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>—</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.moreThanFifteenMilesAveragePaceSecondsPerMileAllTime : userInfo.moreThanFifteenMilesAveragePaceSecondsPerKilometreAllTime, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.moreThanFifteenMilesAveragePaceSecondsPerMileThisMonth : userInfo.moreThanFifteenMilesAveragePaceSecondsPerKilometreThisMonth, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.moreThanFifteenMilesAveragePaceSecondsPerMileThisWeek : userInfo.moreThanFifteenMilesAveragePaceSecondsPerKilometreThisWeek, 3)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.moreThanFifteenMilesAveragePaceAllTimeGlobalTop, 2)}</Text></View>
                 </View>
             </View>
         </View>

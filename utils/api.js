@@ -482,7 +482,7 @@ export async function getFinishedRuns(pageId, pageSize, accessToken) {
 }
 
 export async function getUserStatistics(userId, accessToken) {
-
+    
     const result = await Axios.get('/Users/GetUserStatistics' + userId, {
         headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -495,7 +495,7 @@ export async function getUserStatistics(userId, accessToken) {
                 return null;
         }
     ).catch(err => {
-        console.log(err);
+        console.log('Statistics', err);
         return null;
     });
 

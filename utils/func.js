@@ -145,3 +145,20 @@ export function renderMinValue(value) {
     else
         return value + '';
 }
+
+export function displayStatisticsValue(value, type) {
+    if(value == 0 || value < 0)
+        return '—';
+    switch(type) {
+        case 1:
+            return Math.floor(value * 10) / 10 + '';
+        case 2:
+            return Math.floor(value * 10) / 10 + '%';
+        case 3:
+            const ts = Math.floor(value % 60);
+            const tm = Math.floor(value / 60);
+            return tm + ':' + (ts < 10 ? '0' + ts : ts);
+        default:
+            return '';
+    }
+}

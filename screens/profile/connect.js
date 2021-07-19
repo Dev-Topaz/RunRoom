@@ -62,6 +62,8 @@ const ProfileConnection = (props) => {
             //    }
             //    setLoading(false);
             //});
+            setData([]);
+            setLoading(false);
         }
         setLoading(false);
     }, [page]);
@@ -91,12 +93,14 @@ const ProfileConnection = (props) => {
                 setLoading(false);
             });
         } else {
-            getAllUsers(page, 8, searchText, accessToken).then(result => {
-                if(result != null) {
-                    setData(result);
-                }
-                setLoading(false);
-            });
+            //getAllUsers(page, 8, searchText, accessToken).then(result => {
+            //    if(result != null) {
+            //        setData(result);
+            //    }
+            //    setLoading(false);
+            //});
+            setData([]);
+            setLoading(false);
         }
         setLoading(false);
     }, [searchText, isFollower, isFollowing]);

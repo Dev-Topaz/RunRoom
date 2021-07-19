@@ -63,6 +63,8 @@ const InviteModal = (props) => {
             //    }
             //    setLoading(false);
             //});
+            setData([]);
+            setLoading(false);
         }
         setLoading(false);
     }, [page]);
@@ -98,6 +100,8 @@ const InviteModal = (props) => {
             //    }
             //    setLoading(false);
             //});
+            setData([]);
+            setLoading(false);
         }
         setLoading(false);
     }, [searchText, isFollower, isFollowing]);
@@ -162,10 +166,10 @@ const InviteModal = (props) => {
     const pressGroupButton = (index) => {
         if(index == 1) {
             if(isFollowing)
-                setFollower(isFollower => !isFollower);
+                setFollower(!isFollower);
         } else {
             if(isFollower)
-                setFollowing(isFollowing => !isFollowing);
+                setFollowing(!isFollowing);
         }
     }
 
@@ -189,7 +193,7 @@ const InviteModal = (props) => {
             </View>
             <View style={css.buttonGroupContainer}>
                 <Pressable style={[css.inviteButton, { marginRight: 5, backgroundColor: findIndex(item, inviteList) > -1 ? global.COLOR.SECONDARY : global.COLOR.BACKGROUND }]} onPress={() => pressInviteAction(index)}>
-                    <Text style={[css.inviteButtonText, { color: findIndex(item, inviteList) > -1 ? 'white' : global.COLOR.PRIMARY100 }]}>Invite</Text>
+                    <Text style={[css.inviteButtonText, { color: findIndex(item, inviteList) > -1 ? 'white' : global.COLOR.PRIMARY100 }]}>{findIndex(item, inviteList) > -1 ? 'Inviting' : 'Invite'}</Text>
                 </Pressable>
                 <Pressable style={[css.inviteButton, { backgroundColor: item.followingStatus == 1 ? global.COLOR.STATUS_INACTIVE : item.followingStatus == 2 ? global.COLOR.SECONDARY : 'transparent', borderWidth: 1, borderColor: item.followingStatus  == 1 ? global.COLOR.STATUS_INACTIVE : global.COLOR.SECONDARY }]} onPress={() => pressFollowAction(index)}>
                     <Text style={[css.inviteButtonText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{followType[item.followingStatus]}</Text>
