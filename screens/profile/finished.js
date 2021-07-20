@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { getFinishedRuns } from '../../utils/api';
 import { convertFloat } from '../../utils/func';
 
-const ProfileFinished = (props) => {
+const ProfileFinished = () => {
 
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
@@ -54,7 +54,7 @@ const ProfileFinished = (props) => {
                     <View style={css.leftBottom}>
                         <Text style={[css.thumbRemainText2, { marginBottom: 1 }]}>{item.roomType == 1 ? 'Public' : 'Private'}</Text>
                         <Text style={css.thumbDateText}>{'Ranked ' + item.currenUserDetails.rank}</Text>
-                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + item.currenUserDetails.averagePace + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
+                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + Math.floor(item.currenUserDetails.averagePace * 10) / 10 + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
                     </View>
                     <View style={css.rightTop}>
                         <View style={{ flexDirection: 'row' }}>

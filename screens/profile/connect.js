@@ -9,7 +9,7 @@ import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, st
 import { findIndex } from '../../utils/func';
 
 
-const ProfileConnection = (props) => {
+const ProfileConnection = () => {
 
     const accessToken = useSelector(state => state.user.accessToken);
 

@@ -17,8 +17,9 @@ const Running = (props) => {
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.roomId);
     const distance = useSelector(state => state.run.distance);
-    const startTime = new Date(useSelector(state => state.run.runDateTime));
+    //const startTime = new Date(useSelector(state => state.run.runDateTime));
 
+    const [startTime, setStartTime] = useState(new Date());
     const [raceStatus, setRaceStatus] = useState(1);
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
@@ -45,7 +46,7 @@ const Running = (props) => {
                 Alert.alert('Your Location Permission is denied');
                 props.navigation.navigate('Room');
             } else {
-                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
                 setLastPoint(location);
                 //console.log(location);
             }
@@ -73,7 +74,7 @@ const Running = (props) => {
     }, [current]);
 
     useEffect(() => {
-        const timer = setInterval(() => {setNow(new Date())}, 1000);
+        const timer = setInterval(() => {setNow(new Date())}, 2500);
 
         if(raceStatus > 1) {
             setCurPace(0);
@@ -83,7 +84,7 @@ const Running = (props) => {
                 if (status !== 'granted') {
                   console.log('Access was denied.');
                 } else {
-                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
                     console.log(location);
                     if(lastPoint == null && location != null) {
                         setLastPoint(location);
@@ -99,16 +100,18 @@ const Running = (props) => {
                         const haversine = require('haversine');
                         let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                         let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
+                        let currentMeter = haversine(start, end, {unit: 'meter'});
                         let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
+                        console.log(betweenDistance, currentMeter, dist);
                         setLastPoint(location);
                         setDist(dist => dist + betweenDistance);
                         
-                        if(betweenDistance < 0.0001)
+                        if(currentMeter < 1)
                             setElapsed(elapsed => elapsed + 1);
                         else
                             setElapsed(0);
 
-                        let currentPace = 1 / betweenDistance;
+                        let currentPace = unit == 1 ? 1609.3 / currentMeter : 1000 / currentMeter;
                         setCurPace(currentPace > 59999 ? 0 : currentPace);
                     }
                 }
@@ -123,7 +126,7 @@ const Running = (props) => {
             unit: unit,
             runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
             currentPace: curPace,
-            averagePace: dist > 0 ? averagePace : 0,
+            averagePace: averagePace > 59999 ? 0 : averagePace,
             status: raceStatus,
         };
         
@@ -471,7 +474,7 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 15,
         marginRight: 12,
-        borderRadius: 1,
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: global.COLOR.SECONDARY,

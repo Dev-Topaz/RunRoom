@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { displayStatisticsValue } from '../../utils/func';
 import { getUserStatistics } from '../../utils/api';
 
-const ProfileStatistics = (props) => {
+const ProfileStatistics = () => {
 
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
