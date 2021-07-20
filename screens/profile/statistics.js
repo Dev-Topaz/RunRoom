@@ -58,11 +58,11 @@ const ProfileStatistics = () => {
     });
 
     useEffect(() => {
-        getUserStatistics(userId, accessToken).then(result => {
-            if(result != null && userId == result.userId) {
-                setUserInfo(result);
-            }
-        });
+        //getUserStatistics(userId, accessToken).then(result => {
+        //    if(result != null && userId == result.userId) {
+        //        setUserInfo(result);
+        //    }
+        //});
     }, []);
 
     return (

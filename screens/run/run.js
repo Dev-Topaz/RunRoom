@@ -118,7 +118,7 @@ const Running = (props) => {
             })();
         }
 
-        const averagePace = (now.getTime() - startTime.getTime()) / 1000 / dist;
+        const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
 
         const updateInfo = {
             runRoomId: roomId,
