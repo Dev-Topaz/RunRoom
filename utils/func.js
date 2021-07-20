@@ -147,8 +147,13 @@ export function renderMinValue(value) {
 }
 
 export function displayStatisticsValue(value, type) {
+
+    if(value == null || value == undefined)
+        return '—';
+
     if(value == 0 || value < 0)
         return '—';
+        
     switch(type) {
         case 1:
             return Math.floor(value * 10) / 10 + '';

@@ -17,9 +17,9 @@ const Running = (props) => {
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.roomId);
     const distance = useSelector(state => state.run.distance);
-    //const startTime = new Date(useSelector(state => state.run.runDateTime));
+    const startTime = new Date(useSelector(state => state.run.runDateTime));
 
-    const [startTime, setStartTime] = useState(new Date());
+    //const [startTime, setStartTime] = useState(new Date());
     const [raceStatus, setRaceStatus] = useState(1);
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
@@ -102,7 +102,7 @@ const Running = (props) => {
                         let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
                         let currentMeter = haversine(start, end, {unit: 'meter'});
                         let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
-                        console.log(betweenDistance, currentMeter, dist);
+                        //console.log(betweenDistance, currentMeter, dist);
                         setLastPoint(location);
                         setDist(dist => dist + betweenDistance);
                         
@@ -111,7 +111,7 @@ const Running = (props) => {
                         else
                             setElapsed(0);
 
-                        let currentPace = unit == 1 ? 1609.3 / currentMeter : 1000 / currentMeter;
+                        let currentPace = unit == 1 ? 1609.3 / currentMeter * 2.5 : 1000 / currentMeter * 2.5;
                         setCurPace(currentPace > 59999 ? 0 : currentPace);
                     }
                 }
