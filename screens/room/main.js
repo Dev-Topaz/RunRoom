@@ -4,7 +4,7 @@ import { FloatingAction } from 'react-native-floating-action';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
-import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime, displayLobbyTime } from '../../utils/func';
+import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import FollowModal from '../../components/followModal';
 import FilterModal from '../../components/filterModal';
 

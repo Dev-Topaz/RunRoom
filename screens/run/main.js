@@ -5,7 +5,7 @@ import global from '../../global';
 import css from '../../css';
 import FollowModal from '../../components/followModal';
 
-import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime, displayLobbyTime } from '../../utils/func';
+import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, disjoinRun } from '../../utils/api';
 import { changeRoom } from '../../store/actions/actions';
