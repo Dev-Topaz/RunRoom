@@ -33,7 +33,7 @@ const RoomMain = (props) => {
         participating: false,
         organized: false,
         startValue: 0,
-        endValue: 20,
+        endValue: 100,
         unit: 1,
         dateValue: new Date(),
     });
@@ -49,6 +49,25 @@ const RoomMain = (props) => {
 
     useEffect(() => {
         setPage(1);
+        setLoading(true);
+        getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
+            if(result != null) {
+
+                let res = [...result];
+                res.forEach(item => {
+                    const idx = item.runners.findIndex(element => userId == element.runnerId);
+                    if(idx > -1)
+                        item.runners.splice(idx, 1);
+                });
+
+                if(page != 1)
+                    setData([...data, ...res]);
+                else
+                    setData(res);
+            }
+            setLoading(false);
+        });
+        setLoading(false);
     }, [filterOption]);
 
     useEffect(() => {

@@ -21,9 +21,9 @@ const RunMain = (props) => {
     const filterOption = {
         invited: false,
         participating: true,
-        organized: true,
+        organized: false,
         startValue: 0,
-        endValue: 20,
+        endValue: 100,
         unit: 1,
         dateValue: new Date(),
     };

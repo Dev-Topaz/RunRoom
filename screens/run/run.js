@@ -74,7 +74,7 @@ const Running = (props) => {
     }, [current]);
 
     useEffect(() => {
-        const timer = setInterval(() => {setNow(new Date())}, 2500);
+        const timer = setInterval(() => {setNow(new Date())}, 5000);
 
         if(raceStatus > 1) {
             setCurPace(0);
@@ -92,27 +92,31 @@ const Running = (props) => {
 
                     if(lastPoint != null && location != null) {
                         //console.log(location['coords']['speed']);
-                        //if(location['coords']['speed'] > 0)
-                        //    setCurPace(convertUnit(location['coords']['speed'], unit));
-                        //else
-                        //    setCurPace(0);
+                        if(location['coords']['speed'] > 0)
+                            setCurPace(convertUnit(location['coords']['speed'], unit));
+                        else
+                            setCurPace(0);
 
                         const haversine = require('haversine');
                         let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
                         let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
-                        let currentMeter = haversine(start, end, {unit: 'meter'});
+                        let isMoving = haversine(start, end, {threshold: 5, unit: 'meter'});
                         let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
                         //console.log(betweenDistance, currentMeter, dist);
-                        setLastPoint(location);
-                        setDist(dist => dist + betweenDistance);
                         
-                        if(currentMeter < 1)
-                            setElapsed(elapsed => elapsed + 1);
-                        else
+                        //setLastPoint(location);
+                        //setDist(dist => dist + betweenDistance);
+                        
+                        if(isMoving) {
                             setElapsed(0);
+                            setLastPoint(location);
+                            setDist(dist => dist + betweenDistance);
+                        } else {
+                            setElapsed(elapsed => elapsed + 1);
+                        }
 
-                        let currentPace = unit == 1 ? 1609.3 / currentMeter * 2.5 : 1000 / currentMeter * 2.5;
-                        setCurPace(currentPace > 59999 ? 0 : currentPace);
+                        //let currentPace = unit == 1 ? 1609.3 / currentMeter * 2.5 : 1000 / currentMeter * 2.5;
+                        //setCurPace(currentPace > 59999 ? 0 : currentPace);
                     }
                 }
             })();
@@ -125,7 +129,7 @@ const Running = (props) => {
             runDistance: dist,
             unit: unit,
             runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
-            currentPace: curPace,
+            currentPace: curPace > 59999 ? 0 : curPace,
             averagePace: averagePace > 59999 ? 0 : averagePace,
             status: raceStatus,
         };
@@ -149,7 +153,7 @@ const Running = (props) => {
 
     useEffect(() => {
         if(!isWarning)
-            if(elapsed > 600) {
+            if(elapsed > 120) {
                 setWarning(true);
                 Alert.alert('Notification', 'Are you still participating in the run?',
                 [
