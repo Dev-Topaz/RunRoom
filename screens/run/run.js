@@ -85,7 +85,7 @@ const Running = (props) => {
                   console.log('Access was denied.');
                 } else {
                     let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-                    console.log(location);
+                    //console.log(location);
                     if(lastPoint == null && location != null) {
                         setLastPoint(location);
                     }
@@ -108,11 +108,11 @@ const Running = (props) => {
                         //setDist(dist => dist + betweenDistance);
                         
                         if(isMoving) {
+                            setElapsed(elapsed => elapsed + 1);
+                        } else {
                             setElapsed(0);
                             setLastPoint(location);
                             setDist(dist => dist + betweenDistance);
-                        } else {
-                            setElapsed(elapsed => elapsed + 1);
                         }
 
                         //let currentPace = unit == 1 ? 1609.3 / currentMeter * 2.5 : 1000 / currentMeter * 2.5;

@@ -170,8 +170,8 @@ const RunMain = (props) => {
                     <Text style={css.hostName}>{item.organizerDetails.runnerFirstName + ' ' + item.organizerDetails.runnerLastName}</Text>
                     <View style={css.hostInvited}>
                         <Text style={css.hostLabel}>Host</Text>
-                        <Text style={css.hostLabel}>{item.organizerDetails.invitationType == 1 ? '  •  ' : ''}</Text>
-                        <Text style={css.inviteLabel}>{item.organizerDetails.invitationType == 1 ? 'Invited' : ''}</Text>
+                        <Text style={css.hostLabel}>{item.invitationType == 1 ? '  •  ' : ''}</Text>
+                        <Text style={css.inviteLabel}>{item.invitationType == 1 ? 'Invited' : ''}</Text>
                     </View>
                 </View>
                 <View style={css.participateStatus}>
