@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable, Keyboard } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -7,16 +7,41 @@ import css from '../../css';
 
 const Feedback = (props) => {
 
+    const [isKB, setKB] = useState(false);
+
+    useEffect(() => {
+        
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        }
+    }, []);
+
+    const handleKeyboardDidShow = () => {
+        setKB(true);
+    }
+
+    const handleKeyboardDidHide = () => {
+        setKB(false);
+    }
+
     return (
         <View style={css.bgContainer}>
             <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Settings')}>
                 <SvgIcon icon='Back'/>
             </Pressable>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>FEEDBACK</Text>
-            <Text style={[css.authIndicatorText, { letterSpacing: -0.35 }]}>{'Please help us improve our app by providing feedback' + '\n' + 'below'}</Text>
-            <View style={styles.radioGroupContainer}>
-                <RadioGroup radioButtons={radioButtonList}/>
-            </View>
+            <Text style={[css.authIndicatorText, { letterSpacing: -0.35, marginBottom: 40 }]}>{'Please help us improve our app by providing feedback' + '\n' + 'below'}</Text>
+            {
+                isKB ? null :
+                <View style={styles.radioGroupContainer}>
+                    <RadioGroup radioButtons={radioButtonList}/>
+                </View>
+            }
+            
             <Text style={css.labelText}>Email Address</Text>
             <View style={[css.textInputContainer, { marginBottom: 20 }]}>
                 <TextInput
@@ -31,6 +56,7 @@ const Feedback = (props) => {
                     placeholder='Write message here'
                     textAlignVertical='top'
                     multiline={true}
+                    blurOnSubmit={true}
                 />
             </View>
             <View style={styles.footer}>
@@ -49,7 +75,6 @@ const styles = StyleSheet.create({
         color: global.COLOR.PRIMARY70,
     },
     radioGroupContainer: {
-        marginTop: 40,
         marginBottom: 20,
         alignSelf: 'flex-start',
     },
