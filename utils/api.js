@@ -520,10 +520,9 @@ export async function getCities(country) {
 
 export async function getStates(country) {
 
-    const result = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+    const response = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
         method: 'POST',
         headers: {
-            Accept: 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -531,5 +530,6 @@ export async function getStates(country) {
         })
     });
 
+    const result = await response.json();
     return result.data;
 }
