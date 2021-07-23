@@ -43,7 +43,7 @@ const InviteFriends = (props) => {
             <Toast
                 ref={ toast }
                 position='bottom'
-                positionValue={150}
+                positionValue={180}
                 fadeInDuration={750}
                 fadeOutDuration={1000}
                 opacity={0.8}
