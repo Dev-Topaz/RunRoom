@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Pressable, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import { CodeField, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 import global from '../../global';
 import css from '../../css';
@@ -41,7 +41,10 @@ const Verification = (props) => {
         verifyCode(phoneNumber, value).then(result => {
             if(result.isVerified) {
                 dispatch(codeVerified(result));
-                props.navigation.navigate('UserName');
+                if(result.userType == 1)
+                    props.navigation.navigate('LocationPermission');
+                else
+                    props.navigation.navigate('UserName');
                 setValue('');
             } else {
                 setValue('');
