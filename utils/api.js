@@ -501,3 +501,35 @@ export async function getUserStatistics(userId, accessToken) {
 
     return result;
 }
+
+export async function getCities(country) {
+
+    const response = await fetch('https://countriesnow.space/api/v0.1/countries/cities', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            country: `${country}`
+        })
+    });
+
+    const result = await response.json();
+    return result.data;
+}
+
+export async function getStates(country) {
+
+    const result = await fetch('https://countriesnow.space/api/v0.1/countries/states', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            country: `${country}`
+        })
+    });
+
+    return result.data;
+}

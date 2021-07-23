@@ -14,7 +14,7 @@ import global from '../../global';
 import css from '../../css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserDetails, updateUserProfile } from '../../utils/api';
+import { getUserDetails, updateUserProfile, getCities } from '../../utils/api';
 
 const EditProfile = (props) => {
 
