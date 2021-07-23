@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image, Text, Pressable, TouchableOpacity, TextInput, Modal, Alert } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SwitchToggle from 'react-native-switch-toggle';
 import PhoneInput from 'react-native-phone-input';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
+import * as Location from 'expo-location';
 import { Icon } from 'react-native-elements';
-import CountryPicker from '../../components/countryPicker';
 import AgePicker from '../../components/agePicker';
 import GenderPicker from '../../components/genderPicker';
 import SvgIcon from '../../components/svgIcon';
@@ -23,7 +23,6 @@ const EditProfile = (props) => {
     const phoneNumber = useSelector(state => state.user.phoneNumber);
     const unit = useSelector(state => state.setting.unit);
     const dispatch = useDispatch();
-    const phoneInput = useRef(null);
 
     const [name, setName] = useState({ firstName: '', lastName: '' });
     const [location, setLocation] = useState('');
@@ -31,16 +30,16 @@ const EditProfile = (props) => {
     const [gender, setGender] = useState(0);
     const [avatar, setAvatar] = useState(null);
     const [isToggle, setToggle] = useState(false);
-    const [countryData, setCountryData] = useState([]);
+    const [country, setCountry] = useState('');
+    const [city, setCity] = useState('');
+    const [cityList, setCityList] = useState([]);
 
-    const [countryVisible, setCountryVisible] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
     const [ageVisible, setAgeVisible] = useState(false);
     const [genderVisible, setGenderVisible] = useState(false);
     const [pickerVisible, setPickerVisible] = useState(false);
 
     useEffect(() => {
-        setCountryData(phoneInput.current.getPickerData());
         getUserDetails(userId, accessToken).then(result => {
             if(result == null) {
                 Alert.alert('You are not authorized.');
@@ -54,6 +53,21 @@ const EditProfile = (props) => {
                 setGender(result.gender);
             }
         });
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Your Location Permission is denied');
+            } else {
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                const position = {
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                };
+                let region = await Location.reverseGeocodeAsync(position);
+                setCountry(region[0].country);
+                setCity(region[0].city);
+            }
+        })();
     }, []);
 
     useEffect(() => {
@@ -64,10 +78,6 @@ const EditProfile = (props) => {
             }
         }
     }, [isToggle]);
-
-    const selectCountry = (item) => {
-        phoneInput.current.selectCountry(item.iso2);
-    }
 
     const pressCameraAction = () => {
         setPickerVisible(false);
@@ -133,10 +143,6 @@ const EditProfile = (props) => {
     const pressSubmitAction = () => {
         if(name.firstName == '' || name.lastName == '') {
             Alert.alert('WARNING', 'The first name and last name cannot be empty');
-            return;
-        }
-        if(!phoneInput.current.isValidNumber()) {
-            Alert.alert('WARNING', 'Your phone number is invalid');
             return;
         }
         
@@ -208,8 +214,7 @@ const EditProfile = (props) => {
                 <Text style={[css.labelText, { marginTop: 15 }]}>Phone Number</Text>
                 <View style={css.textInputContainer}>
                     <PhoneInput
-                        ref={phoneInput}
-                        onPressFlag={() => setCountryVisible(true)}
+                        onPressFlag={() => {}}
                         initialCountry='us'
                         textProps={{ placeholder: 'Enter your mobile number' }}
                         textStyle={css.inputText}
@@ -222,7 +227,7 @@ const EditProfile = (props) => {
                     <TextInput
                         style={[css.inputText, { paddingVertical: 20 }]}
                         placeholder='Enter your running location'
-                        value={location}
+                        value={location == '' ? city + ', ' + country : location}
                         onChangeText={text => setLocation(text)}
                     />
                 </View>
@@ -271,12 +276,6 @@ const EditProfile = (props) => {
                     <Text style={css.submitText}>SET</Text>
                 </TouchableOpacity>
             </KeyboardAwareScrollView>
-            <CountryPicker
-                visible={countryVisible}
-                data={countryData}
-                onChangeCountry={selectCountry}
-                onChangeVisible={setCountryVisible}
-            />
             <AgePicker
                 visible={ageVisible}
                 data={ageGroup}
