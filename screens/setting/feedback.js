@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable, Keyboard } from 'react-native';
 import RadioGroup from 'react-native-radio-buttons-group';
 import SvgIcon from '../../components/svgIcon';
@@ -41,7 +41,6 @@ const Feedback = (props) => {
                     <RadioGroup radioButtons={radioButtonList}/>
                 </View>
             }
-            
             <Text style={css.labelText}>Email Address</Text>
             <View style={[css.textInputContainer, { marginBottom: 20 }]}>
                 <TextInput
