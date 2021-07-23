@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.metomine.runroom",
-      "buildNumber": "2.1.2",
+      "buildNumber": "2.1.3",
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
         "NSLocationWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
