@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import Clipboard from 'expo-clipboard';
+import Toast from 'react-native-easy-toast';
 import { Icon } from 'react-native-elements';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -8,8 +9,11 @@ import css from '../../css';
 
 const InviteFriends = (props) => {
 
+    const toast = useRef(null);
+
     const copyToClipboard = () => {
         Clipboard.setString('https://runroom.com/cjsKck12');
+        toast.current.show('Copied to Clipboard!');
     }
 
     return (
@@ -36,6 +40,14 @@ const InviteFriends = (props) => {
                     <Text style={css.submitText}>COPY LINK</Text>
                 </TouchableOpacity>
             </View>
+            <Toast
+                ref={ toast }
+                position='bottom'
+                positionValue={150}
+                fadeInDuration={750}
+                fadeOutDuration={1000}
+                opacity={0.8}
+            />
         </View>
     );
 }
