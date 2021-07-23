@@ -25,7 +25,7 @@ const EditProfile = (props) => {
     const dispatch = useDispatch();
 
     const [name, setName] = useState({ firstName: '', lastName: '' });
-    const [location, setLocation] = useState('');
+    const [runningLocation, setRunningLocation] = useState('');
     const [ageGroup, setAgeGroup] = useState(0);
     const [gender, setGender] = useState(0);
     const [avatar, setAvatar] = useState(null);
@@ -47,7 +47,7 @@ const EditProfile = (props) => {
                 Alert.alert('You are a fake user.');
             } else {
                 setName({ firstName: result.firstName, lastName: result.lastName });
-                setLocation(result.location == null ? '' : result.location);
+                setRunningLocation(result.location == null ? '' : result.location);
                 setAgeGroup(result.ageGroup);
                 setAvatar(result.avatar);
                 setGender(result.gender);
@@ -64,8 +64,16 @@ const EditProfile = (props) => {
                     longitude: location.coords.longitude,
                 };
                 let region = await Location.reverseGeocodeAsync(position);
-                setCountry(region[0].country);
-                setCity(region[0].city);
+                if(region[0].country != null) {
+                    setCountry(region[0].country);
+                    getCities(region[0].country).then(result => {
+                        setCityList(result);
+                    });
+                }
+                if(region[0].city != null)
+                    setCity(region[0].city);
+                else
+                    setCity(cityList[0]);
             }
         })();
     }, []);
@@ -152,7 +160,7 @@ const EditProfile = (props) => {
         updateInfo.append('LastName', name.lastName);
         updateInfo.append('AgeGroup', ageGroup);
         updateInfo.append('Gender', gender);
-        updateInfo.append('RunningLocation', location);
+        updateInfo.append('RunningLocation', runningLocation);
         updateInfo.append('UnitOfMeasurement', unit);
         
         if(avatar != null) {
@@ -225,10 +233,11 @@ const EditProfile = (props) => {
                 <Text style={[css.labelText, { marginTop: 15 }]}>Running Location</Text>
                 <View style={css.textInputContainer}>
                     <TextInput
+                        
                         style={[css.inputText, { paddingVertical: 20 }]}
                         placeholder='Enter your running location'
-                        value={location == '' ? city + ', ' + country : location}
-                        onChangeText={text => setLocation(text)}
+                        value={runningLocation == '' ? city + ', ' + country : runningLocation}
+                        onChangeText={text => setRunningLocation(text)}
                     />
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Age Group</Text>
