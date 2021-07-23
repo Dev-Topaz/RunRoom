@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from 'expo-clipboard';
 import { Icon } from 'react-native-elements';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -8,7 +8,7 @@ import css from '../../css';
 
 const InviteFriends = (props) => {
 
-    const pressSubmitAction = () => {
+    const copyToClipboard = () => {
         Clipboard.setString('https://runroom.com/cjsKck12');
     }
 
@@ -32,7 +32,7 @@ const InviteFriends = (props) => {
                 </Pressable>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={css.submitButton} onPress={pressSubmitAction}>
+                <TouchableOpacity style={css.submitButton} onPress={copyToClipboard}>
                     <Text style={css.submitText}>COPY LINK</Text>
                 </TouchableOpacity>
             </View>
