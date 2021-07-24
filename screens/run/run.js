@@ -31,7 +31,7 @@ const Running = (props) => {
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
-    const [elapsed, setElapsed] = useState(0);
+    const [elapsed, setElapsed] = useState(1);
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
     const [min, setMin] = useState(0);
@@ -113,7 +113,12 @@ const Running = (props) => {
                         if(isMoving) {
                             setElapsed(elapsed => elapsed + 1);
                         } else {
-                            setElapsed(0);
+                            if(curPace == 0) {
+                                const speed = betweenDistance / (5 * elapsed);
+                                setCurPace(1 / speed);
+                            }
+
+                            setElapsed(1);
                             setLastPoint(location);
                             setDist(dist => dist + betweenDistance);
                         }
