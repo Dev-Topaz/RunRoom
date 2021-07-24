@@ -193,6 +193,7 @@ const ProfileConnection = () => {
                 onEndReached={() => setPage(page => page + 1)}
                 ItemSeparatorComponent={null}
                 ListFooterComponent={() => loading && page != 1 ? <View style={styles.listFooter}><ActivityIndicator animating size='large'/></View> : null}
+                keyboardShouldPersistTaps='handled'
             />
         </View>
     );

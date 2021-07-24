@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT } from '../constants';
+import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE } from '../constants';
 
 export function changeMobileNumber(phoneNumber) {
     
@@ -33,6 +33,17 @@ export function changeRoom(roomId, runDateTime, distance, page) {
             runDateTime: runDateTime,
             distance: distance,
             page: page,
+        }
+    }
+}
+
+export function customizeRank(canRank, isRank) {
+
+    return {
+        type: RANK_CUSTOMIZE,
+        payload: {
+            canRank: canRank,
+            isRank: isRank,
         }
     }
 }
