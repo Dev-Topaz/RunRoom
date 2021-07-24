@@ -39,6 +39,7 @@ const Running = (props) => {
     const [current, setCurrent] = useState(new Date());
     const [now, setNow] = useState(new Date());
     const [isExit, setExit] = useState(false);
+    const [alertVisible, setAlertVisible] = useState(false);
     
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -187,10 +188,20 @@ const Running = (props) => {
             if(canRank) {
                 
             } else {
+                setAlertVisible(true);
                 setToggle(false);
             }
         } else {
-            
+            getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                if(res != null) {
+                    const idx = res.findIndex(item => userId === item.runnerId );
+                    setRank(idx + 1);
+                    setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                    setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+
+                    setData(res);
+                }
+            });
         }
     }, [isToggle]);
 
@@ -330,6 +341,21 @@ const Running = (props) => {
                                 <Text style={[styles.submitText, { color: global.COLOR.PRIMARY70 }]}>CANCEL</Text>
                             </Pressable>
                         </View>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType='slide'
+                transparent
+                visible={alertVisible}
+                onRequestClose={() => {}}
+            >
+                <View style={styles.overlay}>
+                    <View style={styles.alertContainer}>
+                        <Text style={styles.alertTitleText}>{'Please select both your age' + '\n' + 'group and gender in Profile' + '\n' + 'to customize the rankings'}</Text>
+                        <Pressable onPress={() => setAlertVisible(false)}>
+                            <Text style={styles.alertButtonText}>Got it</Text>
+                        </Pressable>
                     </View>
                 </View>
             </Modal>
@@ -533,6 +559,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     modalContainer: {
+        position: 'absolute',
         width: global.CONSTANTS.WIDTH * 0.9,
         height: global.CONSTANTS.WIDTH * 0.9,
         backgroundColor: 'white',
@@ -573,6 +600,28 @@ const styles = StyleSheet.create({
         fontFamily: 'SFProMedium',
         fontSize: 16,
         color: 'white',
+    },
+    alertContainer: {
+        width: global.CONSTANTS.MODAL_316,
+        height: global.CONSTANTS.MODAL_194,
+        backgroundColor: 'white',
+        borderRadius: 37,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    alertTitleText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+        letterSpacing: -0.5,
+        lineHeight: 24,
+        marginBottom: global.CONSTANTS.SIZE_20,
+        textAlign: 'center',
+    },
+    alertButtonText: {
+        fontFamily: 'SFProBold',
+        fontSize: 16,
+        color: global.COLOR.GOT,
     },
 });
 

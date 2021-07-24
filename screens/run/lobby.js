@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar, Modal } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -26,6 +26,7 @@ const Lobby = (props) => {
     const [now, setNow] = useState(new Date());
     const [remainMin, setRemainMin] = useState(0);
     const [remainSec, setRemainSec] = useState(0);
+    const [alertVisible, setAlertVisible] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -74,10 +75,15 @@ const Lobby = (props) => {
             if(canRank) {
                 
             } else {
+                setAlertVisible(true);
                 setToggle(false);
             }
         } else {
-            
+            getLobbyRunners(roomId, 1, 500, accessToken).then(result => {
+                if(result != null) {
+                    setData(result);
+                }
+            });
         }
     }, [isToggle]);
 
@@ -205,6 +211,21 @@ const Lobby = (props) => {
                     }
                 </ScrollView>
             </View>
+            <Modal
+                animationType='slide'
+                transparent
+                visible={alertVisible}
+                onRequestClose={() => {}}
+            >
+                <View style={styles.overlay}>
+                    <View style={styles.alertContainer}>
+                        <Text style={styles.alertTitleText}>{'Please select both your age' + '\n' + 'group and gender in Profile' + '\n' + 'to customize the rankings'}</Text>
+                        <Pressable onPress={() => setAlertVisible(false)}>
+                            <Text style={styles.alertButtonText}>Got it</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -378,6 +399,35 @@ const styles = StyleSheet.create({
     rankText: {
         fontFamily: 'SFProMedium',
         fontSize: 12,
+    },
+    overlay: {
+        width: global.CONSTANTS.WIDTH,
+        height: global.CONSTANTS.HEIGHT,
+        backgroundColor: global.COLOR.BLACK40,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    alertContainer: {
+        width: global.CONSTANTS.MODAL_316,
+        height: global.CONSTANTS.MODAL_194,
+        backgroundColor: 'white',
+        borderRadius: 37,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    alertTitleText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 18,
+        color: global.COLOR.PRIMARY100,
+        letterSpacing: -0.5,
+        lineHeight: 24,
+        marginBottom: global.CONSTANTS.SIZE_20,
+        textAlign: 'center',
+    },
+    alertButtonText: {
+        fontFamily: 'SFProBold',
+        fontSize: 16,
+        color: global.COLOR.GOT,
     },
 });
 
