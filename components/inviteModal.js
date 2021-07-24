@@ -5,7 +5,7 @@ import global from '../global';
 import css from '../css';
 
 import { findIndex } from '../utils/func';
-import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, stopFollowing } from '../utils/api';
+import { getAllConnections, getFollowings, getFollowers, follow, stopFollowing } from '../utils/api';
 import { useSelector } from 'react-redux';
 
 const InviteModal = (props) => {

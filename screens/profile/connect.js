@@ -5,8 +5,7 @@ import global from '../../global';
 import css from '../../css';
 
 import { useSelector } from 'react-redux';
-import { getAllConnections, getAllUsers, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
-import { findIndex } from '../../utils/func';
+import { getAllConnections, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
 
 
 const ProfileConnection = () => {
