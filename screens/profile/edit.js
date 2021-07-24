@@ -15,6 +15,7 @@ import css from '../../css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserDetails, updateUserProfile, getCities } from '../../utils/api';
+import { customizeRank } from '../../store/actions/actions';
 
 const EditProfile = (props) => {
 
@@ -174,6 +175,7 @@ const EditProfile = (props) => {
 
         updateUserProfile(updateInfo, accessToken).then(result => {
             if(result) {
+                dispatch(customizeRank(ageGroup != 0 && gender != 0, isToggle));
                 Alert.alert('Your profile is updated successfully');
                 props.navigation.navigate('Profile');
             } else {

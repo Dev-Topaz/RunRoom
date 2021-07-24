@@ -17,6 +17,8 @@ const Lobby = (props) => {
     const runDateTime = useSelector(state => state.run.runDateTime);
     const distance = useSelector(state => state.run.distance);
     const previousPage = useSelector(state => state.run.page);
+    const canRank = useSelector(state => state.run.canRank);
+    const isRank = useSelector(state => state.run.isRank);
 
     const [isToggle, setToggle] = useState(false);
     const [data, setData] = useState([]);
@@ -27,6 +29,7 @@ const Lobby = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        setToggle(isRank);
     }, []);
 
     useEffect(() => {
@@ -55,12 +58,28 @@ const Lobby = (props) => {
 
         getLobbyRunners(roomId, 1, 500, accessToken).then(result => {
             if(result != null) {
-                setData(result);
+                if(isToggle) {
+                    setData(result);
+                } else {
+                    setData(result);
+                }
             }
         });
 
         return () => clearInterval(timer);
     }, [now]);
+
+    useEffect(() => {
+        if(isToggle) {
+            if(canRank) {
+                
+            } else {
+                setToggle(false);
+            }
+        } else {
+            
+        }
+    }, [isToggle]);
 
     const pressFollowAction = (index) => {
         let target = [...data];

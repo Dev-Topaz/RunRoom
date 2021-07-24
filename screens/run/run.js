@@ -18,6 +18,8 @@ const Running = (props) => {
     const roomId = useSelector(state => state.run.roomId);
     const distance = useSelector(state => state.run.distance);
     const startTime = new Date(useSelector(state => state.run.runDateTime));
+    const canRank = useSelector(state => state.run.canRank);
+    const isRank = useSelector(state => state.run.isRank);
 
     //const [startTime, setStartTime] = useState(new Date());
     const [raceStatus, setRaceStatus] = useState(1);
@@ -40,6 +42,7 @@ const Running = (props) => {
     
     useEffect(() => {
         StatusBar.setHidden(true);
+        setToggle(isRank);
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -138,11 +141,16 @@ const Running = (props) => {
             if(result) {
                 getRaceRunners(roomId, 1, 500, accessToken).then(res => {
                     if(res != null) {
-                        setData(res);
                         const idx = res.findIndex(item => userId === item.runnerId );
                         setRank(idx + 1);
                         setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
                         setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+
+                        if(isToggle) {
+                            setData(res);
+                        } else {
+                            setData(res);
+                        }
                     }
                 });
             }
@@ -168,6 +176,18 @@ const Running = (props) => {
                 ]);
             }
     }, [elapsed]);
+
+    useEffect(() => {
+        if(isToggle) {
+            if(canRank) {
+                
+            } else {
+                setToggle(false);
+            }
+        } else {
+            
+        }
+    }, [isToggle]);
 
     const pressBackAction = () => {
         if(raceStatus == 1)
