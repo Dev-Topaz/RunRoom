@@ -233,7 +233,6 @@ const EditProfile = (props) => {
                 <Text style={[css.labelText, { marginTop: 15 }]}>Running Location</Text>
                 <View style={css.textInputContainer}>
                     <TextInput
-                        
                         style={[css.inputText, { paddingVertical: 20 }]}
                         placeholder='Enter your running location'
                         value={runningLocation == '' ? city + ', ' + country : runningLocation}

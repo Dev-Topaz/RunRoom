@@ -23,9 +23,9 @@ const ProfileStatistics = () => {
         distanceCoveredMilesThisWeek: 0,
         distanceCoveredKilometerThisWeek: 0,
         distanceCoverdAllTimeGlobalTop: 0,
-        runningTimeHoursAllTime: 0,
-        runningTimeHoursThisMonth: 0,
-        runningTimeHoursThisWeek: 0,
+        runningTimeSecondsAllTime: 0,
+        runningTimeSecondsThisMonth: 0,
+        runningTimeSecondsThisWeek: 0,
         runningTimeAllTimeGlobalTop: 0,
         uptoFiveMilesAveragePaceSecondsPerMileAllTime: 0,
         uptoFiveMilesAveragePaceSecondsPerKilometreAllTime: 0,
@@ -87,9 +87,9 @@ const ProfileStatistics = () => {
                         <Text style={styles.rowText}>{'Distance' + '\n' + 'Covered'}</Text>
                         <Text style={styles.unitText}>{unit == 1 ? 'miles' : 'kilometers'}</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesAllTime : userInfo.distanceCoveredKilometerAllTime, 1)}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisMonth : userInfo.distanceCoveredKilometerThisMonth, 1)}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisWeek : userInfo.distanceCoveredKilometerThisWeek, 1)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesAllTime : userInfo.distanceCoveredKilometerAllTime, 4)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisMonth : userInfo.distanceCoveredKilometerThisMonth, 4)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(unit == 1 ? userInfo.distanceCoveredMilesThisWeek : userInfo.distanceCoveredKilometerThisWeek, 4)}</Text></View>
                     <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.distanceCoverdAllTimeGlobalTop, 2)}</Text></View>
                 </View>
                 <View style={[styles.row, { borderBottomWidth: 1, borderBottomColor: 'rgba(173, 174, 181, 0.5)' }]}>
@@ -97,10 +97,10 @@ const ProfileStatistics = () => {
                         <Text style={styles.rowText}>Running Time</Text>
                         <Text style={styles.unitText}>hours</Text>
                     </View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursAllTime, 1)}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursThisMonth, 1)}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeHoursThisWeek, 1)}</Text></View>
-                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runsCompletedAllTimeGlobalTop, 2)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeSecondsAllTime, 5)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeSecondsThisMonth, 5)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeSecondsThisWeek, 5)}</Text></View>
+                    <View style={styles.cell}><Text style={styles.cellText}>{displayStatisticsValue(userInfo.runningTimeAllTimeGlobalTop, 2)}</Text></View>
                 </View>
             </View>
             <View style={{ flex: 697 }}>
