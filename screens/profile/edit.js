@@ -6,6 +6,7 @@ import PhoneInput from 'react-native-phone-input';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from 'react-native-elements';
 import AgePicker from '../../components/agePicker';
 import GenderPicker from '../../components/genderPicker';
@@ -175,7 +176,14 @@ const EditProfile = (props) => {
 
         updateUserProfile(updateInfo, accessToken).then(result => {
             if(result) {
-                dispatch(customizeRank(ageGroup != 0 && gender != 0, isToggle));
+                AsyncStorage.multiSet([['canRank', ageGroup != 0 && gender != 0 ? '1' : '0'], ['isRank', isToggle ? '1' : '0']], err => {
+                    if(err) {
+                        console.log('An error occured');
+                        throw err;
+                    } else {
+                        dispatch(customizeRank(ageGroup != 0 && gender != 0, isToggle));
+                    }
+                });
                 Alert.alert('Your profile is updated successfully');
                 props.navigation.navigate('Profile');
             } else {
