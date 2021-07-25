@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import { Provider } from 'react-redux';
@@ -10,6 +11,21 @@ import AppNavigator from './navigations/appNavigator';
 const store = configureStore()
 
 export default function App() {
+
+  const [appState, setAppState] = useState(AppState.currentState);
+
+  useEffect(() => {
+    AppState.addEventListener('change', handleAppStateChange);
+    return () => AppState.removeEventListener('change', handleAppStateChange);
+  }, []);
+
+  const handleAppStateChange = (nextAppState) => {
+    if(appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground');
+    }
+
+    setAppState(nextAppState);
+  }
 
   const [fontsLoaded] = useFonts({
     FuturaT: global.FONT.FUTURA,
