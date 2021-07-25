@@ -24,9 +24,7 @@ export async function initUnitFromStorageToRedux(dispatch) {
 
         AsyncStorage.multiGet(['canRank', 'isRank']).then(result => {
             if(result[0][1] != null && result[1][1] != null) {
-                const canRank = result[0][1];
-                const isRank = result[1][1];
-                dispatch(customizeRank(canRank == '1' ? true : false, isRank == '1' ? true : false));
+                dispatch(customizeRank(result[0][1] == '1' ? true : false, result[1][1] == '1' ? true : false));
             } else {
                 dispatch(customizeRank(false, false));
             }
