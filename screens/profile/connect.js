@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TextInput, Pressable, FlatList } from 'react-native';
+import { StyleSheet, View, Image, Text, TextInput, Pressable, FlatList, Keyboard } from 'react-native';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
@@ -18,6 +18,27 @@ const ProfileConnection = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
+    const [isKB, setKB] = useState(false);
+
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
+
+        return () => {
+            keyboardDidShowListener.remove();
+            keyboardDidHideListener.remove();
+        }
+    }, []);
+
+    const handleKeyboardDidShow = () => {
+        console.log('keyboard shown');
+        setKB(true);
+    }
+
+    const handleKeyboardDidHide = () => {
+        console.log('keyboard hidden');
+        setKB(false);
+    }
 
     useEffect(() => {
         setLoading(true);

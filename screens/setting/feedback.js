@@ -10,7 +10,6 @@ const Feedback = (props) => {
     const [isKB, setKB] = useState(false);
 
     useEffect(() => {
-        
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
 
