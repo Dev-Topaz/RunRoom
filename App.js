@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AppState } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
