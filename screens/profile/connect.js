@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TextInput, Pressable, FlatList, Keyboard } from 'react-native';
+import { StyleSheet, View, Image, Text, TextInput, Pressable, FlatList, Modal } from 'react-native';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
@@ -19,26 +19,6 @@ const ProfileConnection = () => {
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [isKB, setKB] = useState(false);
-
-    useEffect(() => {
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', handleKeyboardDidShow);
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', handleKeyboardDidHide);
-
-        return () => {
-            keyboardDidShowListener.remove();
-            keyboardDidHideListener.remove();
-        }
-    }, []);
-
-    const handleKeyboardDidShow = () => {
-        console.log('keyboard shown');
-        setKB(true);
-    }
-
-    const handleKeyboardDidHide = () => {
-        console.log('keyboard hidden');
-        setKB(false);
-    }
 
     useEffect(() => {
         setLoading(true);
@@ -188,12 +168,15 @@ const ProfileConnection = () => {
         <View style={{ flex: 1, paddingTop: global.CONSTANTS.SIZE_20, backgroundColor: 'white' }}>
             <View style={css.searchInputContainer}>
                 <SvgIcon icon='Search'/>
-                <TextInput
-                    style={{ fontFamily: 'SFProRegular', fontSize: 17, marginLeft: 10 }}
-                    placeholder='Search'
-                    value={ searchText }
-                    onChangeText={text => setSearchText(text)}
-                />
+                <Pressable style={{ width: '100%' }} onPress={() => setKB(true)}>
+                    <TextInput
+                        style={{ fontFamily: 'SFProRegular', fontSize: 17, marginLeft: 10 }}
+                        placeholder='Search'
+                        value={ searchText }
+                        editable={false}
+                        pointerEvents='none'
+                    />
+                </Pressable>
             </View>
             <View style={css.toggleContainer}>
                 <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(1)}>
@@ -213,8 +196,23 @@ const ProfileConnection = () => {
                 onEndReached={() => setPage(page => page + 1)}
                 ItemSeparatorComponent={null}
                 ListFooterComponent={() => loading && page != 1 ? <View style={styles.listFooter}><ActivityIndicator animating size='large'/></View> : null}
-                keyboardShouldPersistTaps='handled'
             />
+            <Modal
+                animationType='slide'
+                visible={isKB}
+                transparent
+                onRequestClose={() => {}}
+            >
+                <View style={styles.overlay}>
+                    <TextInput
+                        autoFocus
+                        value={searchText}
+                        style={{ position: 'absolute', bottom: 1 }}
+                        onChangeText={text => setSearchText(text)}
+                        onSubmitEditing={() => setKB(false)}
+                    />
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -223,6 +221,11 @@ const styles = StyleSheet.create({
     listFooter: {
         paddingVertical: 20,
     },
+    overlay: {
+        width: global.CONSTANTS.WIDTH,
+        height: global.CONSTANTS.HEIGHT,
+        backgroundColor: 'transparent',
+    }
 });
 
 export default ProfileConnection;

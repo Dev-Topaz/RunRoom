@@ -107,6 +107,7 @@ export default createAppContainer(
             shifting: false,
             activeColor: global.COLOR.PRIMARY100,
             inactiveColor: global.COLOR.PRIMARY50,
+            keyboardHidesNavigationBar: true,
         }
     )
 );
