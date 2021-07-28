@@ -73,7 +73,18 @@ const Lobby = (props) => {
     useEffect(() => {
         if(isToggle) {
             if(canRank) {
-                
+                const idx = data.findIndex(item => userId === item.runnerId);
+                if(idx > -1) {
+                    const targetGender = data[idx].runnerGender;
+                    const targetAgeGroup = data[idx].runnerAgeGroup;
+                    let target = [];
+                    data.forEach(item => {
+                        if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                            target.push(item);
+                    });
+                    console.log(target);
+                    setData(target);
+                }
             } else {
                 setAlertVisible(true);
                 setToggle(false);

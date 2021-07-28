@@ -186,7 +186,14 @@ const Running = (props) => {
     useEffect(() => {
         if(isToggle) {
             if(canRank) {
-                
+                const targetGender = data[rank-1].runnerGender;
+                const targetAgeGroup = data[rank-1].runnerAgeGroup;
+                let target = [];
+                data.forEach(item => {
+                    if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                        target.push(item);
+                });
+                setData(target);
             } else {
                 setAlertVisible(true);
                 setToggle(false);

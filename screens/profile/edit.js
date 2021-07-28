@@ -24,6 +24,7 @@ const EditProfile = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const phoneNumber = useSelector(state => state.user.phoneNumber);
     const unit = useSelector(state => state.setting.unit);
+    const isRank = useSelector(state => state.run.isRank);
     const dispatch = useDispatch();
 
     const [name, setName] = useState({ firstName: '', lastName: '' });
@@ -53,6 +54,7 @@ const EditProfile = (props) => {
                 setAgeGroup(result.ageGroup);
                 setAvatar(result.avatar);
                 setGender(result.gender);
+                setToggle(isRank);
             }
         });
         (async () => {
