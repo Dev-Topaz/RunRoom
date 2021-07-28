@@ -53,7 +53,7 @@ export function getRemainTimeStyle(current, target) {
         return 1;
     else if(th > 0)
         return 2;
-    else if(tm > 2)
+    else if(tm > 1)
         return 3;
     else
         return 4;
