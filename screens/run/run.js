@@ -50,7 +50,7 @@ const Running = (props) => {
                 Alert.alert('Your Location Permission is denied');
                 props.navigation.navigate('Room');
             } else {
-                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //console.log(location);
             }
@@ -88,7 +88,7 @@ const Running = (props) => {
                 if (status !== 'granted') {
                   console.log('Access was denied.');
                 } else {
-                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                     //console.log(location);
                     if(lastPoint == null && location != null) {
                         setLastPoint(location);
