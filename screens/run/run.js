@@ -186,8 +186,9 @@ const Running = (props) => {
     useEffect(() => {
         if(isToggle) {
             if(canRank) {
-                const targetGender = data[rank-1].runnerGender;
-                const targetAgeGroup = data[rank-1].runnerAgeGroup;
+                const idx = data.findIndex(item => userId === item.runnerId);
+                const targetGender = data[idx].runnerGender;
+                const targetAgeGroup = data[idx].runnerAgeGroup;
                 let target = [];
                 data.forEach(item => {
                     if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
