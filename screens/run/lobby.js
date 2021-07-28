@@ -82,7 +82,6 @@ const Lobby = (props) => {
                         if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
                             target.push(item);
                     });
-                    console.log(target);
                     setData(target);
                 }
             } else {
