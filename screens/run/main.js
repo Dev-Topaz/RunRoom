@@ -92,8 +92,10 @@ const RunMain = (props) => {
         let target = [...data];
 
         while(true) {
-            if(target.length < 1)
+            if(target.length < 1) {
+                setData([]);
                 break;
+            }
             if(getRemainTimeStyle(current, target[0].runDateTime) == 4) {
                 target.shift();
             } else {
