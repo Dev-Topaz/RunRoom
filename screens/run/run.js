@@ -152,12 +152,12 @@ const Running = (props) => {
         if(elapsed.getTime() - lastMoment.getTime() > 11000)
             setCurPace(0);
 
-        const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
+        const averagePace = dist == 0 ? 0 : (elapsed.getTime() - startTime.getTime()) / 1000 / dist;
         const updateInfo = {
             runRoomId: roomId,
             runDistance: dist,
             unit: unit,
-            runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
+            runTimeInSeconds: Math.floor((elapsed.getTime() - startTime.getTime()) / 1000),
             currentPace: curPace > 59999 ? 0 : curPace,
             averagePace: averagePace > 59999 ? 0 : averagePace,
             status: raceStatus,
