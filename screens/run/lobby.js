@@ -60,7 +60,21 @@ const Lobby = (props) => {
         getLobbyRunners(roomId, 1, 500, accessToken).then(result => {
             if(result != null) {
                 if(isToggle) {
-                    setData(result);
+                    if(canRank) {
+                        const idx = result.findIndex(item => userId === item.runnerId);
+                        if(idx > -1) {
+                            const targetGender = result[idx].runnerGender;
+                            const targetAgeGroup = result[idx].runnerAgeGroup;
+                            let target = [];
+                            result.forEach(item => {
+                                if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                    target.push(item);
+                            });
+                            setData(target);
+                        }
+                    } else {
+                        setData(result);
+                    }
                 } else {
                     setData(result);
                 }

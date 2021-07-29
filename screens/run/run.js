@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView,
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import * as Location from 'expo-location';
+import * as TaskManager from 'expo-task-manager';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
@@ -26,20 +27,22 @@ const Running = (props) => {
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
     const [dist, setDist] = useState(0);
+    const [lastMoment, setLastMoment] = useState(new Date());
     const [distData, setDistData] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
-    const [lastPoint, setLastPoint] = useState(null);
-    const [elapsed, setElapsed] = useState(1);
+    const [startPoint, setStartPoint] = useState(null);
+    const [elapsed, setElapsed] = useState(new Date());
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
     const [current, setCurrent] = useState(new Date());
-    const [now, setNow] = useState(new Date());
     const [isExit, setExit] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
+
+    const LOCATION_TASK_NAME = 'background-location-task';
     
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -51,10 +54,12 @@ const Running = (props) => {
                 props.navigation.navigate('Room');
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                setLastPoint(location);
-                //console.log(location);
+                setStartPoint(location);
+                startLocationTracking();
             }
         })();
+
+        return () => Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     }, []);
 
     useEffect(() => {
@@ -77,97 +82,59 @@ const Running = (props) => {
         return () => clearInterval(timer);
     }, [current]);
 
-    useEffect(() => {
-        const timer = setInterval(() => {setNow(new Date())}, 5000);
-
-        if(raceStatus > 1) {
-            setCurPace(0);
-        } else {
-            (async () => {
-                let { status } = await Location.requestForegroundPermissionsAsync();
-                if (status !== 'granted') {
-                  console.log('Access was denied.');
-                } else {
-                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                    //console.log(location);
-                    if(lastPoint == null && location != null) {
-                        setLastPoint(location);
-                    }
-
-                    if(lastPoint != null && location != null) {
-                        //console.log(location['coords']['speed']);
-                        if(location['coords']['speed'] > 0)
-                            setCurPace(convertUnit(location['coords']['speed'], unit));
-                        else
-                            setCurPace(0);
-
-                        const haversine = require('haversine');
-                        let start = { latitude: lastPoint['coords']['latitude'], longitude: lastPoint['coords']['longitude'] }
-                        let end = { latitude: location['coords']['latitude'], longitude: location['coords']['longitude'] }
-                        let isMoving = haversine(start, end, {threshold: 5, unit: 'meter'});
-                        let betweenDistance = haversine(start, end, {unit: unit == 1 ? 'mile' : 'km'});
-                        //console.log(betweenDistance, currentMeter, dist);
-                        
-                        //setLastPoint(location);
-                        //setDist(dist => dist + betweenDistance);
-                        
-                        if(isMoving) {
-                            setElapsed(elapsed => elapsed + 1);
-                        } else {
-                            if(curPace == 0) {
-                                const speed = betweenDistance / (5 * elapsed);
-                                setCurPace(1 / speed);
-                            }
-
-                            setElapsed(1);
-                            setLastPoint(location);
-                            setDist(dist => dist + betweenDistance);
-                        }
-
-                        //let currentPace = unit == 1 ? 1609.3 / currentMeter * 2.5 : 1000 / currentMeter * 2.5;
-                        //setCurPace(currentPace > 59999 ? 0 : currentPace);
-                    }
-                }
-            })();
-        }
-
-        const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
-
-        const updateInfo = {
-            runRoomId: roomId,
-            runDistance: dist,
-            unit: unit,
-            runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
-            currentPace: curPace > 59999 ? 0 : curPace,
-            averagePace: averagePace > 59999 ? 0 : averagePace,
-            status: raceStatus,
-        };
-        
-        updateRun(updateInfo, accessToken).then(result => {
-            if(result) {
-                getRaceRunners(roomId, 1, 500, accessToken).then(res => {
-                    if(res != null) {
-                        const idx = res.findIndex(item => userId === item.runnerId );
-                        setRank(idx + 1);
-                        setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
-                        setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
-
-                        if(isToggle) {
-                            setData(res);
-                        } else {
-                            setData(res);
-                        }
-                    }
-                });
-            }
+    const startLocationTracking = async() => {
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+            accuracy: Location.Accuracy.BestForNavigation,
+            distanceInterval: 3,
+            timeInterval: 5000,
+            activityType: Location.ActivityType.Fitness,
         });
 
-        return () => clearInterval(timer);
-    }, [now]);
+        const location = await Location.watchPositionAsync(
+            {
+                accuracy: Location.Accuracy.BestForNavigation,
+                distanceInterval: 3,
+                timeInterval: 5000,
+            },
+            newLocation => {
+                if(startPoint == null) {
+                    setStartPoint(newLocation);
+                } else {
+                    const google_distance = require('google-distance');
+                    google_distance.apiKey = "AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA";
+                    google_distance.get(
+                        {
+                            origin: startPoint['coords']['latitude'] + ',' + startPoint['coords']['longitude'],
+                            destination: newLocation['coords']['latitude'] + ',' + newLocation['coords']['longitude'],
+                            mode: 'walking',
+                            units: unit == 1 ? 'imperial' : 'metric',
+                        },
+                        (err, data) => {
+                            if(err) {
+                                console.log(err);
+                                return;
+                            }
+                            const now = new Date();
+                            const newDist = data.distanceValue / (unit == 1 ? 1609.34 : 1000);
+                            const curSpeed = 1 / ((newDist - dist) / (now.getTime() - lastMoment.getTime()) * 1000);
+                            
+                            setLastMoment(now);
+                            setDist(newDist);
+                            setCurPace(curSpeed);
+                        }
+                    );
+                }
+            },
+            err => console.log(err)
+        );
+        return location;
+    }
 
     useEffect(() => {
+        const timer = setInterval(() => {setElapsed(new Date())}, 5000);
+        
         if(!isWarning)
-            if(elapsed > 120) {
+            if(elapsed.getTime() - lastMoment.getTime() > 600000) {
                 setWarning(true);
                 Alert.alert('Notification', 'Are you still participating in the run?',
                 [
@@ -177,10 +144,57 @@ const Running = (props) => {
                     },
                     {
                         text: 'Yes',
-                        onPress: () => { setWarning(false); setElapsed(0); }
+                        onPress: () => { setWarning(false); }
                     }
                 ]);
             }
+
+        if(elapsed.getTime() - lastMoment.getTime() > 11000)
+            setCurPace(0);
+
+        const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
+        const updateInfo = {
+            runRoomId: roomId,
+            runDistance: dist,
+            unit: unit,
+            runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
+            currentPace: curPace > 59999 ? 0 : curPace,
+            averagePace: averagePace > 59999 ? 0 : averagePace,
+            status: raceStatus,
+        };
+        updateRun(updateInfo, accessToken).then(result => {
+            if(result) {
+                getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                    if(res != null) {
+                        const idx = res.findIndex(item => userId === item.runnerId);
+                        setRank(idx + 1);
+                        setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                        setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+
+                        if(isToggle) {
+                            if(canRank) {
+                                if(idx > -1) {
+                                    const targetGender = res[idx].runnerGender;
+                                    const targetAgeGroup = res[idx].runnerAgeGroup;
+                                    let target = [];
+                                    res.forEach(item => {
+                                        if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                            target.push(item);
+                                    });
+                                    setData(target);
+                                }
+                            } else {
+                                setData(res);
+                            }
+                        } else {
+                            setData(res);
+                        }
+                    }
+                });
+            }
+        });
+        
+        return () => clearInterval(timer);
     }, [elapsed]);
 
     useEffect(() => {
@@ -370,6 +384,17 @@ const Running = (props) => {
         </View>
     );
 }
+
+TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, err }) => {
+    if(err) {
+        console.log(err);
+        return;
+    }
+    if(data) {
+        const { locations } = data;
+        console.log(location);
+    }
+});
 
 const styles = StyleSheet.create({
     header: {
