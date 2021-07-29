@@ -32,7 +32,7 @@ const Running = (props) => {
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
-    const [startPoint, setStartPoint] = useState(null);
+    const [lastPoint, setLastPoint] = useState(null);
     const [elapsed, setElapsed] = useState(new Date());
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
@@ -42,8 +42,6 @@ const Running = (props) => {
     const [isExit, setExit] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
 
-    const LOCATION_TASK_NAME = 'background-location-task';
-    
     useEffect(() => {
         StatusBar.setHidden(true);
         setToggle(isRank);
@@ -54,7 +52,7 @@ const Running = (props) => {
                 props.navigation.navigate('Room');
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                setStartPoint(location);
+                setLastPoint(location);
                 startLocationTracking();
             }
         })();
@@ -85,7 +83,7 @@ const Running = (props) => {
     const startLocationTracking = async() => {
         await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
-            distanceInterval: 3,
+            distanceInterval: 5,
             timeInterval: 5000,
             activityType: Location.ActivityType.Fitness,
         });
@@ -93,36 +91,14 @@ const Running = (props) => {
         const location = await Location.watchPositionAsync(
             {
                 accuracy: Location.Accuracy.BestForNavigation,
-                distanceInterval: 3,
+                distanceInterval: 5,
                 timeInterval: 5000,
             },
             newLocation => {
-                if(startPoint == null) {
-                    setStartPoint(newLocation);
+                if(lastPoint == null) {
+                    setLastPoint(newLocation);
                 } else {
-                    const google_distance = require('google-distance');
-                    google_distance.apiKey = "AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA";
-                    google_distance.get(
-                        {
-                            origin: startPoint['coords']['latitude'] + ',' + startPoint['coords']['longitude'],
-                            destination: newLocation['coords']['latitude'] + ',' + newLocation['coords']['longitude'],
-                            mode: 'walking',
-                            units: unit == 1 ? 'imperial' : 'metric',
-                        },
-                        (err, data) => {
-                            if(err) {
-                                console.log(err);
-                                return;
-                            }
-                            const now = new Date();
-                            const newDist = data.distanceValue / (unit == 1 ? 1609.34 : 1000);
-                            const curSpeed = 1 / ((newDist - dist) / (now.getTime() - lastMoment.getTime()) * 1000);
-                            
-                            setLastMoment(now);
-                            setDist(newDist);
-                            setCurPace(curSpeed);
-                        }
-                    );
+                    
                 }
             },
             err => console.log(err)
@@ -385,7 +361,7 @@ const Running = (props) => {
     );
 }
 
-TaskManager.defineTask(LOCATION_TASK_NAME, ({ data, err }) => {
+TaskManager.defineTask(`${LOCATION_TASK_NAME}`, ({ data, err }) => {
     if(err) {
         console.log(err);
         return;
@@ -661,3 +637,5 @@ const styles = StyleSheet.create({
 export default Running;
 
 const followType = [ '', 'Follow', 'Following', 'Follow back' ];
+
+const LOCATION_TASK_NAME = 'background-location-task';
