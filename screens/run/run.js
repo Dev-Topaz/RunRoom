@@ -33,6 +33,7 @@ const Running = (props) => {
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
+    const [lastCoords, setLastCoords] = useState(null);
     const [elapsed, setElapsed] = useState(new Date());
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
@@ -53,11 +54,12 @@ const Running = (props) => {
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
+                setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 startLocationTracking();
             }
         })();
 
-        return () => Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+        //return () => Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
     }, []);
 
     useEffect(() => {
@@ -81,29 +83,42 @@ const Running = (props) => {
     }, [current]);
 
     const startLocationTracking = async() => {
-        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-            accuracy: Location.Accuracy.BestForNavigation,
-            distanceInterval: 5,
-            timeInterval: 5000,
-            activityType: Location.ActivityType.Fitness,
-        });
+        //await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        //    accuracy: Location.Accuracy.BestForNavigation,
+        //    distanceInterval: 5,
+        //    timeInterval: 5000,
+        //    activityType: Location.ActivityType.Fitness,
+        //});
 
-        const location = await Location.watchPositionAsync(
+        await Location.watchPositionAsync(
             {
                 accuracy: Location.Accuracy.BestForNavigation,
-                distanceInterval: 5,
+                distanceInterval: 3,
                 timeInterval: 5000,
             },
             newLocation => {
                 if(lastPoint == null) {
                     setLastPoint(newLocation);
+                    setLastCoords({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude });
                 } else {
-                    
+                    const midLatitude = (lastPoint['coords']['latitude'] + newLocation['coords']['latitude']) / 2;
+                    const midLongitude = (lastPoint['coords']['longitude'] + newLocation['coords']['longitude']) / 2;
+                    const midCoords = { latitude: midLatitude, longitude: midLongitude };
+
+                    const haversine = require('haversine');
+                    const betweenDist = haversine(lastCoords, midCoords, {unit: unit == 1 ? 'mile' : 'km'});
+                    setDist(dist + betweenDist);
+                    const now = new Date();
+                    const curSpeed = 1 / (betweenDist / (now.getTime() - lastMoment.getTime()) * 1000);
+                    setCurPace(curSpeed);
+
+                    setLastMoment(now);
+                    setLastPoint(newLocation);
+                    setLastCoords(midCoords);
                 }
             },
             err => console.log(err)
         );
-        return location;
     }
 
     useEffect(() => {
@@ -361,16 +376,16 @@ const Running = (props) => {
     );
 }
 
-TaskManager.defineTask(`${LOCATION_TASK_NAME}`, ({ data, err }) => {
-    if(err) {
-        console.log(err);
-        return;
-    }
-    if(data) {
-        const { locations } = data;
-        console.log(location);
-    }
-});
+//TaskManager.defineTask(`${LOCATION_TASK_NAME}`, ({ data, err }) => {
+//    if(err) {
+//        console.log(err);
+//        return;
+//    }
+//    if(data) {
+//        const { locations } = data;
+//        console.log(locations);
+//    }
+//});
 
 const styles = StyleSheet.create({
     header: {
@@ -638,4 +653,4 @@ export default Running;
 
 const followType = [ '', 'Follow', 'Following', 'Follow back' ];
 
-const LOCATION_TASK_NAME = 'background-location-task';
+//const LOCATION_TASK_NAME = 'background-location-task';
