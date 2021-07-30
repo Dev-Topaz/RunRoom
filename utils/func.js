@@ -118,6 +118,9 @@ export function getDistancePercent(currentDistance, totalDistance) {
     if(result > 100)
         result = 100;
 
+    if(result == 100)
+        return '100';
+
     if(isInteger(result))
         return result + '.0';
     else
