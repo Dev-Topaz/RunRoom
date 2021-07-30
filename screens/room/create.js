@@ -11,7 +11,7 @@ import ConnectionModal from '../../components/connModal';
 
 import { useSelector } from 'react-redux';
 import { createRoom } from '../../utils/api';
-import { showDateInfo } from '../../utils/func';
+import { showDateInfo, convertFloat } from '../../utils/func';
 
 
 const RoomCreate = (props) => {
@@ -98,7 +98,7 @@ const RoomCreate = (props) => {
                     style={css.inputText}
                     placeholder='Pick a distance'
                     editable={false}
-                    value={distanceValue > 0 ? distanceValue + (unit == 1 ? ' miles' : ' kilometers') : ''}
+                    value={distanceValue > 0 ? convertFloat(distanceValue) + (unit == 1 ? ' miles' : ' kilometers') : ''}
                     pointerEvents='none'
                 />
                 <View style={css.plusButton}>
