@@ -129,10 +129,12 @@ const Running = (props) => {
     useEffect(() => {
         const timer = setInterval(() => {setElapsed(new Date());}, 5000);
         
-        if(!isWarning)
+        if(!isWarning) {
             if(elapsed.getTime() - lastMoment.getTime() > 600000) {
                 setWarning(true);
-                Alert.alert('Notification', 'Are you still participating in the run?',
+            }
+        } else {
+            Alert.alert('Notification', 'Are you still participating in the run?',
                 [
                     {
                         text: 'No',
@@ -140,10 +142,11 @@ const Running = (props) => {
                     },
                     {
                         text: 'Yes',
-                        onPress: () => { setWarning(false); }
+                        onPress: () => { setWarning(false); setLastMoment(new Date()); }
                     }
-                ]);
-            }
+                ]
+            );
+        }
 
         if(elapsed.getTime() - lastMoment.getTime() > 11000)
             setCurPace(0);
