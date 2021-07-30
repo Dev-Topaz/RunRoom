@@ -56,7 +56,7 @@ const Running = (props) => {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                _client = startLocationTracking();
+                _client = await startLocationTracking();
             }
         })();
 
