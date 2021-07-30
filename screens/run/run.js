@@ -3,7 +3,6 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView,
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
@@ -40,6 +39,7 @@ const Running = (props) => {
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
     const [current, setCurrent] = useState(new Date());
+    //const [now, setNow] = useState(new Date());
     const [isExit, setExit] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
 
@@ -55,11 +55,11 @@ const Running = (props) => {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                startLocationTracking();
+                _client = startLocationTracking();
             }
         })();
 
-        //return () => Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+        return () => _client.remove();
     }, []);
 
     useEffect(() => {
@@ -90,13 +90,14 @@ const Running = (props) => {
         //    activityType: Location.ActivityType.Fitness,
         //});
 
-        await Location.watchPositionAsync(
+        const location = await Location.watchPositionAsync(
             {
                 accuracy: Location.Accuracy.BestForNavigation,
-                distanceInterval: 3,
+                distanceInterval: 5,
                 timeInterval: 5000,
             },
             newLocation => {
+                console.log(newLocation);
                 if(lastPoint == null) {
                     setLastPoint(newLocation);
                     setLastCoords({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude });
@@ -107,10 +108,11 @@ const Running = (props) => {
 
                     const haversine = require('haversine');
                     const betweenDist = haversine(lastCoords, midCoords, {unit: unit == 1 ? 'mile' : 'km'});
-                    setDist(dist + betweenDist);
+                    console.log(betweenDist);
+                    setDist(dist => dist + betweenDist);
                     const now = new Date();
                     const curSpeed = 1 / (betweenDist / (now.getTime() - lastMoment.getTime()) * 1000);
-                    setCurPace(curSpeed);
+                    setCurPace(curSpeed > 59999 ? 0 : curSpeed);
 
                     setLastMoment(now);
                     setLastPoint(newLocation);
@@ -119,10 +121,12 @@ const Running = (props) => {
             },
             err => console.log(err)
         );
+
+        return location;
     }
 
     useEffect(() => {
-        const timer = setInterval(() => {setElapsed(new Date())}, 5000);
+        const timer = setInterval(() => {setElapsed(new Date());}, 5000);
         
         if(!isWarning)
             if(elapsed.getTime() - lastMoment.getTime() > 600000) {
