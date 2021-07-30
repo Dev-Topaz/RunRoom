@@ -98,7 +98,7 @@ const Running = (props) => {
                 timeInterval: 5000,
             },
             newLocation => {
-                console.log(newLocation);
+                //console.log(newLocation);
                 if(lastPoint == null) {
                     setLastPoint(newLocation);
                     setLastCoords({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude });
@@ -109,7 +109,7 @@ const Running = (props) => {
 
                     const haversine = require('haversine');
                     const betweenDist = haversine(lastCoords, midCoords, {unit: unit == 1 ? 'mile' : 'km'});
-                    console.log(betweenDist);
+                    //console.log(betweenDist);
                     setDist(dist => dist + betweenDist);
                     const now = new Date();
                     const curSpeed = 1 / (betweenDist / (now.getTime() - lastMoment.getTime()) * 1000);
