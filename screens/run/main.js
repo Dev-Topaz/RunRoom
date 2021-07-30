@@ -51,28 +51,21 @@ const RunMain = (props) => {
                         if(idx > -1)
                             item.runners.splice(idx, 1);
                     });
-                
-                    if(page != 1)
-                        setData([...data, ...res]);
-                    else
-                        setData(res);
+
+                    while(true) {
+                        if(res.length < 1) {
+                            setData([]);
+                            break;
+                        }
+                        if(getRemainTimeStyle(new Date(), res[0].runDateTime) == 4) {
+                            res.shift();
+                        } else {
+                            setData(res);
+                            break;
+                        }
+                    }
                 }
                 setLoading(false);
-
-                let target = [...data];
-
-                while(true) {
-                    if(target.length < 1) {
-                        setData([]);
-                        break;
-                    }
-                    if(getRemainTimeStyle(new Date(), target[0].runDateTime) == 4) {
-                        target.shift();
-                    } else {
-                        setData(target);
-                        break;
-                    }
-                }
             });
             setLoading(false);
         });

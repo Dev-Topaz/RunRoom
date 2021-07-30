@@ -46,6 +46,7 @@ const Running = (props) => {
     useEffect(() => {
         StatusBar.setHidden(true);
         setToggle(isRank);
+        let _client;
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
