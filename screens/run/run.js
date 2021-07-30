@@ -55,6 +55,7 @@ const Running = (props) => {
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
+                setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 //_client = await startLocationTracking();
             }
@@ -129,7 +130,52 @@ const Running = (props) => {
     useEffect(() => {
        const timer = setInterval(() => {setNow(new Date());}, 5000);
 
-       
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log('Permission Access Denied');
+            } else {
+                if(raceStatus < 2) {
+                    let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
+                    
+                    if(lastPoint == null) {
+                        setLastPoint(location);
+                        setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                    } else {
+                        if(location != null) {
+                            midLat = (lastPoint.coords.latitude + location.coords.latitude) / 2;
+                            midLon = (lastPoint.coords.longitude + location.coords.longitude) / 2;
+                            midCoords = { latitude: midLat, longitude: midLon };
+                        
+                            const haversine = require('haversine');
+                            const isMoving = haversine(lastPoint, location, { threshold: 5, unit: 'meter' });
+                            const betweenDist = haversine(lastCoords, midCoords, { unit: unit == 1 ? 'mile' : 'km' });
+                            if(isMoving) {
+                                setElapsed(elapsed => elapsed + 1);
+                            } else {
+                                const curSpeed = 1 / (betweenDist / (5 * elapsed));
+                                setCurPace(curSpeed);
+                                setDist(dist => dist + betweenDist);
+                                setLastPoint(location);
+                                setLastCoords(midCoords);
+                                setElapsed(1);
+                            }
+                        }
+                    }
+                }
+
+                const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
+                const updateInfo = {
+                    runRoomId: roomId,
+                    runDistance: dist,
+                    unit: unit,
+                    runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
+                    currentPace: curPace > 59999 ? 0 : curPace,
+                    averagePace: averagePace > 59999 ? 0 : averagePace,
+                    status: raceStatus,
+                }
+            }
+        })();
 
        return () => clearInterval(timer);
     }, [now]);
