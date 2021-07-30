@@ -26,27 +26,27 @@ const Running = (props) => {
     const [data, setData] = useState([]);
     const [isToggle, setToggle] = useState(false);
     const [dist, setDist] = useState(0);
-    const [lastMoment, setLastMoment] = useState(new Date());
+    //const [lastMoment, setLastMoment] = useState(new Date());
     const [distData, setDistData] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
     const [lastCoords, setLastCoords] = useState(null);
-    const [elapsed, setElapsed] = useState(new Date());
+    const [elapsed, setElapsed] = useState(1);
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
     const [min, setMin] = useState(0);
     const [hour, setHour] = useState(0);
     const [current, setCurrent] = useState(new Date());
-    //const [now, setNow] = useState(new Date());
+    const [now, setNow] = useState(new Date());
     const [isExit, setExit] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
         setToggle(isRank);
-        let _client;
+        //let _client;
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -55,12 +55,12 @@ const Running = (props) => {
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
-                setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                _client = await startLocationTracking();
+                //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                //_client = await startLocationTracking();
             }
         })();
 
-        return () => _client.remove();
+        //return () => _client.remove();
     }, []);
 
     useEffect(() => {
@@ -83,51 +83,58 @@ const Running = (props) => {
         return () => clearInterval(timer);
     }, [current]);
 
-    const startLocationTracking = async() => {
-        //await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
-        //    accuracy: Location.Accuracy.BestForNavigation,
-        //    distanceInterval: 5,
-        //    timeInterval: 5000,
-        //    activityType: Location.ActivityType.Fitness,
-        //});
-
-        const location = await Location.watchPositionAsync(
-            {
-                accuracy: Location.Accuracy.BestForNavigation,
-                distanceInterval: 5,
-                timeInterval: 5000,
-            },
-            newLocation => {
-                //console.log(newLocation);
-                if(lastPoint == null) {
-                    setLastPoint(newLocation);
-                    setLastCoords({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude });
-                } else {
-                    const midLatitude = (lastPoint['coords']['latitude'] + newLocation['coords']['latitude']) / 2;
-                    const midLongitude = (lastPoint['coords']['longitude'] + newLocation['coords']['longitude']) / 2;
-                    const midCoords = { latitude: midLatitude, longitude: midLongitude };
-
-                    const haversine = require('haversine');
-                    const betweenDist = haversine(lastCoords, midCoords, {unit: unit == 1 ? 'mile' : 'km'});
-                    //console.log(betweenDist);
-                    setDist(dist => dist + betweenDist);
-                    const now = new Date();
-                    const curSpeed = 1 / (betweenDist / (now.getTime() - lastMoment.getTime()) * 1000);
-                    setCurPace(curSpeed > 59999 ? 0 : curSpeed);
-
-                    setLastMoment(now);
-                    setLastPoint(newLocation);
-                    setLastCoords(midCoords);
-                }
-            },
-            err => console.log(err)
-        );
-
-        return location;
-    }
+    //const startLocationTracking = async() => {
+    //    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+    //        accuracy: Location.Accuracy.BestForNavigation,
+    //        distanceInterval: 5,
+    //        timeInterval: 5000,
+    //        activityType: Location.ActivityType.Fitness,
+    //    });
+    //
+    //    const location = await Location.watchPositionAsync(
+    //        {
+    //            accuracy: Location.Accuracy.BestForNavigation,
+    //            distanceInterval: 5,
+    //            timeInterval: 5000,
+    //        },
+    //        newLocation => {
+    //            //console.log(newLocation);
+    //            if(lastPoint == null) {
+    //                setLastPoint(newLocation);
+    //                setLastCoords({ latitude: newLocation.coords.latitude, longitude: newLocation.coords.longitude });
+    //            } else {
+    //                const midLatitude = (lastPoint['coords']['latitude'] + newLocation['coords']['latitude']) / 2;
+    //                const midLongitude = (lastPoint['coords']['longitude'] + newLocation['coords']['longitude']) / 2;
+    //                const midCoords = { latitude: midLatitude, longitude: midLongitude };
+    //
+    //                const haversine = require('haversine');
+    //                const betweenDist = haversine(lastCoords, midCoords, {unit: unit == 1 ? 'mile' : 'km'});
+    //                //console.log(betweenDist);
+    //                setDist(dist => dist + betweenDist);
+    //                const now = new Date();
+    //                const curSpeed = 1 / (betweenDist / (now.getTime() - lastMoment.getTime()) * 1000);
+    //                setCurPace(curSpeed > 59999 ? 0 : curSpeed);
+    //
+    //                setLastMoment(now);
+    //                setLastPoint(newLocation);
+    //                setLastCoords(midCoords);
+    //            }
+    //        },
+    //        err => console.log(err)
+    //    );
+    //
+    //    return location;
+    //}
 
     useEffect(() => {
-        const timer = setInterval(() => {setElapsed(new Date());}, 5000);
+       const timer = setInterval(() => {setNow(new Date());}, 5000);
+
+       
+
+       return () => clearInterval(timer);
+    }, [now]);
+
+    useEffect(() => {
         
         if(!isWarning) {
             if(elapsed.getTime() - lastMoment.getTime() > 600000) {
@@ -147,9 +154,6 @@ const Running = (props) => {
                 ]
             );
         }
-
-        if(elapsed.getTime() - lastMoment.getTime() > 11000)
-            setCurPace(0);
 
         const averagePace = dist == 0 ? 0 : (elapsed.getTime() - startTime.getTime()) / 1000 / dist;
         const updateInfo = {
