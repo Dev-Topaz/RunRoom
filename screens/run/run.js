@@ -137,7 +137,7 @@ const Running = (props) => {
             } else {
                 if(raceStatus < 2) {
                     let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                    
+                    //console.log(location);
                     if(lastPoint == null) {
                         setLastPoint(location);
                         setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
@@ -150,11 +150,12 @@ const Running = (props) => {
                             const haversine = require('haversine');
                             const isMoving = haversine(lastPoint, location, { threshold: 5, unit: 'meter' });
                             const betweenDist = haversine(lastCoords, midCoords, { unit: unit == 1 ? 'mile' : 'km' });
+                            //console.log(betweenDist);
                             if(isMoving) {
                                 setElapsed(elapsed => elapsed + 1);
                             } else {
                                 const curSpeed = 1 / (betweenDist / (5 * elapsed));
-                                setCurPace(curSpeed);
+                                setCurPace(curSpeed > 59999 ? 0 : curSpeed);
                                 setDist(dist => dist + betweenDist);
                                 setLastPoint(location);
                                 setLastCoords(midCoords);

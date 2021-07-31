@@ -58,6 +58,7 @@ const EditProfile = (props) => {
             }
         });
         (async () => {
+            //Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
                 Alert.alert('Your Location Permission is denied');
