@@ -155,6 +155,7 @@ const Running = (props) => {
                             //console.log(betweenDist);
                             if(isMoving) {
                                 setElapsed(elapsed => elapsed + 1);
+                                setCurPace(0);
                             } else {
                                 const curSpeed = 1 / (betweenDist / (5 * elapsed));
                                 setCurPace(curSpeed > 59999 ? 0 : curSpeed);
