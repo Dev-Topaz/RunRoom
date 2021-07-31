@@ -162,9 +162,14 @@ const Running = (props) => {
                             }
                         }
                     }
+                } else {
+                    setCurPace(0);
                 }
 
-                const averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
+                let averagePace = dist == 0 ? 0 : (now.getTime() - startTime.getTime()) / 1000 / dist;
+                if(raceStatus > 1)
+                    averagePace = avgPace;
+
                 const updateInfo = {
                     runRoomId: roomId,
                     runDistance: dist,
@@ -173,7 +178,38 @@ const Running = (props) => {
                     currentPace: curPace > 59999 ? 0 : curPace,
                     averagePace: averagePace > 59999 ? 0 : averagePace,
                     status: raceStatus,
-                }
+                };
+                updateRun(updateInfo, accessToken).then(result => {
+                    if(result) {
+                        getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                            if(res != null) {
+                                const idx = res.findIndex(item => userId === item.runnerId);
+                                setRank(idx + 1);
+                                setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                                setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+
+                                if(isToggle) {
+                                    if(canRank) {
+                                        if(idx > -1) {
+                                            const targetGender = res[idx].runnerGender;
+                                            const targetAgeGroup = res[idx].runnerAgeGroup;
+                                            let target = [];
+                                            res.forEach(item => {
+                                                if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                                    target.push(item);
+                                            });
+                                            setData(target);
+                                        }
+                                    } else {
+                                        setData(res);
+                                    }
+                                } else {
+                                    setData(res);
+                                }
+                            }
+                        });
+                    }
+                });
             }
         })();
 
@@ -181,9 +217,8 @@ const Running = (props) => {
     }, [now]);
 
     useEffect(() => {
-        
         if(!isWarning) {
-            if(elapsed.getTime() - lastMoment.getTime() > 600000) {
+            if(elapsed > 120) {
                 setWarning(true);
             }
         } else {
@@ -195,55 +230,12 @@ const Running = (props) => {
                     },
                     {
                         text: 'Yes',
-                        onPress: () => { setWarning(false); setLastMoment(new Date()); }
+                        onPress: () => { setWarning(false); setElapsed(1); }
                     }
                 ]
             );
         }
-
-        const averagePace = dist == 0 ? 0 : (elapsed.getTime() - startTime.getTime()) / 1000 / dist;
-        const updateInfo = {
-            runRoomId: roomId,
-            runDistance: dist,
-            unit: unit,
-            runTimeInSeconds: Math.floor((elapsed.getTime() - startTime.getTime()) / 1000),
-            currentPace: curPace > 59999 ? 0 : curPace,
-            averagePace: averagePace > 59999 ? 0 : averagePace,
-            status: raceStatus,
-        };
-        updateRun(updateInfo, accessToken).then(result => {
-            if(result) {
-                getRaceRunners(roomId, 1, 500, accessToken).then(res => {
-                    if(res != null) {
-                        const idx = res.findIndex(item => userId === item.runnerId);
-                        setRank(idx + 1);
-                        setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
-                        setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
-
-                        if(isToggle) {
-                            if(canRank) {
-                                if(idx > -1) {
-                                    const targetGender = res[idx].runnerGender;
-                                    const targetAgeGroup = res[idx].runnerAgeGroup;
-                                    let target = [];
-                                    res.forEach(item => {
-                                        if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
-                                            target.push(item);
-                                    });
-                                    setData(target);
-                                }
-                            } else {
-                                setData(res);
-                            }
-                        } else {
-                            setData(res);
-                        }
-                    }
-                });
-            }
-        });
         
-        return () => clearInterval(timer);
     }, [elapsed]);
 
     useEffect(() => {
