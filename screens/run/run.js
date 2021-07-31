@@ -148,7 +148,9 @@ const Running = (props) => {
                             midCoords = { latitude: midLat, longitude: midLon };
                         
                             const haversine = require('haversine');
-                            const isMoving = haversine(lastPoint, location, { threshold: 5, unit: 'meter' });
+                            let startPoint = { latitude: lastPoint.coords.latitude, longitude: lastPoint.coords.longitude };
+                            let endPoint = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+                            const isMoving = haversine(startPoint, endPoint, { threshold: 5, unit: 'meter' });
                             const betweenDist = haversine(lastCoords, midCoords, { unit: unit == 1 ? 'mile' : 'km' });
                             //console.log(betweenDist);
                             if(isMoving) {
