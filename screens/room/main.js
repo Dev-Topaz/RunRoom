@@ -58,7 +58,7 @@ const RoomMain = (props) => {
                             setData([]);
                             break;
                         }
-                        if(getRemainTimeStyle(new Date(), res[0].runDateTime) == 4) {
+                        if(getRemainTimeStyle(new Date(), res[0].runDateTime) > 3) {
                             res.shift();
                         } else {
                             setData(res);
@@ -121,7 +121,7 @@ const RoomMain = (props) => {
     }, [page]);
 
     useEffect(() => {
-        const timer = setInterval(() => {setCurrent(new Date())}, 60000);
+        const timer = setInterval(() => {setCurrent(new Date())}, 30000);
         let target = [...data];
 
         while(true) {
@@ -129,7 +129,7 @@ const RoomMain = (props) => {
                 setData([]);
                 break;
             }
-            if(getRemainTimeStyle(current, target[0].runDateTime) == 4) {
+            if(getRemainTimeStyle(current, target[0].runDateTime) > 3) {
                 target.shift();
             } else {
                 setData(target);
