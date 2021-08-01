@@ -77,7 +77,7 @@ export function displayRemainTime(current, target) {
         if(tm > 0)
             remain = remain + ' and ' + tm + ' min';
         return remain + ' to start';
-    } else if(tm > 2) {
+    } else if(tm > 1) {
         remain = remain + tm + ' minutes';
         return remain + ' to START';
     } else {

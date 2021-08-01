@@ -5,7 +5,7 @@ import css from '../../css';
 
 import { useSelector } from 'react-redux';
 import { getFinishedRuns } from '../../utils/api';
-import { convertFloat } from '../../utils/func';
+import { convertFloat, displayRunDateTime } from '../../utils/func';
 
 const ProfileFinished = () => {
 
@@ -45,6 +45,7 @@ const ProfileFinished = () => {
                     <View style={css.leftTop}>
                         <Text style={css.thumbRunnerText}>{item.totalRunnersCount + (item.totalRunnersCount == 1 ? ' Runner' : ' Runners')}</Text>
                         <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers) + (unit == 1 ? ' MI' : ' KM')}</Text>
+                        <Text style={styles.dateText}>{displayRunDateTime(new Date(), item.runDateTime)}</Text>
                     </View>
                     <View style={css.rightBottom}>
                         <View style={css.participateButton}>
@@ -126,6 +127,12 @@ const styles = StyleSheet.create({
         marginLeft: 'auto',
         marginRight: 'auto',
         marginTop: global.CONSTANTS.SIZE_20,
+    },
+    dateText: {
+        fontFamily: 'SFProMedium',
+        fontSize: 16,
+        color: 'white',
+        marginTop: 5,
     },
 });
 
