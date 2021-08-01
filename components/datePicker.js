@@ -57,7 +57,10 @@ const DatePicker = (props) => {
         let hour = parseInt(timeString.split(':')[0]);
         let min = parseInt(timeString.split(':')[1]);
         
-        const idx = 4 * hour + Math.ceil(min / 15);
+        let idx = 4 * hour + Math.ceil(min / 15);
+        if(min % 15 == 0)
+            idx++;
+
         if(idx > 47)
             setPM(true);
         else
