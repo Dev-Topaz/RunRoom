@@ -8,7 +8,7 @@ import global from '../../global';
 
 import { useSelector } from 'react-redux';
 import { updateRun, getRaceRunners } from '../../utils/api';
-import { convertFloat, convertUnit, displayPace, getDistancePercent } from '../../utils/func';
+import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 
 const Running = (props) => {
 
@@ -55,7 +55,6 @@ const Running = (props) => {
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
-                setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 //_client = await startLocationTracking();
             }
@@ -140,18 +139,18 @@ const Running = (props) => {
                     //console.log(location);
                     if(lastPoint == null) {
                         setLastPoint(location);
-                        setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
+                        //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                     } else {
                         if(location != null) {
-                            midLat = (lastPoint.coords.latitude + location.coords.latitude) / 2;
-                            midLon = (lastPoint.coords.longitude + location.coords.longitude) / 2;
-                            midCoords = { latitude: midLat, longitude: midLon };
+                            //midLat = (lastPoint.coords.latitude + location.coords.latitude) / 2;
+                            //midLon = (lastPoint.coords.longitude + location.coords.longitude) / 2;
+                            //midCoords = { latitude: midLat, longitude: midLon };
                         
                             const haversine = require('haversine');
                             let startPoint = { latitude: lastPoint.coords.latitude, longitude: lastPoint.coords.longitude };
                             let endPoint = { latitude: location.coords.latitude, longitude: location.coords.longitude };
                             const isMoving = haversine(startPoint, endPoint, { threshold: 5, unit: 'meter' });
-                            const betweenDist = haversine(lastCoords, midCoords, { unit: unit == 1 ? 'mile' : 'km' });
+                            const betweenDist = haversine(startPoint, endPoint, { unit: unit == 1 ? 'mile' : 'km' });
                             //console.log(betweenDist);
                             if(isMoving) {
                                 setElapsed(elapsed => elapsed + 1);
@@ -159,9 +158,11 @@ const Running = (props) => {
                             } else {
                                 const curSpeed = 1 / (betweenDist / (5 * elapsed));
                                 setCurPace(curSpeed > 59999 ? 0 : curSpeed);
-                                setDist(dist => dist + betweenDist);
+                                const delta = 2.5 / (unit == 1 ? 1609 : 1000);
+                                let newDist = dist + betweenDist - delta;
+                                setDist(newDist > distance ? distance : newDist);
                                 setLastPoint(location);
-                                setLastCoords(midCoords);
+                                //setLastCoords(midCoords);
                                 setElapsed(1);
                             }
                         }
