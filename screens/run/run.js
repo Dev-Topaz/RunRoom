@@ -32,7 +32,7 @@ const Running = (props) => {
     const [curPace, setCurPace] = useState(0);
     const [rank, setRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
-    const [lastCoords, setLastCoords] = useState(null);
+    //const [lastCoords, setLastCoords] = useState(null);
     const [elapsed, setElapsed] = useState(1);
     const [isWarning, setWarning] = useState(false);
     const [sec, setSec] = useState(0);
