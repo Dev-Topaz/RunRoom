@@ -136,7 +136,7 @@ const Running = (props) => {
             } else {
                 if(raceStatus < 2) {
                     let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                    //console.log(location);
+                    console.log(location);
                     if(lastPoint == null) {
                         setLastPoint(location);
                         //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
@@ -156,9 +156,10 @@ const Running = (props) => {
                                 setElapsed(elapsed => elapsed + 1);
                                 setCurPace(0);
                             } else {
-                                const curSpeed = 1 / (betweenDist / (5 * elapsed));
-                                setCurPace(curSpeed > 59999 ? 0 : curSpeed);
                                 const delta = 2.5 / (unit == 1 ? 1609 : 1000);
+                                const curSpeed = 1 / ((betweenDist - delta) / (5 * elapsed));
+                                setCurPace(curSpeed > 59999 ? 0 : curSpeed);
+
                                 let newDist = dist + betweenDist - delta;
                                 setDist(newDist > distance ? distance : newDist);
                                 setLastPoint(location);
