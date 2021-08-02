@@ -38,8 +38,12 @@ const ProfileFinished = () => {
             setEmpty(false);
     }, [data]);
 
+    const pressItem = (index) => {
+        
+    }
+
     const renderItem = ({ item, index }) => (
-        <View key={item.id} style={styles.card}>
+        <Pressable key={item.id} style={styles.card} onPress={() => pressItem(index)}>
             <ImageBackground source={stockImages[item.stockImageID]} style={css.cardThumbnail}>
                 <View style={css.thumbOverlay}>
                     <View style={css.leftTop}>
@@ -79,7 +83,7 @@ const ProfileFinished = () => {
                     </View>
                 </View>
             </ImageBackground>
-        </View>
+        </Pressable>
     );
 
     return (
