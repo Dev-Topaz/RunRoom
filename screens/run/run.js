@@ -185,37 +185,67 @@ const Running = (props) => {
                     averagePace: averagePace > 59999 ? 0 : averagePace,
                     status: raceStatus,
                 };
-                updateRun(updateInfo, accessToken).then(result => {
-                    if(result) {
-                        getRaceRunners(roomId, 1, 500, accessToken).then(res => {
-                            if(res != null) {
-                                const idx = res.findIndex(item => userId === item.runnerId);
-                                setRank(idx + 1);
-                                setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
-                                setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
 
-                                if(isToggle) {
-                                    if(canRank) {
-                                        if(idx > -1) {
-                                            const targetGender = res[idx].runnerGender;
-                                            const targetAgeGroup = res[idx].runnerAgeGroup;
-                                            let target = [];
-                                            res.forEach(item => {
-                                                if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
-                                                    target.push(item);
-                                            });
-                                            setData(target);
+                if(raceStatus < 2)
+                    updateRun(updateInfo, accessToken).then(result => {
+                        if(result) {
+                            getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                                if(res != null) {
+                                    const idx = res.findIndex(item => userId === item.runnerId);
+                                    setRank(idx + 1);
+                                    setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                                    setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+                                    
+                                    if(isToggle) {
+                                        if(canRank) {
+                                            if(idx > -1) {
+                                                const targetGender = res[idx].runnerGender;
+                                                const targetAgeGroup = res[idx].runnerAgeGroup;
+                                                let target = [];
+                                                res.forEach(item => {
+                                                    if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                                        target.push(item);
+                                                });
+                                                setData(target);
+                                            }
+                                        } else {
+                                            setData(res);
                                         }
                                     } else {
                                         setData(res);
                                     }
+                                }
+                            });
+                        }
+                    });
+                else
+                    getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                        if(res != null) {
+                            const idx = res.findIndex(item => userId === item.runnerId);
+                            setRank(idx + 1);
+                            setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                            setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+                            
+                            if(isToggle) {
+                                if(canRank) {
+                                    if(idx > -1) {
+                                        const targetGender = res[idx].runnerGender;
+                                        const targetAgeGroup = res[idx].runnerAgeGroup;
+                                        let target = [];
+                                        res.forEach(item => {
+                                            if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                                target.push(item);
+                                        });
+                                        setData(target);
+                                    }
                                 } else {
                                     setData(res);
                                 }
+                            } else {
+                                setData(res);
                             }
-                        });
-                    }
-                });
+                        }
+                    });
             }
         })();
 

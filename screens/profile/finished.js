@@ -3,14 +3,16 @@ import { StyleSheet, View, ImageBackground, Text, Pressable, FlatList, ActivityI
 import global from '../../global';
 import css from '../../css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getFinishedRuns } from '../../utils/api';
 import { convertFloat, displayRunDateTime } from '../../utils/func';
+import { changeBoard } from '../../store/actions/actions';
 
 const ProfileFinished = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
+    const dispatch = useDispatch();
 
     const [page, setPage] = useState(1);
     const [data, setData] = useState([]);
@@ -44,7 +46,7 @@ const ProfileFinished = (props) => {
             runDistanceKilometers: data[index].runDistanceKilometers,
             runDistanceMiles: data[index].runDistanceMiles,
         };
-        
+        dispatch(changeBoard(roomInfo));
         props.navigation.navigate('Result', roomInfo);
     }
 

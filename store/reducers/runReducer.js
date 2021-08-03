@@ -1,4 +1,4 @@
-import { ROOM_ENTER, RANK_CUSTOMIZE } from '../constants';
+import { ROOM_ENTER, RANK_CUSTOMIZE, BOARD_ENTER } from '../constants';
 
 const initialState = {
     roomId: null,
@@ -7,6 +7,9 @@ const initialState = {
     page: null,
     canRank: false,
     isRank: false,
+    boardId: null,
+    boardDistanceKilometers: 0,
+    boardDistanceMiles: 0,
 };
 
 const runReducer = (state = initialState, action) => {
@@ -25,6 +28,14 @@ const runReducer = (state = initialState, action) => {
                 ...state,
                 canRank: action.payload.canRank,
                 isRank: action.payload.isRank
+            };
+
+        case BOARD_ENTER:
+            return {
+                ...state,
+                boardId: action.payload.roomId,
+                boardDistanceMiles: action.payload.runDistanceMiles,
+                boardDistanceKilometers: action.payload.runDistanceKilometers,
             };
 
         default:

@@ -15,21 +15,20 @@ const Result = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const canRank = useSelector(state => state.run.canRank);
     const unit = useSelector(state => state.setting.unit);
+    const roomId = useSelector(state => state.run.boardId);
+    const distance = useSelector(unit == 1 ? state => state.run.boardDistanceMiles : state => state.run.boardDistanceKilometers);
 
     const [data, setData] = useState([]);
     const [rank, setRank] = useState(1);
     const [hour, setHour] = useState(0);
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
-    const [distance, setDistance] = useState(0);
-    const [curPace, setCurPace] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [isToggle, setToggle] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        console.log(props);
     }, []);
 
     useEffect(() => {
@@ -37,8 +36,8 @@ const Result = (props) => {
             if(canRank) {
                 let target = [];
                 const idx = data.findIndex(item => item.runnerId === userId);
-                const targetAgeGroup = target[idx].runnerAgeGroup;
-                const targetGender = target[idx].runnerGender;
+                const targetAgeGroup = data[idx].runnerAgeGroup;
+                const targetGender = data[idx].runnerGender;
 
                 data.forEach(item => {
                     if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
@@ -46,8 +45,10 @@ const Result = (props) => {
                 });
                 setData(target);
                 const index = target.findIndex(item => item.runnerId === userId);
-                if(index > -1)
+                if(index > -1) {
                     setRank(index + 1);
+                    setAvgPace(unit == 1 ? target[index].averagePaceMiles : target[index].averagePaceKilometers);
+                }
             } else {
                 setAlertVisible(true);
                 setToggle(false);
@@ -56,9 +57,11 @@ const Result = (props) => {
             getRaceLeaderBoard(roomId, 1, 500, accessToken).then(result => {
                 if(result != null) {
                     const idx = result.findIndex(item => item.runnerId === userId);
-                    if(idx > -1)
+                    if(idx > -1) {
                         setRank(idx + 1);
-                    
+                        setAvgPace(unit == 1 ? result[idx].averagePaceMiles : result[idx].averagePaceKilometers);
+                    }
+
                     setData(result);
                 }
             });
@@ -95,7 +98,7 @@ const Result = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={styles.valueText}>{distance}</Text>
+                            <Text style={styles.valueText}>{convertFloat(distance)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
                             <Text style={styles.valueText}>100.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
@@ -106,8 +109,8 @@ const Result = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Current Pace</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>{displayPace(curPace)}</Text>
-                            <Text style={[styles.indexText, { marginLeft: 5 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
+                            <Text style={[styles.valueText, { letterSpacing: 1.5 }]}>--:--</Text>
+                            <Text style={[styles.indexText, { marginLeft: 10 }]}>{'min / ' + (unit == 1 ? 'mile' : 'km')}</Text>
                         </View>
                     </View>
                     <View style={styles.cell}>
