@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ImageBackground, Text, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ImageBackground, Text, Pressable, FlatList, ActivityIndicator } from 'react-native';
 import global from '../../global';
 import css from '../../css';
 
@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { getFinishedRuns } from '../../utils/api';
 import { convertFloat, displayRunDateTime } from '../../utils/func';
 
-const ProfileFinished = () => {
+const ProfileFinished = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
@@ -39,7 +39,13 @@ const ProfileFinished = () => {
     }, [data]);
 
     const pressItem = (index) => {
-        
+        console.log(props);
+        const roomInfo = {
+            roomId: data[index].id,
+            runDistanceKilometers: data[index].runDistanceKilometers,
+            runDistanceMiles: data[index].runDistanceMiles,
+        };
+        props.navigation.navigate('Result');
     }
 
     const renderItem = ({ item, index }) => (

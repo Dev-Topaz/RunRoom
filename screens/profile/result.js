@@ -6,13 +6,14 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
 import { useSelector } from 'react-redux';
-import { getRaceRunners } from '../../utils/api';
-import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
+import { getRaceLeaderBoard } from '../../utils/api';
+import { convertFloat, displayPace } from '../../utils/func';
 
 const Result = (props) => {
 
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
+    const canRank = useSelector(state => state.run.canRank);
 
     const [data, setData] = useState([]);
     const [rank, setRank] = useState(1);
@@ -27,16 +28,44 @@ const Result = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        
     }, []);
 
     useEffect(() => {
         if(isToggle) {
+            if(canRank) {
+                let target = [];
+                const idx = data.findIndex(item => item.runnerId === userId);
+                const targetAgeGroup = target[idx].runnerAgeGroup;
+                const targetGender = target[idx].runnerGender;
 
+                data.forEach(item => {
+                    if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
+                        target.push(item);
+                });
+                setData(target);
+                const index = target.findIndex(item => item.runnerId === userId);
+                if(index > -1)
+                    setRank(index + 1);
+            } else {
+                setAlertVisible(true);
+                setToggle(false);
+            }
         } else {
-
+            getRaceLeaderBoard(roomId, 1, 500, accessToken).then(result => {
+                if(result != null) {
+                    const idx = result.findIndex(item => item.runnerId === userId);
+                    if(idx > -1)
+                        setRank(idx + 1);
+                    
+                    setData(result);
+                }
+            });
         }
     }, [isToggle]);
+
+    const pressBackAction = () => {
+        props.navigation.navigate('Account');
+    }
 
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -66,7 +95,7 @@ const Result = (props) => {
                         <View style={styles.valueContainer}>
                             <Text style={styles.valueText}>{distance}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
-                            <Text style={styles.valueText}>100</Text>
+                            <Text style={styles.valueText}>100.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
                     </View>

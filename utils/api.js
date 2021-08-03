@@ -533,3 +533,29 @@ export async function getStates(country) {
     const result = await response.json();
     return result.data;
 }
+
+export async function getRaceLeaderBoard(roomId, pageId, pageSize, accessToken) {
+
+    const result = await Axios.get('/RunRooms/GetRaceLeaderBoard', {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+            RunRoomId: roomId,
+            PageNumber: pageId,
+            PageSize: pageSize,
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}

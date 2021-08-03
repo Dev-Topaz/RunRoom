@@ -223,8 +223,13 @@ const Running = (props) => {
     }, [now]);
 
     useEffect(() => {
+        if(elapsed > 600) {
+            setRaceStatus(2);
+            return;
+        }
+        
         if(!isWarning) {
-            if(elapsed > 120) {
+            if(elapsed % 120 == 0) {
                 setWarning(true);
             }
         } else {
