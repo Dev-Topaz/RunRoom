@@ -71,7 +71,7 @@ const Profile = (props) => {
                     >
                         <TopTab.Screen
                             name='ProfileFinished'
-                            component={ProfileFinished}
+                            children={() => <ProfileFinished navigation={props.navigation}/>}
                             options={{ tabBarLabel: 'Finished Runs' }}
                         />
                         <TopTab.Screen

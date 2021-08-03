@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, View, Image, Text, Modal, Pressable, ScrollView, StatusBar } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import SvgIcon from '../../components/svgIcon';
@@ -14,6 +14,7 @@ const Result = (props) => {
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const canRank = useSelector(state => state.run.canRank);
+    const unit = useSelector(state => state.setting.unit);
 
     const [data, setData] = useState([]);
     const [rank, setRank] = useState(1);
@@ -28,6 +29,7 @@ const Result = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        console.log(props);
     }, []);
 
     useEffect(() => {

@@ -39,13 +39,13 @@ const ProfileFinished = (props) => {
     }, [data]);
 
     const pressItem = (index) => {
-        console.log(props);
         const roomInfo = {
             roomId: data[index].id,
             runDistanceKilometers: data[index].runDistanceKilometers,
             runDistanceMiles: data[index].runDistanceMiles,
         };
-        props.navigation.navigate('Result');
+        
+        props.navigation.navigate('Result', roomInfo);
     }
 
     const renderItem = ({ item, index }) => (
