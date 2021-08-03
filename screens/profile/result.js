@@ -31,6 +31,14 @@ const Result = (props) => {
         StatusBar.setHidden(true);
     }, []);
 
+    const setTimeInfo = (ts) => {
+        let tm = Math.floor(ts % 3600 / 60);
+        let th = Math.floor(ts / 3600);
+        setHour(th);
+        setMin(tm);
+        setSec(Math.floor(ts % 60));
+    }
+
     useEffect(() => {
         if(isToggle) {
             if(canRank) {
@@ -47,7 +55,8 @@ const Result = (props) => {
                 const index = target.findIndex(item => item.runnerId === userId);
                 if(index > -1) {
                     setRank(index + 1);
-                    setAvgPace(unit == 1 ? target[index].averagePaceMiles : target[index].averagePaceKilometers);
+                    //setAvgPace(unit == 1 ? target[index].averagePaceMiles : target[index].averagePaceKilometers);
+                    //setTimeInfo(target[index].runTimeInSeconds);
                 }
             } else {
                 setAlertVisible(true);
@@ -60,6 +69,7 @@ const Result = (props) => {
                     if(idx > -1) {
                         setRank(idx + 1);
                         setAvgPace(unit == 1 ? result[idx].averagePaceMiles : result[idx].averagePaceKilometers);
+                        setTimeInfo(result[idx].runTimeInSeconds);
                     }
 
                     setData(result);
