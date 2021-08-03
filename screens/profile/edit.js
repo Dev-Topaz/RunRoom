@@ -102,6 +102,11 @@ const EditProfile = (props) => {
         }
     }, [isToggle]);
 
+    useEffect(() => {
+        if(gender == 0 || ageGroup == 0)
+            setToggle(false);
+    }, [gender, ageGroup]);
+
     const pressCameraAction = () => {
         setPickerVisible(false);
         (async () => {
