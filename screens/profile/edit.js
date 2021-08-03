@@ -47,47 +47,50 @@ const EditProfile = (props) => {
                 Alert.alert('You are a fake user.');
             } else {
                 setName({ firstName: result.firstName, lastName: result.lastName });
-                setRunningLocation(result.location == null ? '' : result.location);
+                //setRunningLocation(result.location == null ? '' : result.location);
                 setAgeGroup(result.ageGroup);
                 setAvatar(result.avatar);
                 setGender(result.gender);
                 setToggle(isRank);
+
+                (async () => {
+                    //Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
+                    let { status } = await Location.requestForegroundPermissionsAsync();
+                    if (status !== 'granted') {
+                        Alert.alert('Your Location Permission is denied');
+                    } else {
+                        let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                        const position = {
+                            latitude: location.coords.latitude,
+                            longitude: location.coords.longitude,
+                        };
+                        
+                        if(result.location == '' || result.location == null) {
+                            let area = await Location.reverseGeocodeAsync(position);
+                            if(area[0].country != null) {
+                                if(area[0].city != null)
+                                    setRunningLocation(area[0].city + ', ' + area[0].country);
+                                else
+                                    setRunningLocation(area[0].region + ', ' + area[0].country);
+                            }
+                        } else {
+                            setRunningLocation(result.location);
+                        }
+                        
+                        //if(region[0].country != null) {
+                        //    setCountry(region[0].country);
+                        //    getCities(region[0].country).then(result => {
+                        //        setCityList(result);
+                        //    });
+                        //}
+                        //if(region[0].city != null)
+                        //    setCity(region[0].city);
+                        //else
+                        //    setCity(cityList[0]);
+                    }
+                })();
             }
         });
-        (async () => {
-            //Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                Alert.alert('Your Location Permission is denied');
-            } else {
-                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-                const position = {
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                };
-                
-                if(runningLocation == '') {
-                    let area = await Location.reverseGeocodeAsync(position);
-                    if(area[0].country != null) {
-                        if(area[0].city != null)
-                            setRunningLocation(area[0].city + ', ' + area[0].country);
-                        else
-                            setRunningLocation(area[0].region + ', ' + area[0].country);
-                    }
-                }
-                
-                //if(region[0].country != null) {
-                //    setCountry(region[0].country);
-                //    getCities(region[0].country).then(result => {
-                //        setCityList(result);
-                //    });
-                //}
-                //if(region[0].city != null)
-                //    setCity(region[0].city);
-                //else
-                //    setCity(cityList[0]);
-            }
-        })();
     }, []);
 
     useEffect(() => {
