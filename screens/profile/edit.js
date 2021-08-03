@@ -201,7 +201,9 @@ const EditProfile = (props) => {
                     } else {
                         dispatch(setRank(isToggle));
                     }
-                }).catch(err => console.log(err));
+                }).catch(err => {
+                    console.log(err);
+                });
                 dispatch(customizeRank(gender != 0 && ageGroup != 0));
                 Alert.alert('Your profile is updated successfully');
                 props.navigation.navigate('Profile');
