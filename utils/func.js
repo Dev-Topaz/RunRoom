@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { changeUnit, customizeRank } from '../store/actions/actions';
+import { changeUnit, customizeRank, setRank } from '../store/actions/actions';
 import { isInteger } from 'lodash';
 import moment from 'moment';
 
@@ -22,13 +22,24 @@ export async function initUnitFromStorageToRedux(dispatch) {
             });
         }
 
-        AsyncStorage.multiGet(['canRank', 'isRank']).then(result => {
-            if(result[0][1] != null && result[1][1] != null) {
-                dispatch(customizeRank(result[0][1] == '1' ? true : false, result[1][1] == '1' ? true : false));
-            } else {
-                dispatch(customizeRank(false, false));
-            }
-        });
+        const isRank = await AsyncStorage.getItem('rank');
+        if(isRank != null) {
+            if(isRank == '0')
+                dispatch(setRank(false));
+            else
+                dispatch(setRank(true));
+        } else {
+            AsyncStorage.setItem('rank', '0', (err) => {
+                if(err) {
+                    console.log('There is an error.');
+                    throw err;
+                } else {
+                    dispatch(setRank(false));
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }
     } catch(e) {
         console.log('Error: ' + e);
     }

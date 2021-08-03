@@ -18,7 +18,7 @@ const Lobby = (props) => {
     const distance = useSelector(state => state.run.distance);
     const previousPage = useSelector(state => state.run.page);
     const canRank = useSelector(state => state.run.canRank);
-    const isRank = useSelector(state => state.run.isRank);
+    const isRank = useSelector(state => state.setting.isRank);
 
     const [isToggle, setToggle] = useState(false);
     const [data, setData] = useState([]);

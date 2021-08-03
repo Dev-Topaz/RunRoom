@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, BOARD_ENTER } from '../constants';
+import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, RANK_SET, BOARD_ENTER } from '../constants';
 
 export function changeMobileNumber(phoneNumber) {
     
@@ -37,14 +37,19 @@ export function changeRoom(roomId, runDateTime, distance, page) {
     }
 }
 
-export function customizeRank(canRank, isRank) {
+export function customizeRank(canRank) {
 
     return {
         type: RANK_CUSTOMIZE,
-        payload: {
-            canRank: canRank,
-            isRank: isRank,
-        }
+        payload: canRank
+    }
+}
+
+export function setRank(isRank) {
+
+    return {
+        type: RANK_SET,
+        payload: isRank
     }
 }
 

@@ -1,8 +1,8 @@
-import { UNIT_CHANGE } from '../constants';
+import { UNIT_CHANGE, RANK_SET } from '../constants';
 
 const initialState = {
     unit: 1,
-
+    isRank: false,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -12,6 +12,12 @@ const settingReducer = (state = initialState, action) => {
                 ...state,
                 unit: action.payload
             };
+
+        case RANK_SET:
+            return {
+                ...state,
+                isRank: action.payload
+            }
 
         default:
             return state;

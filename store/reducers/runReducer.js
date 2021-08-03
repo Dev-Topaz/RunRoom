@@ -6,7 +6,6 @@ const initialState = {
     distance: 0,
     page: null,
     canRank: false,
-    isRank: false,
     boardId: null,
     boardDistanceKilometers: 0,
     boardDistanceMiles: 0,
@@ -26,8 +25,7 @@ const runReducer = (state = initialState, action) => {
         case RANK_CUSTOMIZE:
             return {
                 ...state,
-                canRank: action.payload.canRank,
-                isRank: action.payload.isRank
+                canRank: action.payload,
             };
 
         case BOARD_ENTER:

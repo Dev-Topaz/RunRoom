@@ -19,7 +19,7 @@ const Running = (props) => {
     const distance = useSelector(state => state.run.distance);
     const startTime = new Date(useSelector(state => state.run.runDateTime));
     const canRank = useSelector(state => state.run.canRank);
-    const isRank = useSelector(state => state.run.isRank);
+    const isRank = useSelector(state => state.setting.isRank);
 
     //const [startTime, setStartTime] = useState(new Date());
     const [raceStatus, setRaceStatus] = useState(1);

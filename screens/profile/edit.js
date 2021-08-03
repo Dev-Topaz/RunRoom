@@ -15,8 +15,8 @@ import global from '../../global';
 import css from '../../css';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserDetails, updateUserProfile, getCities } from '../../utils/api';
-import { customizeRank } from '../../store/actions/actions';
+import { getUserDetails, updateUserProfile } from '../../utils/api';
+import { customizeRank, setRank } from '../../store/actions/actions';
 
 const EditProfile = (props) => {
 
@@ -24,7 +24,7 @@ const EditProfile = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const phoneNumber = useSelector(state => state.user.phoneNumber);
     const unit = useSelector(state => state.setting.unit);
-    const isRank = useSelector(state => state.run.isRank);
+    const isRank = useSelector(state => state.setting.isRank);
     const dispatch = useDispatch();
 
     const [name, setName] = useState({ firstName: '', lastName: '' });
@@ -33,9 +33,6 @@ const EditProfile = (props) => {
     const [gender, setGender] = useState(0);
     const [avatar, setAvatar] = useState(null);
     const [isToggle, setToggle] = useState(false);
-    const [country, setCountry] = useState('');
-    const [city, setCity] = useState('');
-    const [cityList, setCityList] = useState([]);
 
     const [alertVisible, setAlertVisible] = useState(false);
     const [ageVisible, setAgeVisible] = useState(false);
@@ -68,17 +65,27 @@ const EditProfile = (props) => {
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
                 };
-                let region = await Location.reverseGeocodeAsync(position);
-                if(region[0].country != null) {
-                    setCountry(region[0].country);
-                    getCities(region[0].country).then(result => {
-                        setCityList(result);
-                    });
+                
+                if(runningLocation == '') {
+                    let area = await Location.reverseGeocodeAsync(position);
+                    if(area[0].country != null) {
+                        if(area[0].city != null)
+                            setRunningLocation(area[0].city + ', ' + area[0].country);
+                        else
+                            setRunningLocation(area[0].region + ', ' + area[0].country);
+                    }
                 }
-                if(region[0].city != null)
-                    setCity(region[0].city);
-                else
-                    setCity(cityList[0]);
+                
+                //if(region[0].country != null) {
+                //    setCountry(region[0].country);
+                //    getCities(region[0].country).then(result => {
+                //        setCityList(result);
+                //    });
+                //}
+                //if(region[0].city != null)
+                //    setCity(region[0].city);
+                //else
+                //    setCity(cityList[0]);
             }
         })();
     }, []);
@@ -179,14 +186,15 @@ const EditProfile = (props) => {
 
         updateUserProfile(updateInfo, accessToken).then(result => {
             if(result) {
-                AsyncStorage.multiSet([['canRank', ageGroup != 0 && gender != 0 ? '1' : '0'], ['isRank', isToggle ? '1' : '0']], err => {
+                AsyncStorage.setItem('rank', isToggle ? '1' : '0', err => {
                     if(err) {
-                        console.log('An error occured');
+                        console.log('There is an error.');
                         throw err;
                     } else {
-                        dispatch(customizeRank(ageGroup != 0 && gender != 0, isToggle));
+                        dispatch(setRank(isToggle));
                     }
-                });
+                }).catch(err => console.log(err));
+                dispatch(customizeRank(gender != 0 && ageGroup != 0));
                 Alert.alert('Your profile is updated successfully');
                 props.navigation.navigate('Profile');
             } else {
@@ -248,7 +256,7 @@ const EditProfile = (props) => {
                     <TextInput
                         style={[css.inputText, { paddingVertical: 20 }]}
                         placeholder='Enter your running location'
-                        value={runningLocation == '' ? city + ', ' + country : runningLocation}
+                        value={runningLocation}
                         onChangeText={text => setRunningLocation(text)}
                     />
                 </View>
