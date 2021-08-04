@@ -47,7 +47,7 @@ const ProfileFinished = (props) => {
             runDistanceMiles: data[index].runDistanceMiles,
         };
         dispatch(changeBoard(roomInfo));
-        props.navigation.navigate('Result', roomInfo);
+        props.navigation.navigate('Result');
     }
 
     const renderItem = ({ item, index }) => (
