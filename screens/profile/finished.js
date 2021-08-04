@@ -5,7 +5,7 @@ import css from '../../css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getFinishedRuns } from '../../utils/api';
-import { convertFloat, displayRunDateTime } from '../../utils/func';
+import { convertFloat, displayRunDateTime, displayPace } from '../../utils/func';
 import { changeBoard } from '../../store/actions/actions';
 
 const ProfileFinished = (props) => {
@@ -67,7 +67,7 @@ const ProfileFinished = (props) => {
                     <View style={css.leftBottom}>
                         <Text style={[css.thumbRemainText2, { marginBottom: 1 }]}>{item.roomType == 1 ? 'Public' : 'Private'}</Text>
                         <Text style={css.thumbDateText}>{'Ranked ' + item.currenUserDetails.rank}</Text>
-                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + Math.floor(item.currenUserDetails.averagePace / 60 * 10) / 10 + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
+                        <Text style={[css.thumbRemainText2, { marginBottom: 4 }]}>{'Avg pace ' + displayPace(item.currenUserDetails.averagePace) + (unit == 1 ? ' min/mile' : ' min/km')}</Text>
                     </View>
                     <View style={css.rightTop}>
                         <View style={{ flexDirection: 'row' }}>
