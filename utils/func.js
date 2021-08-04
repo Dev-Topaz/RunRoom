@@ -193,12 +193,14 @@ export function displayStatisticsValue(value, type) {
         case 4:
             if(isInteger(value))
                 return value + '.0';
-            return Math.floor(value * 10) / 10 + '';
+            else
+                return Math.floor(value * 10) / 10 + '';
         case 5:
             const th = value / 3600;
             if(isInteger(th))
                 return th + '.0';
-            return Math.floor(th * 10) / 10 + '';
+            else
+                return Math.floor(th * 10) / 10 + '';
         default:
             return '';
     }
