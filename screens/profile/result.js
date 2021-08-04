@@ -26,6 +26,7 @@ const Result = (props) => {
     const [avgPace, setAvgPace] = useState(0);
     const [isToggle, setToggle] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
+    const [current, setCurrent] = useState(new Date());
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -77,6 +78,39 @@ const Result = (props) => {
             });
         }
     }, [isToggle]);
+
+    useEffect(() => {
+        const timer = setInterval(() => setCurrent(new Date()), 5000);
+
+        getRaceLeaderBoard(roomId, 1, 500, accessToken).then(result => {
+            if(result != null) {
+                const idx = result.findIndex(item => item.runnerId === userId);
+                if(isToggle) {
+                    let target = [];
+                    const targetAgeGroup = result[idx].runnerAgeGroup;
+                    const targetGender = result[idx].runnerGender;
+
+                    result.forEach(item => {
+                        if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
+                            target.push(item);
+                    });
+                    setData(target);
+                    const index = target.findIndex(item => item.runnerId === userId);
+                    if(index > -1)
+                        setRank(index + 1);
+                } else {
+                    if(idx > -1) {
+                        setRank(idx + 1);
+                        setAvgPace(unit == 1 ? result[idx].averagePaceMiles : result[idx].averagePaceKilometers);
+                        setTimeInfo(result[idx].runTimeInSeconds);
+                    }
+                    setData(result);
+                }
+            }
+        });
+
+        return () => clearInterval(timer);
+    }, [current]);
 
     const pressBackAction = () => {
         props.navigation.navigate('Account');
