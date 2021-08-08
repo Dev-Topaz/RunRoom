@@ -54,7 +54,7 @@ const EditProfile = (props) => {
                 setToggle(isRank);
 
                 (async () => {
-                    //Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
+                    Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
                     let { status } = await Location.requestForegroundPermissionsAsync();
                     if (status !== 'granted') {
                         Alert.alert('Your Location Permission is denied');
@@ -67,6 +67,7 @@ const EditProfile = (props) => {
                         
                         if(result.location == '' || result.location == null) {
                             let area = await Location.reverseGeocodeAsync(position);
+                            //console.log(area);
                             if(area[0].country != null) {
                                 if(area[0].city != null)
                                     setRunningLocation(area[0].city + ', ' + area[0].country);
