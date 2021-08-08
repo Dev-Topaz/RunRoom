@@ -136,7 +136,7 @@ const Running = (props) => {
             } else {
                 if(raceStatus < 2) {
                     let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
-                    console.log(location);
+                    //console.log(location);
                     if(lastPoint == null) {
                         setLastPoint(location);
                         //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
