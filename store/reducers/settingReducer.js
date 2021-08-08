@@ -1,9 +1,10 @@
-import { UNIT_CHANGE, RANK_SET, CLICK_INVITE } from '../constants';
+import { UNIT_CHANGE, RANK_SET, CLICK_INVITE, PREV_FLAG } from '../constants';
 
 const initialState = {
     unit: 1,
     isRank: false,
     prevPage: null,
+    prevFlag: false,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -24,6 +25,12 @@ const settingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 prevPage: action.payload
+            }
+
+        case PREV_FLAG:
+            return {
+                ...state,
+                prevFlag: action.payload
             }
 
         default:

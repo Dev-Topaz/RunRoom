@@ -7,11 +7,13 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { changePrevFlag } from '../../store/actions/actions';
 
 const InviteFriends = (props) => {
 
     const prevPage = useSelector(state => state.setting.prevPage);
+    const dispatch = useDispatch();
     const toast = useRef(null);
 
     const copyToClipboard = () => {
@@ -27,6 +29,8 @@ const InviteFriends = (props) => {
         if(prevPage == null) {
             props.navigation.navigate('Setting');
         } else {
+            if(prevPage == 'Account')
+                dispatch(changePrevFlag(true));
             props.navigation.navigate(prevPage);
         }
     }

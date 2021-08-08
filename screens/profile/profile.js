@@ -8,8 +8,9 @@ import ProfileFinished from './finished';
 import ProfileStatistics from './statistics';
 import ProfileConnection from './connect';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getUserDetails } from '../../utils/api';
+import { changePrevFlag } from '../../store/actions/actions';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -18,6 +19,8 @@ const Profile = (props) => {
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const prevPage = useSelector(state => state.setting.prevPage);
+    const prevFlag = useSelector(state => state.setting.prevFlag);
+    const dispatch = useDispatch();
     const [userInfo, setUserInfo] = useState({
         avatar: null,
         firstName: '',
@@ -27,6 +30,8 @@ const Profile = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        if(prevFlag)
+            dispatch(changePrevFlag(false));
         getUserDetails(userId, accessToken).then(result => {
             if(result == null || result.userId != userId) {
                 Alert.alert('You are not authorized.');
@@ -60,7 +65,7 @@ const Profile = (props) => {
             <View style={{ flex: 1 }}>
                 <NavigationContainer>
                     <TopTab.Navigator
-                        initialRouteName={prevPage == 'Account' ? 'ProfileConnection' : 'ProfileFinished'}
+                        initialRouteName={prevPage == 'Account' && prevFlag ? 'ProfileConnection' : 'ProfileFinished'}
                         tabBarOptions={{
                             activeTintColor: global.COLOR.PRIMARY100,
                             inactiveTintColor: global.COLOR.PRIMARY50,
