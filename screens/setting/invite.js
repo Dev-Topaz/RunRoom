@@ -7,13 +7,11 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { clickInvite } from '../../store/actions/actions';
+import { useSelector } from 'react-redux';
 
 const InviteFriends = (props) => {
 
     const prevPage = useSelector(state => state.setting.prevPage);
-    const dispatch = useDispatch();
     const toast = useRef(null);
 
     const copyToClipboard = () => {
