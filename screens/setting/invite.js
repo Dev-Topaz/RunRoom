@@ -16,6 +16,10 @@ const InviteFriends = (props) => {
         toast.current.show('Copied to Clipboard!');
     }
 
+    const shareLink = () => {
+        console.log('clicked');
+    }
+
     return (
         <View style={css.bgContainer}>
             <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Settings')}>
@@ -31,13 +35,13 @@ const InviteFriends = (props) => {
                     placeholder='Enter your url'
                     value='https://runroom.com/cjsKck12'
                 />
-                <Pressable style={styles.duplicateButton}>
+                <Pressable style={styles.duplicateButton} onPress={copyToClipboard}>
                     <Icon name='content-copy' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
                 </Pressable>
             </View>
             <View style={styles.footer}>
-                <TouchableOpacity style={css.submitButton} onPress={copyToClipboard}>
-                    <Text style={css.submitText}>COPY LINK</Text>
+                <TouchableOpacity style={css.submitButton} onPress={shareLink}>
+                    <Text style={css.submitText}>SHARE LINK</Text>
                 </TouchableOpacity>
             </View>
             <Toast
