@@ -256,7 +256,7 @@ const InviteModal = (props) => {
                         </TouchableOpacity>
                         <View style={styles.indicatorContainer}>
                             <Text style={[css.hostLabel, { letterSpacing: -0.3 }]}>Cannot find connection? Invite a friend by clicking</Text>
-                            <TouchableOpacity style={{ marginLeft: 5 }}>
+                            <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => props.navigation.navigate('InviteFriend')}>
                                 <Text style={styles.hereText}>HERE ⮕</Text>
                             </TouchableOpacity>
                         </View>

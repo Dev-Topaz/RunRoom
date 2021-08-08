@@ -168,6 +168,7 @@ const RoomCreate = (props) => {
             <InviteModal
                 data={ inviteList }
                 visible={ inviteVisible }
+                navigation={ props.navigation }
                 onChangeVisible={ setInviteVisible }
                 onChangeValue={ setInviteList }
             />
