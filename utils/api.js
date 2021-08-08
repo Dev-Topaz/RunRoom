@@ -559,3 +559,23 @@ export async function getRaceLeaderBoard(roomId, pageId, pageSize, accessToken) 
 
     return result;
 }
+
+export async function refreshAccessToken(accessToken, refreshToken) {
+
+    const result = await Axios.post('/Users/RefreshTheAccessToken', {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data;
+            else
+                return null;
+        }
+    ).catch(err => {
+        console.log(err);
+        return null;
+    });
+
+    return result;
+}
