@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, TextInput, Pressable, FlatList, Modal } from 'react-native';
+import { StyleSheet, View, Image, Text, TextInput, Pressable, TouchableOpacity, FlatList, Modal } from 'react-native';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { getAllConnections, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
 
 
-const ProfileConnection = () => {
+const ProfileConnection = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
 
@@ -197,6 +197,12 @@ const ProfileConnection = () => {
                 ItemSeparatorComponent={null}
                 ListFooterComponent={() => loading && page != 1 ? <View style={styles.listFooter}><ActivityIndicator animating size='large'/></View> : null}
             />
+            <View style={styles.bottomContainer}>
+                <Text style={[css.hostLabel, { letterSpacing: -0.3 }]}>Cannot find connection? Invite a friend by clicking</Text>
+                <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => props.navigation.navigate('InviteFriend')}>
+                    <Text style={styles.hereText}>HERE ⮕</Text>
+                </TouchableOpacity>
+            </View>
             <Modal
                 animationType='slide'
                 visible={isKB}
@@ -225,7 +231,22 @@ const styles = StyleSheet.create({
         width: global.CONSTANTS.WIDTH,
         height: global.CONSTANTS.HEIGHT,
         backgroundColor: 'transparent',
-    }
+    },
+    bottomContainer: {
+        flexDirection: 'row',
+        width: global.CONSTANTS.WIDTH,
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: 0,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        backgroundColor: global.COLOR.WHITE85,
+    },
+    hereText: {
+        fontFamily: 'SFProBold',
+        fontSize: 12,
+        color: global.COLOR.PRIMARY100,
+    },
 });
 
 export default ProfileConnection;

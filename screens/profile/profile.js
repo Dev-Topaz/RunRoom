@@ -81,7 +81,7 @@ const Profile = (props) => {
                         />
                         <TopTab.Screen
                             name='ProfileConnection'
-                            component={ProfileConnection}
+                            children={() => <ProfileConnection navigation={props.navigation}/>}
                             options={{ tabBarLabel: 'Connections' }}
                         />
                     </TopTab.Navigator>
