@@ -6,3 +6,4 @@ export const LOG_OUT = 'Log out current user';
 export const RANK_CUSTOMIZE = 'Customize the rank';
 export const RANK_SET = 'Set the rank setting';
 export const BOARD_ENTER = 'Enter a leaderboard';
+export const CLICK_INVITE = 'Click invite button';

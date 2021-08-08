@@ -8,7 +8,7 @@ import css from '../../css';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector, useDispatch } from 'react-redux';
 import { logOut } from '../../utils/api';
-import { userLogout, changeUnit } from '../../store/actions/actions';
+import { userLogout, changeUnit, clickInvite } from '../../store/actions/actions';
 
 const Setting = (props) => {
 
@@ -70,6 +70,11 @@ const Setting = (props) => {
         ]);
     }
 
+    const pressInviteAction = () => {
+        dispatch(clickInvite(null));
+        props.navigation.navigate('InviteFriend');
+    }
+
     return (
         <View style={css.bgContainer}>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 65 }]}>SETTINGS</Text>
@@ -93,7 +98,7 @@ const Setting = (props) => {
                     <SvgIcon icon='Forward'/>
                 </View>
             </Pressable>
-            <Pressable style={styles.item} onPress={() => props.navigation.navigate('InviteFriend')}>
+            <Pressable style={styles.item} onPress={pressInviteAction}>
                 <Icon name='account-plus' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
                 <View style={styles.indicatorContainer}>
                     <Text style={styles.indicatorTitle}>Invite Friends</Text>

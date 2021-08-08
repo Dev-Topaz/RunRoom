@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, RANK_SET, BOARD_ENTER } from '../constants';
+import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, RANK_SET, BOARD_ENTER, CLICK_INVITE } from '../constants';
 
 export function changeMobileNumber(phoneNumber) {
     
@@ -66,5 +66,13 @@ export function changeBoard(roomInfo) {
     return {
         type: BOARD_ENTER,
         payload: roomInfo
+    }
+}
+
+export function clickInvite(pageInfo) {
+
+    return {
+        type: CLICK_INVITE,
+        payload: pageInfo
     }
 }

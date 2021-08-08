@@ -7,8 +7,13 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { clickInvite } from '../../store/actions/actions';
+
 const InviteFriends = (props) => {
 
+    const prevPage = useSelector(state => state.setting.prevPage);
+    const dispatch = useDispatch();
     const toast = useRef(null);
 
     const copyToClipboard = () => {
@@ -20,9 +25,17 @@ const InviteFriends = (props) => {
         console.log('clicked');
     }
 
+    const pressBackAction = () => {
+        if(prevPage == null) {
+            props.navigation.navigate('Setting');
+        } else {
+            props.navigation.navigate(prevPage);
+        }
+    }
+
     return (
         <View style={css.bgContainer}>
-            <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Settings')}>
+            <Pressable style={css.backButton} onPress={pressBackAction}>
                 <SvgIcon icon='Back'/>
             </Pressable>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>INVITE FRIENDS</Text>

@@ -6,11 +6,13 @@ import css from '../css';
 
 import { findIndex } from '../utils/func';
 import { getAllConnections, getFollowings, getFollowers, follow, stopFollowing } from '../utils/api';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clickInvite } from '../store/actions/actions';
 
 const InviteModal = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
+    const dispatch = useDispatch();
 
     const [searchText, setSearchText] = useState('');
     const [isFollower, setFollower] = useState(true);
@@ -183,6 +185,11 @@ const InviteModal = (props) => {
         }
     }
 
+    const pressInviteHereAction = () => {
+        dispatch(clickInvite('Create'));
+        props.navigation.navigate('InviteFriend');
+    }
+
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId} style={css.listItemContainer}>
             <Image source={item.picture == null ? global.IMAGE.UNKNOWN : { uri: item.picture }} style={css.hostAvatar}/>
@@ -256,7 +263,7 @@ const InviteModal = (props) => {
                         </TouchableOpacity>
                         <View style={styles.indicatorContainer}>
                             <Text style={[css.hostLabel, { letterSpacing: -0.3 }]}>Cannot find connection? Invite a friend by clicking</Text>
-                            <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => props.navigation.navigate('InviteFriend')}>
+                            <TouchableOpacity style={{ marginLeft: 5 }} onPress={pressInviteHereAction}>
                                 <Text style={styles.hereText}>HERE ⮕</Text>
                             </TouchableOpacity>
                         </View>

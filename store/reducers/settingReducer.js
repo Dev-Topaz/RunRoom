@@ -1,8 +1,9 @@
-import { UNIT_CHANGE, RANK_SET } from '../constants';
+import { UNIT_CHANGE, RANK_SET, CLICK_INVITE } from '../constants';
 
 const initialState = {
     unit: 1,
     isRank: false,
+    prevPage: null,
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -17,6 +18,12 @@ const settingReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isRank: action.payload
+            }
+
+        case CLICK_INVITE:
+            return {
+                ...state,
+                prevPage: action.payload
             }
 
         default:

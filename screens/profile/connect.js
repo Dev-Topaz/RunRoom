@@ -4,13 +4,15 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getAllConnections, getFollowings, getFollowers, follow, stopFollowing } from '../../utils/api';
+import { clickInvite } from '../../store/actions/actions';
 
 
 const ProfileConnection = (props) => {
 
     const accessToken = useSelector(state => state.user.accessToken);
+    const dispatch = useDispatch();
 
     const [searchText, setSearchText] = useState('');
     const [isFollower, setFollower] = useState(true);
@@ -148,6 +150,11 @@ const ProfileConnection = (props) => {
         }
     }
 
+    const pressInviteAction = () => {
+        dispatch(clickInvite('Account'));
+        props.navigation.navigate('InviteFriend');
+    }
+
     const renderItem = ({item, index}) => (
         <View key={item.connectedUserId} style={css.listItemContainer}>
             <Image source={item.picture == null ? global.IMAGE.UNKNOWN : { uri: item.picture }} style={css.hostAvatar}/>
@@ -199,7 +206,7 @@ const ProfileConnection = (props) => {
             />
             <View style={styles.bottomContainer}>
                 <Text style={[css.hostLabel, { letterSpacing: -0.3 }]}>Cannot find connection? Invite a friend by clicking</Text>
-                <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => props.navigation.navigate('InviteFriend')}>
+                <TouchableOpacity style={{ marginLeft: 5 }} onPress={pressInviteAction}>
                     <Text style={styles.hereText}>HERE ⮕</Text>
                 </TouchableOpacity>
             </View>

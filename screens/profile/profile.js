@@ -17,6 +17,7 @@ const Profile = (props) => {
 
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
+    const prevPage = useSelector(state => state.setting.prevPage);
     const [userInfo, setUserInfo] = useState({
         avatar: null,
         firstName: '',
@@ -59,7 +60,7 @@ const Profile = (props) => {
             <View style={{ flex: 1 }}>
                 <NavigationContainer>
                     <TopTab.Navigator
-                        initialRouteName='ProfileFinished'
+                        initialRouteName={prevPage == 'Account' ? 'ProfileConnection' : 'ProfileFinished'}
                         tabBarOptions={{
                             activeTintColor: global.COLOR.PRIMARY100,
                             inactiveTintColor: global.COLOR.PRIMARY50,
