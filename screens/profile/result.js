@@ -142,9 +142,9 @@ const Result = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={styles.valueText}>{convertFloat(distance)}</Text>
+                            <Text style={styles.valueText}>{convertFloat(distance, 2)}</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
-                            <Text style={styles.valueText}>100.0</Text>
+                            <Text style={styles.valueText}>100</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>
                         </View>
                     </View>
@@ -202,7 +202,7 @@ const Result = (props) => {
                                             <View style={styles.runInfo}>
                                                 <View style={[styles.infoItem, { marginBottom: 6 }]}>
                                                     <Text style={styles.indexText}>Dist:</Text>
-                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles) + ' miles' : convertFloat(item.runDistanceKilometers) + ' km'}</Text>
+                                                    <Text style={styles.infoText}>{unit == 1 ? convertFloat(item.runDistanceMiles, 2) + ' miles' : convertFloat(item.runDistanceKilometers, 2) + ' km'}</Text>
                                                 </View>
                                                 <View style={styles.infoItem}>
                                                     <Text style={styles.indexText}>Avg pace:</Text>

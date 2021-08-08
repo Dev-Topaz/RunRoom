@@ -170,7 +170,7 @@ const Lobby = (props) => {
                     <View style={styles.cell}>
                         <Text style={styles.indexText}>Distance</Text>
                         <View style={styles.valueContainer}>
-                            <Text style={styles.valueText}>0.0</Text>
+                            <Text style={styles.valueText}>0.00</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>{unit == 1 ? 'miles' : 'km'}</Text>
                             <Text style={styles.valueText}>0.0</Text>
                             <Text style={[styles.indexText, { marginHorizontal: 5, paddingBottom: 2 }]}>%</Text>

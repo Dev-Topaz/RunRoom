@@ -45,12 +45,24 @@ export async function initUnitFromStorageToRedux(dispatch) {
     }
 }
 
-export function convertFloat(distance) {
-    let dist = Math.floor(distance * 10) / 10;
+export function convertFloat(distance, num = 1) {
+    if(num == 1) {
+        let dist = Math.floor(distance * 10) / 10;
         if(isInteger(dist))
             return dist + '.0';
         else 
             return dist + '';
+    } else if(num == 2) {
+        let dist = Math.floor(distance * 100) / 100;
+        if(isInteger(dist))
+            return dist + '.00';
+        else if(isInteger(dist * 10))
+            return dist + '0';
+        else
+            return dist + '';
+    } else {
+        console.log('error');
+    }
 }
 
 export function getRemainTimeStyle(current, target) {
