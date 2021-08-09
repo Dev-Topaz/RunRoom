@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
@@ -12,7 +12,8 @@ const store = configureStore()
 
 export default function App() {
 
-  const [appState, setAppState] = useState(AppState.currentState);
+  const appState = useRef(AppState.currentState);
+  let timer = null;
 
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange);
@@ -21,13 +22,24 @@ export default function App() {
   }, []);
 
   const handleAppStateChange = (nextAppState) => {
-    if(appState.match(/inactive|background/) && nextAppState === 'active') {
+    if(appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      clearInterval(timer);
       console.log('App has come to the foreground');
     } else {
-      console.log('App has come to the background');
+      if(appState.current == 'inactive') {
+        if(timer == null) {
+          timer = setInterval(() => console.log('App is in the background.'), 1000);
+          console.log('App has come to the background');
+        }
+      } else {
+        if(timer == null) {
+          timer = setInterval(() => console.log('App is in the background.'), 1000);
+          console.log('App has come to the background');
+        }
+      }
     }
 
-    setAppState(nextAppState);
+    appState.current = nextAppState;
   }
 
   const [fontsLoaded] = useFonts({
