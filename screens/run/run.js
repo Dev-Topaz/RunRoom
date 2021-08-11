@@ -41,7 +41,6 @@ const Running = (props) => {
     const [current, setCurrent] = useState(new Date());
     const [now, setNow] = useState(new Date());
     const [isExit, setExit] = useState(false);
-    const [isFinished, setFinished] = useState(false);
     const [alertVisible, setAlertVisible] = useState(false);
 
     useEffect(() => {
@@ -73,7 +72,7 @@ const Running = (props) => {
         let tm = Math.floor(ts % 3600 / 60);
         let th = Math.floor(ts % (3600 * 24) / 3600);
 
-        if(dist >= distance) {
+        if(distData >= distance) {
             setRaceStatus(3);
         } else {
             setHour(th);
@@ -184,44 +183,42 @@ const Running = (props) => {
                     runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
                     currentPace: curPace > 59999 ? 0 : curPace,
                     averagePace: averagePace > 59999 ? 0 : averagePace,
-                    status: raceStatus,
+                    status: dist >= distance ? 3 : raceStatus,
                 };
 
-                
-                updateRun(updateInfo, accessToken).then(result => {
-                    if(result) {
-                        getRaceRunners(roomId, 1, 500, accessToken).then(res => {
-                            if(res != null) {
-                                const idx = res.findIndex(item => userId === item.runnerId);
-                                setRank(idx + 1);
-                                setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
-                                setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
-
-                                if(isToggle) {
-                                    if(canRank) {
-                                        if(idx > -1) {
-                                            const targetGender = res[idx].runnerGender;
-                                            const targetAgeGroup = res[idx].runnerAgeGroup;
-                                            let target = [];
-                                            res.forEach(item => {
-                                                if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
-                                                    target.push(item);
-                                            });
-                                            setData(target);
+                if(raceStatus < 2) {
+                    updateRun(updateInfo, accessToken).then(result => {
+                        if(result) {
+                            getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                                if(res != null) {
+                                    const idx = res.findIndex(item => userId === item.runnerId);
+                                    setRank(idx + 1);
+                                    setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
+                                    setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
+                                    
+                                    if(isToggle) {
+                                        if(canRank) {
+                                            if(idx > -1) {
+                                                const targetGender = res[idx].runnerGender;
+                                                const targetAgeGroup = res[idx].runnerAgeGroup;
+                                                let target = [];
+                                                res.forEach(item => {
+                                                    if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                                                        target.push(item);
+                                                });
+                                                setData(target);
+                                            }
+                                        } else {
+                                            setData(res);
                                         }
                                     } else {
                                         setData(res);
                                     }
-                                } else {
-                                    setData(res);
                                 }
-                            }
-                        });
-                        if(raceStatus > 2)
-                            setFinished(true);
-                    }
-                });
-                
+                            });
+                        }
+                    });
+                }
             }
         })();
 
@@ -287,9 +284,9 @@ const Running = (props) => {
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            if(raceStatus == 2 || isFinished)
+            if(raceStatus > 1)
                 props.navigation.navigate('Account');
-        }, 1000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, [raceStatus]);
