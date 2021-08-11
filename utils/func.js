@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { changeMobileNumber, changeUnit, codeVerified, setRank } from '../store/actions/actions';
+import { changeMobileNumber, changeUnit, codeVerified, customizeRank, setRank } from '../store/actions/actions';
 import { isInteger } from 'lodash';
 import moment from 'moment';
-import { refreshAccessToken } from './api';
+import { getUserDetails, refreshAccessToken } from './api';
 
 export async function checkIfLoggedIn(dispatch) {
     const phoneNumber = await AsyncStorage.getItem('phoneNumber');
@@ -21,6 +21,14 @@ export async function checkIfLoggedIn(dispatch) {
                 };
                 dispatch(codeVerified(userInfo));
                 dispatch(changeMobileNumber(phoneNumber));
+                getUserDetails(userId, res.accessToken).then(user => {
+                    if(user != null) {
+                        if(user.gender != 0 && user.ageGroup != 0)
+                            dispatch(customizeRank(true));
+                        else
+                            dispatch(customizeRank(false));
+                    }
+                });
                 return true;
             } else {
                 return false;
