@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
+import AppLoading from 'expo-app-loading';
 import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
@@ -14,19 +15,26 @@ const MobileInput = (props) => {
 
     const dispatch = useDispatch();
 
+    const [isLoaded, setLoaded] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState([]);
 
     const phoneInput = useRef(null);
 
     useEffect(() => {
-        setModalData(phoneInput.current.getPickerData());
         initUnitFromStorageToRedux(dispatch);
         checkIfLoggedIn(dispatch).then(result => {
-            if(!result)
+            if(result)
                 props.navigation.navigate('Main');
+            else
+                setLoaded(true);
         });
     }, []);
+
+    useEffect(() => {
+        if(isLoaded)
+            setModalData(phoneInput.current.getPickerData());
+    }, [isLoaded]);
 
     const selectCountry = (item) => {
         phoneInput.current.selectCountry(item.iso2);
@@ -49,6 +57,9 @@ const MobileInput = (props) => {
         }
     }
 
+    if(!isLoaded)
+        return (<AppLoading/>);
+    
     return (
         <View style={css.bgAuthContainer}>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>MOBILE NUMBER</Text>

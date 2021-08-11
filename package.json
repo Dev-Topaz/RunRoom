@@ -15,6 +15,7 @@
     "@vseslav/react-native-horizontal-picker": "^0.1.1",
     "axios": "^0.21.1",
     "expo": "~41.0.1",
+    "expo-app-loading": "^1.1.2",
     "expo-asset": "~8.3.1",
     "expo-clipboard": "~1.0.2",
     "expo-font": "~9.1.0",

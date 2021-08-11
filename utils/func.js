@@ -27,6 +27,21 @@ export async function checkIfLoggedIn(dispatch) {
     }
 }
 
+export async function rememberUserInfo(userId, accessToken, refreshToken) {
+    try {
+        AsyncStorage.multiSet([['userId', userId], ['accessToken', accessToken], ['refreshToken', refreshToken]], (err) => {
+            if(err) {
+                console.log('There is an error.');
+                throw err;
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    } catch(e) {
+        console.log('Error: ' + e);
+    }
+}
+
 export async function initUnitFromStorageToRedux(dispatch) {
 
     try {
