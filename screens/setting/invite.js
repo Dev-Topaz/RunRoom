@@ -22,7 +22,7 @@ const InviteFriends = (props) => {
     }
 
     const shareLink = () => {
-        console.log('clicked');
+        
     }
 
     const pressBackAction = () => {

@@ -26,7 +26,8 @@
         "NSLocationAlwaysUsageDescription": "App uses your location permission to let others know where you are running now.",
         "NSPhotoLibraryUsageDescription": "App uses your library permission to get a picture for your avatar.",
         "NSCameraUsageDescription": "App uses your camera permission to get a picture for your avatar.",
-        "NSMicrophoneUsageDescription": "App uses your microphone permission to capture a movie with your phone."
+        "NSMicrophoneUsageDescription": "App uses your microphone permission to capture a movie with your phone.",
+        "NSContactsUsageDescription": "App uses your contacts to send an invitation."
       },
       "config": {
         "googleMapsApiKey": "AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA"
