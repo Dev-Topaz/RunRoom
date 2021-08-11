@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { changeUnit, customizeRank, setRank } from '../store/actions/actions';
+import { changeUnit, setRank } from '../store/actions/actions';
 import { isInteger } from 'lodash';
 import moment from 'moment';
 
