@@ -1,7 +1,31 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { changeUnit, setRank } from '../store/actions/actions';
+import { changeUnit, codeVerified, setRank } from '../store/actions/actions';
 import { isInteger } from 'lodash';
 import moment from 'moment';
+import { refreshAccessToken } from './api';
+
+export async function checkIfLoggedIn(dispatch) {
+    const userId = await AsyncStorage.getItem('userId');
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    
+    if(accessToken != null && refreshToken != null && userId != null) {
+        refreshAccessToken(accessToken, refreshToken).then(result => {
+            if(result != null) {
+                const userInfo = {
+                    userId: userId,
+                    accessToken: result.accessToken,
+                    refreshToken: result.refreshToken,
+                    userType: 1,
+                };
+                dispatch(codeVerified(userInfo));
+                return true;
+            }
+        });
+    } else {
+        return false;
+    }
+}
 
 export async function initUnitFromStorageToRedux(dispatch) {
 
