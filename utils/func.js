@@ -27,7 +27,7 @@ export async function checkIfLoggedIn(dispatch) {
     }
 }
 
-export async function rememberUserInfo(userId, accessToken, refreshToken) {
+export async function rememberCurrentUser(userId, accessToken, refreshToken) {
     try {
         AsyncStorage.multiSet([['userId', userId], ['accessToken', accessToken], ['refreshToken', refreshToken]], (err) => {
             if(err) {

@@ -7,7 +7,7 @@ import css from '../../css';
 import { verifyCode, sendVerifyCode, getUserDetails } from '../../utils/api';
 import { useSelector, useDispatch } from 'react-redux';
 import { codeVerified, customizeRank } from '../../store/actions/actions';
-import { rememberUserInfo } from '../../utils/func';
+import { rememberCurrentUser } from '../../utils/func';
 
 const CELL_COUNT = 4;
 const CELL_SIZE = 57;
@@ -42,7 +42,7 @@ const Verification = (props) => {
         verifyCode(phoneNumber, value).then(result => {
             if(result.isVerified) {
                 dispatch(codeVerified(result));
-                rememberUserInfo(result.userId, result.accessToken, result.refreshToken);
+                rememberCurrentUser(result.userId, result.accessToken, result.refreshToken);
                 if(result.userType == 1) {
                     getUserDetails(result.userId, result.accessToken).then(user => {
                         if(user != null) {
