@@ -5,7 +5,7 @@ import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
 
-import { initUnitFromStorageToRedux } from '../../utils/func';
+import { checkIfLoggedIn, initUnitFromStorageToRedux } from '../../utils/func';
 import { useDispatch } from 'react-redux';
 import { changeMobileNumber } from '../../store/actions/actions';
 import { sendVerifyCode } from '../../utils/api';
@@ -22,6 +22,10 @@ const MobileInput = (props) => {
     useEffect(() => {
         setModalData(phoneInput.current.getPickerData());
         initUnitFromStorageToRedux(dispatch);
+        checkIfLoggedIn(dispatch).then(result => {
+            if(!result)
+                props.navigation.navigate('Main');
+        });
     }, []);
 
     const selectCountry = (item) => {
