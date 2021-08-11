@@ -42,7 +42,7 @@ const Verification = (props) => {
         verifyCode(phoneNumber, value).then(result => {
             if(result.isVerified) {
                 dispatch(codeVerified(result));
-                rememberCurrentUser(result.userId, result.accessToken, result.refreshToken);
+                rememberCurrentUser(phoneNumber, result.userId, result.accessToken, result.refreshToken);
                 if(result.userType == 1) {
                     getUserDetails(result.userId, result.accessToken).then(user => {
                         if(user != null) {

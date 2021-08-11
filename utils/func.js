@@ -1,35 +1,40 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { changeUnit, codeVerified, setRank } from '../store/actions/actions';
+import { changeMobileNumber, changeUnit, codeVerified, setRank } from '../store/actions/actions';
 import { isInteger } from 'lodash';
 import moment from 'moment';
 import { refreshAccessToken } from './api';
 
 export async function checkIfLoggedIn(dispatch) {
+    const phoneNumber = await AsyncStorage.getItem('phoneNumber');
     const userId = await AsyncStorage.getItem('userId');
     const accessToken = await AsyncStorage.getItem('accessToken');
     const refreshToken = await AsyncStorage.getItem('refreshToken');
     
-    if(accessToken != null && refreshToken != null && userId != null) {
-        refreshAccessToken(accessToken, refreshToken).then(result => {
-            if(result != null) {
+    if(accessToken != null && refreshToken != null && userId != null && phoneNumber != null) {
+        const result = refreshAccessToken(accessToken, refreshToken).then(res => {
+            if(res != null) {
                 const userInfo = {
                     userId: userId,
-                    accessToken: result.accessToken,
-                    refreshToken: result.refreshToken,
+                    accessToken: res.accessToken,
+                    refreshToken: res.refreshToken,
                     userType: 1,
                 };
                 dispatch(codeVerified(userInfo));
+                dispatch(changeMobileNumber(phoneNumber));
                 return true;
+            } else {
+                return false;
             }
         });
+        return result;
     } else {
         return false;
     }
 }
 
-export async function rememberCurrentUser(userId, accessToken, refreshToken) {
+export async function rememberCurrentUser(phoneNumber, userId, accessToken, refreshToken) {
     try {
-        AsyncStorage.multiSet([['userId', userId], ['accessToken', accessToken], ['refreshToken', refreshToken]], (err) => {
+        AsyncStorage.multiSet([['phoneNumber', phoneNumber], ['userId', userId], ['accessToken', accessToken], ['refreshToken', refreshToken]], (err) => {
             if(err) {
                 console.log('There is an error.');
                 throw err;
