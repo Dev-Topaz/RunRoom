@@ -60,6 +60,14 @@ const Setting = (props) => {
                     logOut(accessToken, refreshToken).then(result => {
                         if(result) {
                             dispatch(userLogout());
+                            AsyncStorage.multiRemove(['userId', 'accessToken', 'refreshToken', 'phoneNumber'], (err) => {
+                                if(err) {
+                                    console.log('An error occured.');
+                                    throw err;
+                                }
+                            }).catch(err => {
+                                console.log(err);
+                            });
                             props.navigation.navigate('Auth');
                         } else {
                             Alert.alert('ERROR', 'There is an error in logout');
