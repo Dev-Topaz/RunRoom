@@ -50,10 +50,8 @@ const Contact = (props) => {
     }, []);
 
     return (
-        <View>
-            <SectionList
-                
-            />
+        <View style={{ flex: 1 }}>
+            
         </View>
     );
 }
