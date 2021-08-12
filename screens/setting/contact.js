@@ -16,7 +16,7 @@ const Contact = (props) => {
                         fields: [Contacts.Fields.Emails, Contacts.Fields.PhoneNumbers],
                     });
                     if(data.length > 0) {
-                        const contact = data.reduce(
+                        const contact = groupBy(data.reduce(
                             (res, cur) => {
                                 if(cur.phoneNumbers != null) {
                                     for(const p of cur.phoneNumbers) {
@@ -39,6 +39,11 @@ const Contact = (props) => {
                                 return res;
                             },
                             []
+                        ),
+                        item => {
+                            const firstChar = (item.name.charAt(0) || '#').toLowerCase();
+                            return firstChar.match(/[a-z]/) ? firstChar : '#';
+                        }
                         );
                         setContacts(contact);
                     }
