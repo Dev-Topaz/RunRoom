@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, SectionList, ContactRow } from 'react-native';
+import { StyleSheet, View, Text, SectionList, TouchableHighlight } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { groupBy } from 'lodash';
 
@@ -54,15 +54,56 @@ const Contact = (props) => {
         })();
     }, []);
 
+    const sections = React.useMemo(() => {
+        return Object.entries(
+            contacts
+        ).map(([key, value]) => ({
+            key,
+            data: value.sort((a, b) => (a.name || a.name || '') < (b.name || b.name || '') ? -1 : 1),
+        })).sort((a, b) => {
+            a.key < b.key ? -1 : 1
+        });
+    }, [contacts]);
+
+    const ContactRow = React.memo(
+        ({ onPress, name, emailOrNumber, selected }) => {
+            return (
+                <TouchableHighlight onPress={onPress}>
+                    <View style={{ flexDirection: 'row', padding: 16, alignItems: 'center' }}>
+                        <Text style={{ marginRight: 16 }}>{selected ? '✅' : '⭕️'}</Text>
+                        <View style={{ flex: 1 }}>
+                            <Text>{name}</Text>
+                            <Text style={{ marginTop: 4, color: '#666' }}>{emailOrNumber}</Text>
+                        </View>
+                    </View>
+                </TouchableHighlight>
+            );
+        }
+    );
+
     return (
         <View style={{ flex: 1 }}>
-            
+            <SectionList
+                sections={sections}
+                keyExtractor={item => item.id}
+                renderSectionHeader={({ section }) => (
+                    <Text>{section.key.toUpperCase()}</Text>
+                )}
+                renderItem={({ item }) => {
+                    return (
+                        <ContactRow
+                            name={item.name}
+                            emailOrNumber={item.email || item.phoneNumber}
+                        />
+                    );
+                }}
+            />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
+    
 });
 
 export default Contact;
