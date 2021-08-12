@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, SectionList, TouchableHighlight } from 'react-native';
 import * as Contacts from 'expo-contacts';
 import { groupBy } from 'lodash';
+import css from '../../css';
 
 const Contact = (props) => {
 
@@ -69,7 +70,7 @@ const Contact = (props) => {
         ({ onPress, name, emailOrNumber, selected }) => {
             return (
                 <TouchableHighlight onPress={onPress}>
-                    <View style={{ flexDirection: 'row', padding: 16, alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', padding: 16, alignItems: 'center', borderBottomWidth: 0.5 }}>
                         <Text style={{ marginRight: 16 }}>{selected ? '✅' : '⭕️'}</Text>
                         <View style={{ flex: 1 }}>
                             <Text>{name}</Text>
@@ -82,12 +83,13 @@ const Contact = (props) => {
     );
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingTop: 55 }}>
+            <Text style={{ fontSize: 22 }}>Your Contacts</Text>
             <SectionList
                 sections={sections}
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section }) => (
-                    <Text>{section.key.toUpperCase()}</Text>
+                    <Text style={{ fontSize: 18, paddingLeft: 16, fontWeight: 'bold', backgroundColor: 'green' }}>{section.key.toUpperCase()}</Text>
                 )}
                 renderItem={({ item }) => {
                     return (
