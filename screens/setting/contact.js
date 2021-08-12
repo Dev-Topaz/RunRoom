@@ -40,8 +40,8 @@ const Contact = (props) => {
                             },
                             []
                         ),
-                        item => {
-                            const firstChar = (item.name.charAt(0) || '#').toLowerCase();
+                        rowItem => {
+                            const firstChar = (rowItem.name.charAt(0) || '#').toLowerCase();
                             return firstChar.match(/[a-z]/) ? firstChar : '#';
                         }
                         );
