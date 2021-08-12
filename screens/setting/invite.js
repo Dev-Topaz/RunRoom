@@ -22,7 +22,7 @@ const InviteFriends = (props) => {
     }
 
     const shareLink = () => {
-        
+        props.navigation.navigate('Contact');
     }
 
     const pressBackAction = () => {
