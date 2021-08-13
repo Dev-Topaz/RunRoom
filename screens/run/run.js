@@ -320,7 +320,7 @@ const Running = (props) => {
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>
                         <Text style={styles.titleText}>YOUR RUN</Text>
-                        <Text style={styles.titleDistance}>{raceStatus > 1 ? 'FINISHED' : convertFloat(distance) + (unit == 1 ? ' MILES' : ' KM')}</Text>
+                        <Text style={styles.titleDistance}>{raceStatus > 1 ? 'FINISHED' : convertFloat(distance, 2) + (unit == 1 ? ' MILES' : ' KM')}</Text>
                     </View>
                 </View>
                 <View style={styles.headerRight}>

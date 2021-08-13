@@ -97,13 +97,16 @@ export async function initUnitFromStorageToRedux(dispatch) {
     }
 }
 
-export function convertFloat(distance, num = 1) {
+export function convertFloat(distance, num = 1, isCeil = false) {
     if(num == 1) {
         let dist = Math.floor(distance * 10) / 10;
-        if(isInteger(dist))
+        if(isInteger(dist)) {
+            if(isCeil && dist < 1)
+                return '0.1';
             return dist + '.0';
-        else 
+        } else {
             return dist + '';
+        }
     } else if(num == 2) {
         let dist = Math.floor(distance * 100) / 100;
         if(isInteger(dist))

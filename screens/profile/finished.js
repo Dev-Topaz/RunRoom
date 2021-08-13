@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ImageBackground, Text, Pressable, FlatList, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, Text, Pressable, FlatList, ActivityIndicator } from 'react-native';
 import global from '../../global';
 import css from '../../css';
 
@@ -10,6 +10,7 @@ import { changeBoard } from '../../store/actions/actions';
 
 const ProfileFinished = (props) => {
 
+    const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
     const dispatch = useDispatch();
@@ -23,10 +24,17 @@ const ProfileFinished = (props) => {
         setLoading(true);
         getFinishedRuns(page, 3, accessToken).then(result => {
             if(result != null && result.length > 0) {
+                let res = [...result];
+                res.forEach(item => {
+                    const idx = item.runners.findIndex(element => userId == element.runnerId);
+                    if(idx > -1)
+                        item.runners.splice(idx, 1);
+                });
+
                 if(page != 1)
-                    setData([...data, ...result]);
+                    setData([...data, ...res]);
                 else
-                    setData(result);
+                    setData(res);
             }
             setLoading(false);
         });
@@ -56,7 +64,7 @@ const ProfileFinished = (props) => {
                 <View style={css.thumbOverlay}>
                     <View style={css.leftTop}>
                         <Text style={css.thumbRunnerText}>{item.totalRunnersCount + (item.totalRunnersCount == 1 ? ' Runner' : ' Runners')}</Text>
-                        <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers) + (unit == 1 ? ' MI' : ' KM')}</Text>
+                        <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers, 1, true) + (unit == 1 ? ' MI' : ' KM')}</Text>
                         <Text style={styles.dateText}>{displayRunDateTime(new Date(), item.runDateTime)}</Text>
                     </View>
                     <View style={css.rightBottom}>
@@ -77,9 +85,9 @@ const ProfileFinished = (props) => {
                                         <View style={[css.badge, {right: 0}]}>
                                             <Text style={css.badgeText}>{'+' + (item.runners.length - 3)}</Text>
                                         </View>
-                                        <Image source={item.runners[2].runnerPicture == null ? unknown : item.runners[2].runnerPicture} style={[css.followAvatar, {right: 25}]}/>
-                                        <Image source={item.runners[1].runnerPicture == null ? unknown : item.runners[1].runnerPicture} style={[css.followAvatar, {right: 48}]}/>
-                                        <Image source={item.runners[0].runnerPicture == null ? unknown : item.runners[0].runnerPicture} style={[css.followAvatar, {right: 70}]}/>
+                                        <Image source={item.runners[2].runnerPicture == null ? unknown : {uri: item.runners[2].runnerPicture}} style={[css.followAvatar, {right: 25}]}/>
+                                        <Image source={item.runners[1].runnerPicture == null ? unknown : {uri: item.runners[1].runnerPicture}} style={[css.followAvatar, {right: 48}]}/>
+                                        <Image source={item.runners[0].runnerPicture == null ? unknown : {uri: item.runners[0].runnerPicture}} style={[css.followAvatar, {right: 70}]}/>
                                     </View>
                                 : item.runners.map((runner, idx = 0) => {
                                     return (

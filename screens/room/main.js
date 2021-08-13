@@ -196,7 +196,7 @@ const RoomMain = (props) => {
                 <View style={css.thumbOverlay}>
                     <View style={css.leftTop}>
                         <Text style={css.thumbRunnerText}>{item.totalRunnersCount + (item.totalRunnersCount  == 1 ? ' Runner' : ' Runners')}</Text>
-                        <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers) + (unit == 1 ? ' MI' : ' KM')}</Text>
+                        <Text style={css.thumbDistanceText}>{convertFloat(unit == 1 ? item.runDistanceMiles : item.runDistanceKilometers, 1, true) + (unit == 1 ? ' MI' : ' KM')}</Text>
                     </View>
                     <View style={css.rightBottom}>
                         <Text style={css.typeSymbol}>●</Text>
@@ -220,9 +220,9 @@ const RoomMain = (props) => {
                                         <View style={[css.badge, {right: 0}]}>
                                             <Text style={css.badgeText}>{'+' + (item.runners.length - 3)}</Text>
                                         </View>
-                                        <Image source={item.runners[2].runnerPicture == null ? unknown : item.runners[2].runnerPicture} style={[css.followAvatar, {right: 25}]}/>
-                                        <Image source={item.runners[1].runnerPicture == null ? unknown : item.runners[1].runnerPicture} style={[css.followAvatar, {right: 48}]}/>
-                                        <Image source={item.runners[0].runnerPicture == null ? unknown : item.runners[0].runnerPicture} style={[css.followAvatar, {right: 70}]}/>
+                                        <Image source={item.runners[2].runnerPicture == null ? unknown : {uri: item.runners[2].runnerPicture}} style={[css.followAvatar, {right: 25}]}/>
+                                        <Image source={item.runners[1].runnerPicture == null ? unknown : {uri: item.runners[1].runnerPicture}} style={[css.followAvatar, {right: 48}]}/>
+                                        <Image source={item.runners[0].runnerPicture == null ? unknown : {uri: item.runners[0].runnerPicture}} style={[css.followAvatar, {right: 70}]}/>
                                     </View>
                                 : item.runners.map((runner, idx = 0) => {
                                     return (
