@@ -69,6 +69,7 @@ const EditProfile = (props) => {
                             let area = await Location.reverseGeocodeAsync(position);
                             //console.log(area);
                             if(area[0].country != null) {
+                                Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
                                 if(area[0].city != null)
                                     setRunningLocation(area[0].city + ', ' + area[0].country);
                                 else

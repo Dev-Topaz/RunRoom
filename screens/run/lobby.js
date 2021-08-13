@@ -4,12 +4,14 @@ import SwitchToggle from 'react-native-switch-toggle';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getLobbyRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat } from '../../utils/func';
+import { setRank } from '../../store/actions/actions';
 
 const Lobby = (props) => {
 
+    const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
@@ -98,6 +100,7 @@ const Lobby = (props) => {
                     });
                     setData(target);
                 }
+                dispatch(setRank(true));
             } else {
                 setAlertVisible(true);
                 setToggle(false);
@@ -108,6 +111,7 @@ const Lobby = (props) => {
                     setData(result);
                 }
             });
+            dispatch(setRank(false));
         }
     }, [isToggle]);
 

@@ -6,12 +6,14 @@ import * as Location from 'expo-location';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { updateRun, getRaceRunners } from '../../utils/api';
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
+import { setRank } from '../../store/actions/actions';
 
 const Running = (props) => {
 
+    const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
@@ -30,7 +32,7 @@ const Running = (props) => {
     const [distData, setDistData] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
     const [curPace, setCurPace] = useState(0);
-    const [rank, setRank] = useState(1);
+    const [runRank, setRunRank] = useState(1);
     const [lastPoint, setLastPoint] = useState(null);
     //const [lastCoords, setLastCoords] = useState(null);
     const [elapsed, setElapsed] = useState(1);
@@ -192,7 +194,7 @@ const Running = (props) => {
                             getRaceRunners(roomId, 1, 500, accessToken).then(res => {
                                 if(res != null) {
                                     const idx = res.findIndex(item => userId === item.runnerId);
-                                    setRank(idx + 1);
+                                    setRunRank(idx + 1);
                                     setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
                                     setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
                                     
@@ -207,6 +209,8 @@ const Running = (props) => {
                                                         target.push(item);
                                                 });
                                                 setData(target);
+                                                const index = target.findIndex(item => item.runnerId === userId);
+                                                setRunRank(index + 1);
                                             }
                                         } else {
                                             setData(res);
@@ -264,21 +268,25 @@ const Running = (props) => {
                         target.push(item);
                 });
                 setData(target);
+                const index = target.findIndex(item => userId === item.runnerId);
+                setRunRank(index + 1);
             } else {
                 setAlertVisible(true);
                 setToggle(false);
             }
+            dispatch(setRank(true));
         } else {
             getRaceRunners(roomId, 1, 500, accessToken).then(res => {
                 if(res != null) {
-                    const idx = res.findIndex(item => userId === item.runnerId );
-                    setRank(idx + 1);
+                    const idx = res.findIndex(item => userId === item.runnerId);
+                    setRunRank(idx + 1);
                     setDistData(unit == 1 ? res[idx].runDistanceMiles : res[idx].runDistanceKilometers);
                     setAvgPace(distData == 0 ? 0 : unit == 1 ? res[idx].averagePaceMiles : res[idx].averagePaceKilometers);
 
                     setData(res);
                 }
             });
+            dispatch(setRank(false));
         }
     }, [isToggle]);
 
@@ -316,7 +324,7 @@ const Running = (props) => {
                     </View>
                 </View>
                 <View style={styles.headerRight}>
-                    <Text style={styles.headerRank}>{'' + rank}</Text>
+                    <Text style={styles.headerRank}>{'' + runRank}</Text>
                     <Text style={styles.indexText}>Rank</Text>
                 </View>
             </View>

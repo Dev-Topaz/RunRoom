@@ -5,21 +5,24 @@ import { ProgressBar } from 'react-native-paper';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { getRaceLeaderBoard } from '../../utils/api';
 import { convertFloat, displayPace } from '../../utils/func';
+import { setRank } from '../../store/actions/actions';
 
 const Result = (props) => {
 
+    const dispatch = useDispatch();
     const userId = useSelector(state => state.user.userId);
     const accessToken = useSelector(state => state.user.accessToken);
     const canRank = useSelector(state => state.run.canRank);
+    const isRank = useSelector(state => state.setting.isRank);
     const unit = useSelector(state => state.setting.unit);
     const roomId = useSelector(state => state.run.boardId);
     const distance = useSelector(unit == 1 ? state => state.run.boardDistanceMiles : state => state.run.boardDistanceKilometers);
 
     const [data, setData] = useState([]);
-    const [rank, setRank] = useState(1);
+    const [runRank, setRunRank] = useState(1);
     const [hour, setHour] = useState(0);
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
@@ -30,6 +33,7 @@ const Result = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
+        setToggle(isRank);
     }, []);
 
     const setTimeInfo = (ts) => {
@@ -45,20 +49,23 @@ const Result = (props) => {
             if(canRank) {
                 let target = [];
                 const idx = data.findIndex(item => item.runnerId === userId);
-                const targetAgeGroup = data[idx].runnerAgeGroup;
-                const targetGender = data[idx].runnerGender;
+                if(idx > -1) {
+                    const targetAgeGroup = data[idx].runnerAgeGroup;
+                    const targetGender = data[idx].runnerGender;
 
-                data.forEach(item => {
-                    if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
-                        target.push(item);
-                });
-                setData(target);
-                const index = target.findIndex(item => item.runnerId === userId);
-                if(index > -1) {
-                    setRank(index + 1);
-                    //setAvgPace(unit == 1 ? target[index].averagePaceMiles : target[index].averagePaceKilometers);
-                    //setTimeInfo(target[index].runTimeInSeconds);
+                    data.forEach(item => {
+                        if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
+                            target.push(item);
+                    });
+                    setData(target);
+                    const index = target.findIndex(item => item.runnerId === userId);
+                    if(index > -1) {
+                        setRunRank(index + 1);
+                        //setAvgPace(unit == 1 ? target[index].averagePaceMiles : target[index].averagePaceKilometers);
+                        //setTimeInfo(target[index].runTimeInSeconds);
+                    }
                 }
+                dispatch(setRank(true));
             } else {
                 setAlertVisible(true);
                 setToggle(false);
@@ -68,7 +75,7 @@ const Result = (props) => {
                 if(result != null) {
                     const idx = result.findIndex(item => item.runnerId === userId);
                     if(idx > -1) {
-                        setRank(idx + 1);
+                        setRunRank(idx + 1);
                         setAvgPace(unit == 1 ? result[idx].averagePaceMiles : result[idx].averagePaceKilometers);
                         setTimeInfo(result[idx].runTimeInSeconds);
                     }
@@ -76,6 +83,7 @@ const Result = (props) => {
                     setData(result);
                 }
             });
+            dispatch(setRank(false));
         }
     }, [isToggle]);
 
@@ -86,21 +94,23 @@ const Result = (props) => {
             if(result != null) {
                 const idx = result.findIndex(item => item.runnerId === userId);
                 if(isToggle) {
-                    let target = [];
-                    const targetAgeGroup = result[idx].runnerAgeGroup;
-                    const targetGender = result[idx].runnerGender;
-
-                    result.forEach(item => {
-                        if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
-                            target.push(item);
-                    });
-                    setData(target);
-                    const index = target.findIndex(item => item.runnerId === userId);
-                    if(index > -1)
-                        setRank(index + 1);
+                    if(idx > -1) {
+                        let target = [];
+                        const targetAgeGroup = result[idx].runnerAgeGroup;
+                        const targetGender = result[idx].runnerGender;
+                        
+                        result.forEach(item => {
+                            if(item.runnerAgeGroup == targetAgeGroup && item.runnerGender == targetGender)
+                                target.push(item);
+                        });
+                        setData(target);
+                        const index = target.findIndex(item => item.runnerId === userId);
+                        if(index > -1)
+                            setRunRank(index + 1);
+                    }
                 } else {
                     if(idx > -1) {
-                        setRank(idx + 1);
+                        setRunRank(idx + 1);
                         setAvgPace(unit == 1 ? result[idx].averagePaceMiles : result[idx].averagePaceKilometers);
                         setTimeInfo(result[idx].runTimeInSeconds);
                     }
@@ -129,7 +139,7 @@ const Result = (props) => {
                     </View>
                 </View>
                 <View style={styles.headerRight}>
-                    <Text style={styles.headerRank}>{'' + rank}</Text>
+                    <Text style={styles.headerRank}>{'' + runRank}</Text>
                     <Text style={styles.indexText}>Rank</Text>
                 </View>
             </View>
