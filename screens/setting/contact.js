@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, SectionList, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Text, SectionList, TouchableHighlight, Pressable } from 'react-native';
 import * as Contacts from 'expo-contacts';
+import { Icon } from 'react-native-elements';
 import { groupBy } from 'lodash';
 import css from '../../css';
+import global from '../../global';
+import SvgIcon from '../../components/svgIcon';
 
 const Contact = (props) => {
 
@@ -67,14 +70,17 @@ const Contact = (props) => {
     }, [contacts]);
 
     const ContactRow = React.memo(
-        ({ onPress, name, emailOrNumber, selected }) => {
+        ({ onPress, name, type, emailOrNumber, selected }) => {
             return (
                 <TouchableHighlight onPress={onPress}>
-                    <View style={{ flexDirection: 'row', padding: 16, alignItems: 'center', borderBottomWidth: 0.5 }}>
-                        <Text style={{ marginRight: 16 }}>{selected ? '✅' : '⭕️'}</Text>
-                        <View style={{ flex: 1 }}>
-                            <Text>{name}</Text>
-                            <Text style={{ marginTop: 4, color: '#666' }}>{emailOrNumber}</Text>
+                    <View style={styles.rowItem}>
+                        <Icon name={type ? 'email' : 'message-text'} type='material-community' size={24} color={'cadetblue'}/>
+                        <View style={styles.infoContainer}>
+                            <Text style={styles.nameText}>{name}</Text>
+                            <Text style={styles.emailText}>{emailOrNumber}</Text>
+                        </View>
+                        <View style={styles.checkMark}>
+                            <Icon name={'check-circle'} type='material-community' size={24} color={'orange'}/>
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -83,19 +89,25 @@ const Contact = (props) => {
     );
 
     return (
-        <View style={{ flex: 1, paddingTop: 55 }}>
-            <Text style={{ fontSize: 22 }}>Your Contacts</Text>
+        <View style={[css.bgContainer, { paddingHorizontal: 0 }]}>
+            <View style={styles.header}>
+                <Pressable style={css.backButton} onPress={() => props.navigation.navigate('InviteFriend')}>
+                    <SvgIcon icon='Back'/>
+                </Pressable>
+                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>YOUR CONTACTS</Text>
+            </View>
             <SectionList
                 sections={sections}
                 keyExtractor={item => item.id}
                 renderSectionHeader={({ section }) => (
-                    <Text style={{ fontSize: 18, paddingLeft: 16, fontWeight: 'bold', backgroundColor: 'green' }}>{section.key.toUpperCase()}</Text>
+                    <Text style={styles.sectionText}>{section.key.toUpperCase()}</Text>
                 )}
                 renderItem={({ item }) => {
                     return (
                         <ContactRow
                             name={item.name}
                             emailOrNumber={item.email || item.phoneNumber}
+                            type={item.email ? true : false}
                         />
                     );
                 }}
@@ -105,7 +117,39 @@ const Contact = (props) => {
 }
 
 const styles = StyleSheet.create({
-    
+    header: {
+        marginHorizontal: global.CONSTANTS.SIZE_20,
+        marginBottom: global.CONSTANTS.SIZE_20,
+    },
+    sectionText: {
+        fontSize: 20,
+        paddingLeft: 16,
+        paddingVertical: 10,
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(245, 247, 247, 1)',
+        color: 'rgba(121, 205, 193, 1)',
+    },
+    rowItem: {
+        flexDirection: 'row',
+        padding: 16,
+        alignItems: 'center',
+        borderBottomWidth: 0.2,
+    },
+    infoContainer: {
+        flex: 1,
+        marginLeft: 16,
+    },
+    checkMark: {
+        position: 'absolute',
+        right: 16,
+    },
+    nameText: {
+        fontSize: 15,
+    },
+    emailText: {
+        marginTop: 5,
+        color: '#666',
+    },
 });
 
 export default Contact;
