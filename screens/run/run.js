@@ -7,7 +7,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { updateRun, getRaceRunners } from '../../utils/api';
+import { updateRun, getRaceRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
 
@@ -311,6 +311,39 @@ const Running = (props) => {
         setRaceStatus(2);
     }
 
+    const pressFollowAction = (index) => {
+        let target = [...data];
+
+        switch(target[index].followingStatus) {
+            case 1:
+                follow(target[index].runnerId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            case 2:
+                stopFollowing(target[index].runnerId, accessToken).then(result => {
+                    if(result != null) {
+                        target[index].followingStatus = result;
+                        setData(target);
+                    }
+                });
+                return;
+            case 3:
+                follow(target[index].runnerId, accessToken).then(result => {
+                    if(result) {
+                        target[index].followingStatus = 2;
+                        setData(target);
+                    }
+                });
+                return;
+            default:
+                return;
+        }
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
@@ -389,7 +422,7 @@ const Running = (props) => {
                                         <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={styles.avatar}/>
                                         <View style={styles.infoContainer}>
                                             <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
-                                            <Pressable style={item.runnerId == userId ? [styles.followBadge, { backgroundColor: 'transparent' }] : item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge }>
+                                            <Pressable style={item.runnerId == userId ? [styles.followBadge, { backgroundColor: 'transparent' }] : item.followingStatus == 1 ? styles.followBadge : item.followingStatus == 2 ? styles.followingBadge : styles.followbackBadge } onPress={() => pressFollowAction(index)}>
                                                 <Text style={[styles.followText, { color: item.followingStatus == 2 ? 'white' : global.COLOR.PRIMARY100 }]}>{item.runnerId == userId ? '' : followType[item.followingStatus]}</Text>
                                             </Pressable>
                                         </View>
