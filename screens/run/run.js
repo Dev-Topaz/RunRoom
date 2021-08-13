@@ -159,7 +159,7 @@ const Running = (props) => {
                                 setCurPace(0);
                             } else {
                                 const delta = 2.5 / (unit == 1 ? 1609 : 1000);
-                                const curSpeed = 5 / (betweenDist - delta);
+                                const curSpeed = 5 / (betweenDist - delta) * 0.1 + avgPace * 0.9;
                                 setCurPace(curSpeed > 59999 ? 0 : curSpeed);
 
                                 let newDist = dist + betweenDist - delta;
