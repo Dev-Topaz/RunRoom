@@ -10,6 +10,7 @@ import SvgIcon from '../../components/svgIcon';
 const Contact = (props) => {
 
     const [contacts, setContacts] = useState([]);
+    const [selectedContacts, setSelectedContacts] = useState([]);
 
     useEffect(() => {
         (async () => {
@@ -58,21 +59,30 @@ const Contact = (props) => {
         })();
     }, []);
 
+    const addSelectedContacts = (data) => {
+        let target = [...selectedContacts];
+        const idx = target.findIndex(item => item.id === data.id);
+        if(idx > -1)
+            target.splice(idx, 1);
+        else
+            target.push(data);
+        setSelectedContacts(target);
+    }
+
     const sections = React.useMemo(() => {
         return Object.entries(
             contacts
         ).map(([key, value]) => ({
             key,
             data: value.sort((a, b) => (a.name || a.name || '') < (b.name || b.name || '') ? -1 : 1),
-        })).sort((a, b) => {
-            a.key < b.key ? -1 : 1
-        });
+        })).sort((a, b) => a.key < b.key ? -1 : 1
+        );
     }, [contacts]);
 
     const ContactRow = React.memo(
         ({ onPress, name, type, emailOrNumber, selected }) => {
             return (
-                <TouchableHighlight onPress={onPress}>
+                <TouchableHighlight underlayColor={global.COLOR.BACKGROUND} onPress={onPress}>
                     <View style={styles.rowItem}>
                         <Icon name={type ? 'email' : 'message-text'} type='material-community' size={24} color={'cadetblue'}/>
                         <View style={styles.infoContainer}>
@@ -80,7 +90,7 @@ const Contact = (props) => {
                             <Text style={styles.emailText}>{emailOrNumber}</Text>
                         </View>
                         <View style={styles.checkMark}>
-                            <Icon name={'check-circle'} type='material-community' size={24} color={'orange'}/>
+                            <Icon name={selected ? 'check-circle' : 'checkbox-blank-circle-outline'} type='material-community' size={24} color={selected ? 'orange' : 'gray'}/>
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -108,6 +118,8 @@ const Contact = (props) => {
                             name={item.name}
                             emailOrNumber={item.email || item.phoneNumber}
                             type={item.email ? true : false}
+                            selected={selectedContacts.findIndex(target => target.id === item.id) > -1 ? true : false}
+                            onPress={() => addSelectedContacts(item)}
                         />
                     );
                 }}
@@ -133,7 +145,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 16,
         alignItems: 'center',
-        borderBottomWidth: 0.2,
+        borderBottomWidth: 0.5,
+        borderColor: 'rgba(245, 247, 247, 1)',
     },
     infoContainer: {
         flex: 1,
