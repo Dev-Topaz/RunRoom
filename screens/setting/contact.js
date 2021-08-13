@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, SectionList, TouchableHighlight, Pressable } from 'react-native';
+import { StyleSheet, View, Text, SectionList, TouchableHighlight, Pressable, TouchableOpacity, Alert } from 'react-native';
 import * as Contacts from 'expo-contacts';
+import { composeAsync } from 'expo-mail-composer';
+import { isAvailableAsync, sendSMSAsync } from 'expo-sms';
 import { Icon } from 'react-native-elements';
 import { groupBy } from 'lodash';
 import css from '../../css';
@@ -69,6 +71,36 @@ const Contact = (props) => {
         setSelectedContacts(target);
     }
 
+    const pressSubmitAction = async() => {
+        let didShare = false;
+        const message = 'We can run together in https://runroom.com/cjsKck12';
+        const emails = selectedContacts.filter(item => item.email != null).map(item => item.email);
+        const phoneNumbers = selectedContacts.filter(item => item.phoneNumber != null).map(item => item.phoneNumber);
+        if(emails.length > 0) {
+            try {
+                const result = await composeAsync({
+                    recipients: emails,
+                    subject: 'RunRoom',
+                    body: message,
+                    isHtml: false,
+                });
+                didShare = didShare || result.status === 'sent';
+            } catch(e) {
+                Alert.alert(e.message);
+            }
+        }
+        if(phoneNumbers.length > 0 && (await isAvailableAsync())) {
+            try {
+                const result = await sendSMSAsync(phoneNumbers, message);
+                didShare = didShare || result.result === 'sent';
+            } catch(e) {
+                Alert.alert(e.message);
+            }
+        }
+        if(didShare)
+            Alert.alert('Thanks for sharing!!!');
+    }
+
     const sections = React.useMemo(() => {
         return Object.entries(
             contacts
@@ -124,6 +156,11 @@ const Contact = (props) => {
                     );
                 }}
             />
+            <View style={styles.footer}>
+                <TouchableOpacity style={css.submitButton} onPress={pressSubmitAction}>
+                    <Text style={css.submitText}>{'Invite contacts (' + selectedContacts.length + ')'}</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -162,6 +199,12 @@ const styles = StyleSheet.create({
     emailText: {
         marginTop: 5,
         color: '#666',
+    },
+    footer: {
+        position: 'absolute',
+        bottom: global.CONSTANTS.SPACE_40,
+        width: '100%',
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
     },
 });
 
