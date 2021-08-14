@@ -27,13 +27,13 @@ const Result = (props) => {
     const [min, setMin] = useState(0);
     const [sec, setSec] = useState(0);
     const [avgPace, setAvgPace] = useState(0);
-    const [isToggle, setToggle] = useState(false);
+    const [isToggle, setToggle] = useState(isRank);
     const [alertVisible, setAlertVisible] = useState(false);
     const [current, setCurrent] = useState(new Date());
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        setToggle(isRank);
+        //setToggle(isRank);
     }, []);
 
     const setTimeInfo = (ts) => {

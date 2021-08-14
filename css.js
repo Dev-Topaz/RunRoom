@@ -300,7 +300,7 @@ export default StyleSheet.create({
         marginLeft: 6,
     },
     participateButton: {
-        width: 105,
+        width: 120,
         height: 30,
         borderRadius: 15,
         justifyContent: 'center',
@@ -323,7 +323,6 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: global.COLOR.SECONDARY,
-        marginBottom: 5,
     },
     enterLobbyText: {
         fontFamily: 'SFProMedium',

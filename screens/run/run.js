@@ -26,7 +26,7 @@ const Running = (props) => {
     //const [startTime, setStartTime] = useState(new Date());
     const [raceStatus, setRaceStatus] = useState(1);
     const [data, setData] = useState([]);
-    const [isToggle, setToggle] = useState(false);
+    const [isToggle, setToggle] = useState(isRank);
     const [dist, setDist] = useState(0);
     //const [lastMoment, setLastMoment] = useState(new Date());
     const [distData, setDistData] = useState(0);
@@ -47,7 +47,7 @@ const Running = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        setToggle(isRank);
+        //setToggle(isRank);
         //let _client;
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();

@@ -22,7 +22,7 @@ const Lobby = (props) => {
     const canRank = useSelector(state => state.run.canRank);
     const isRank = useSelector(state => state.setting.isRank);
 
-    const [isToggle, setToggle] = useState(false);
+    const [isToggle, setToggle] = useState(isRank);
     const [data, setData] = useState([]);
     const [current, setCurrent] = useState(new Date());
     const [now, setNow] = useState(new Date());
@@ -32,7 +32,7 @@ const Lobby = (props) => {
 
     useEffect(() => {
         StatusBar.setHidden(true);
-        setToggle(isRank);
+        //setToggle(isRank);
     }, []);
 
     useEffect(() => {
