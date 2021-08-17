@@ -126,10 +126,10 @@ const Setting = (props) => {
                     <SvgIcon icon='Forward'/>
                 </View>
             </Pressable>
-            <Pressable style={[styles.textItem, { marginTop: 20 }]}>
+            <Pressable style={[styles.textItem, { marginTop: 20 }]} onPress={() => props.navigation.navigate('TermsAndConditions')}>
                 <Text style={styles.indicatorTitle}>Terms of Service</Text>
             </Pressable>
-            <Pressable style={styles.textItem}>
+            <Pressable style={styles.textItem} onPress={() => props.navigation.navigate('PrivacyPolicy')}>
                 <Text style={styles.indicatorTitle}>Privacy Policy</Text>
             </Pressable>
             <Pressable style={styles.textItem} onPress={pressLogoutAction}>
