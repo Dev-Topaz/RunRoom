@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, Pressable } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Pressable } from 'react-native';
 import global from '../../global';
 import css from '../../css';
 import SvgIcon from '../../components/svgIcon';
@@ -8,9 +8,12 @@ const PrivacyPolicy = (props) => {
 
     return(
         <View style={styles.bgContainer}>
-            <Pressable>
-                <SvgIcon icon='Back'/>
-            </Pressable>
+            <View style={styles.header}>
+                <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Settings')}>
+                    <SvgIcon icon='Back'/>
+                </Pressable>
+                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>PRIVACY POLICY</Text>
+            </View>
             <ScrollView style={{ paddingHorizontal: 5 }}>
                 <Text>RUNROOM PRIVACY POLICY</Text>
                 <Text>August 1, 2021</Text>
@@ -290,7 +293,11 @@ const styles = StyleSheet.create({
     bgContainer: {
         flex: 1,
         backgroundColor: 'white',
-
+        paddingTop: global.CONSTANTS.SPACE_55,
+    },
+    header: {
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        marginBottom: 10,
     }
 });
 
