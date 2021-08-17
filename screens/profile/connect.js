@@ -101,7 +101,7 @@ const ProfileConnection = (props) => {
             //    }
             //    setLoading(false);
             //});
-            setData([]);
+            //setData([]);
             setLoading(false);
         }
         setLoading(false);
