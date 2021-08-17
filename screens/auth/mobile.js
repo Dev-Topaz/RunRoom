@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Alert } from 'react-native';
 import PhoneInput from 'react-native-phone-input';
-import AppLoading from 'expo-app-loading';
 import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
@@ -58,7 +57,7 @@ const MobileInput = (props) => {
     }
 
     if(!isLoaded)
-        return (<AppLoading/>);
+        return (<View/>);
     
     return (
         <View style={css.bgAuthContainer}>

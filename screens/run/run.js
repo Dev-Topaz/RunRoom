@@ -3,6 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity, Pressable, ScrollView,
 import SwitchToggle from 'react-native-switch-toggle';
 import { ProgressBar } from 'react-native-paper';
 import * as Location from 'expo-location';
+import * as TaskManager from 'expo-task-manager';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
@@ -48,7 +49,7 @@ const Running = (props) => {
     useEffect(() => {
         StatusBar.setHidden(true);
         //setToggle(isRank);
-        //let _client;
+        let _client;
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -58,11 +59,11 @@ const Running = (props) => {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                //_client = await startLocationTracking();
+                _client = await startLocationTracking();
             }
         })();
 
-        //return () => _client.remove();
+        return () => _client.remove();
     }, []);
 
     useEffect(() => {
@@ -84,6 +85,15 @@ const Running = (props) => {
 
         return () => clearInterval(timer);
     }, [current]);
+
+    const startLocationTracking = async() => {
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+            accuracy: Location.Accuracy.BestForNavigation,
+            distanceInterval: 5,
+            timeInterval: 5000,
+            activityType: Location.ActivityType.Fitness,
+        });
+    }
 
     //const startLocationTracking = async() => {
     //    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
@@ -490,16 +500,16 @@ const Running = (props) => {
     );
 }
 
-//TaskManager.defineTask(`${LOCATION_TASK_NAME}`, ({ data, err }) => {
-//    if(err) {
-//        console.log(err);
-//        return;
-//    }
-//    if(data) {
-//        const { locations } = data;
-//        console.log(locations);
-//    }
-//});
+TaskManager.defineTask(`${LOCATION_TASK_NAME}`, ({ data, err }) => {
+    if(err) {
+        console.log(err);
+        return;
+    }
+    if(data) {
+        const { locations } = data;
+        console.log(locations);
+    }
+});
 
 const styles = StyleSheet.create({
     header: {
@@ -767,4 +777,4 @@ export default Running;
 
 const followType = [ '', 'Follow', 'Following', 'Follow back' ];
 
-//const LOCATION_TASK_NAME = 'background-location-task';
+const LOCATION_TASK_NAME = 'background-location-task';
