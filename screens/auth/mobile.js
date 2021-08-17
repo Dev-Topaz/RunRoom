@@ -4,6 +4,7 @@ import PhoneInput from 'react-native-phone-input';
 import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
+import Loading from '../../components/loading';
 
 import { checkIfLoggedIn, initUnitFromStorageToRedux } from '../../utils/func';
 import { useDispatch } from 'react-redux';
@@ -57,7 +58,7 @@ const MobileInput = (props) => {
     }
 
     if(!isLoaded)
-        return (<View/>);
+        return (<Loading/>);
     
     return (
         <View style={css.bgAuthContainer}>

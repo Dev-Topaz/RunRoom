@@ -73,6 +73,7 @@ export default {
             STOCK_19: require('./assets/stock/woman10.png'),
         },
         UNKNOWN: require('./assets/unknown.png'),
+        LOADING: require('./assets/loading.gif'),
     },
     FONT: {
         FUTURA: require('./assets/fonts/FuturaCondExtraBoldObl.otf'),
