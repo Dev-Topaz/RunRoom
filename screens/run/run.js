@@ -53,13 +53,18 @@ const Running = (props) => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                Alert.alert('Your Location Permission is denied');
+                Alert.alert('Your Location Foreground Permission is denied');
                 props.navigation.navigate('Room');
             } else {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                _client = await startLocationTracking();
+                const { status } = Location.requestBackgroundPermissionsAsync();
+                if (status !== 'granted') {
+                    Alert.alert('Your Location Background Permission is denied');
+                } else {
+                    _client = await startLocationTracking();
+                }
             }
         })();
 
