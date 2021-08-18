@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, ScrollView, View, Text, Pressable } from 'react-native';
+import { StyleSheet, ScrollView, View, Text, Pressable, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
 import global from '../../global';
 import css from '../../css';
 import SvgIcon from '../../components/svgIcon';
@@ -289,6 +290,14 @@ const PrivacyPolicy = (props) => {
                     team@runroom-app.com.
                 </Text>
             </ScrollView>
+            <View style={styles.bottomContainer}>
+                <TouchableOpacity style={styles.minusButton}>
+                    <Icon name='minus-thick' type='material-community' size={15}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.plusButton}>
+                    <Icon name='plus-thick' type='material-community' size={15}/>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
@@ -305,7 +314,7 @@ const styles = StyleSheet.create({
     },
     docContainer: {
         paddingHorizontal: 15,
-        marginBottom: 40,
+        marginBottom: global.CONSTANTS.SPACE_40,
     },
     docTitle: {
         fontSize: 18,
@@ -339,7 +348,30 @@ const styles = StyleSheet.create({
         lineHeight: 18,
         fontWeight: 'bold',
         marginBottom: 5,
-    }
+    },
+    bottomContainer: {
+        position: 'absolute',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: global.CONSTANTS.SPACE_40,
+        paddingVertical: 10,
+    },
+    minusButton: {
+        width: 40,
+        height: 20,
+        backgroundColor: global.COLOR.WHITE75,
+        marginRight: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    plusButton: {
+        width: 40,
+        height: 20,
+        backgroundColor: global.COLOR.WHITE75,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default PrivacyPolicy;
