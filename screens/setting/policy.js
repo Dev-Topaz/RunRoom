@@ -4,6 +4,8 @@ import global from '../../global';
 import css from '../../css';
 import SvgIcon from '../../components/svgIcon';
 
+let zoom = 2;
+
 const PrivacyPolicy = (props) => {
 
     return(
@@ -14,10 +16,10 @@ const PrivacyPolicy = (props) => {
                 </Pressable>
                 <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>PRIVACY POLICY</Text>
             </View>
-            <ScrollView style={{ paddingHorizontal: 5 }}>
-                <Text>RUNROOM PRIVACY POLICY</Text>
-                <Text>August 1, 2021</Text>
-                <Text>
+            <ScrollView style={styles.docContainer}>
+                <Text style={styles.docTitle}>RUNROOM PRIVACY POLICY</Text>
+                <Text style={styles.docDate}>August 1, 2021</Text>
+                <Text style={styles.docParagraph}>
                     This Privacy Policy has been developed in line with RUNROOM’s 
                     commitment to privacy and describes how RUNROOM treat the information 
                     it collects and shares when you use the mobile RUNROOM application, 
@@ -25,12 +27,12 @@ const PrivacyPolicy = (props) => {
                     Corporation Metomine LLC, hereinafter referred to as “RUNROOM” or 
                     “we”, “us” or “our”.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     This Privacy Policy is effective immediately for users registering an 
                     RUNROOM accounts after the date of last update hereinabove and will 
                     become effective 30 days after said date for pre-existing users.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     By visiting the App, you are accepting this Privacy Policy. As the App will 
                     develop and evolve over time, this Privacy Policy may change to reflect that. 
                     Your continued use of the App following the effective date hereinabove 
@@ -39,8 +41,8 @@ const PrivacyPolicy = (props) => {
                     responsibility to check periodically for any changes we may make to this 
                     Privacy Policy.
                 </Text>
-                <Text>1. Collected and Disclosed Information</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>1. Collected and Disclosed Information</Text>
+                <Text style={styles.docParagraph}>
                     1.1 RUNROOM may request information from you in order to grant you 
                     access to selected content of the App. RUNROOM may use this information 
                     to contact you regarding your relationship with the App and to provide 
@@ -49,14 +51,14 @@ const PrivacyPolicy = (props) => {
                     have requested or to provide information about products or services that 
                     may be of interest to you.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     1.2 Other than as stated in this Privacy Policy, your personal information 
                     will not be used for promotional purposes without your consent. However, 
                     if you choose to fill out any user surveys, or participate in a contest, 
                     demographic information that you submit about yourself may be shared 
                     with associated sponsors and business partners in aggregate form.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     1.3 Information collected in aggregate form includes the number of visitors 
                     to the App, how long they stay, the pages they visit, the trails and locations 
                     they select, anonymized review content and trail share statistics.
@@ -72,21 +74,21 @@ const PrivacyPolicy = (props) => {
                     in aggregate form only to allow advertising banners on the App to be
                     targeted to the readers for whom they are most pertinent.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     1.4 RUNROOM cooperates with all law-enforcement inquiries, official 
                     investigations and legal proceedings initiated by governmental and/or law 
                     enforcement officials, and reserves the right to disclose personally 
                     identifying and/or aggregate information in connection with a subpoena or 
                     other court-sanctioned demand for such information.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     1.5 Nothing in this Privacy Policy is meant to impede RUNROOM’s right or 
                     ability to transfer, sell or otherwise dispose of any of its assets. RUNROOM
                     reserves the right to share your information with any successor to 
                     RUNROOM’s business, subject to acceptance by said any successor of all 
                     obligations under this Privacy Policy.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     1.6 RUNROOM reserves the right to use the information it collects about 
                     your computer, mobile or other device (including its geographical location), 
                     which may at times be able to identify you, for any lawful business purpose, 
@@ -100,14 +102,14 @@ const PrivacyPolicy = (props) => {
                     a group for any lawful business purpose, such as analysing usage trends and 
                     seeking compatible advertisers, sponsors, clients and customers.
                 </Text>
-                <Text>2. IP Addresses; Cookies and Other Tracking Technology</Text>
-                <Text>
+                <Text  style={styles.docSubTitle}>2. IP Addresses; Cookies and Other Tracking Technology</Text>
+                <Text style={styles.docParagraph}>
                     2.1 RUNROOM logs IP (Internet Protocol) addresses, or the location of your 
                     computer on the Internet, for systems administration and troubleshooting 
                     purposes. RUNROOM uses the IP address log in an aggregate fashion to 
                     track access to the App.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     2.2 As is standard practice on many web Apps, the App uses “cookies” and 
                     other similar technologies such as clear gifs (collectively "Local Device 
                     Storage") to recognize you and provide personalization, as well as to help 
@@ -121,7 +123,7 @@ const PrivacyPolicy = (props) => {
                     of your web software, if available; however, declining to use Local Device 
                     Storage may impede the ability of the App to function properly.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     2.3 In addition, RUNROOM may use a third-party advertising company to 
                     serve ads when you visit the App. This company may use information (not 
                     including your name, address, e-mail address, or telephone number) about 
@@ -130,15 +132,15 @@ const PrivacyPolicy = (props) => {
                     While serving advertisements to the App, said third-party advertiser may 
                     place or recognize a unique cookie on your browser
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     2.4 In addition to Local Device Storage, RUNROOM may use web beacons, 
                     web bugs and similar technologies (collectively, together with Local Device 
                     Storage, the "Tracking Technologies"). Tracking Technologies are used for 
                     all or some of the same lawful business purposes we described hereinbefore 
                     for the use of Local Device Storage.
                 </Text>
-                <Text>3. User Generated Content</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>3. User Generated Content</Text>
+                <Text style={styles.docParagraph}>
                     Please remember that any personal information you disclose in e.g. user
                     reviews becomes public information and you should exercise caution when
                     deciding to disclose your personal information. If you send e-mails, you 
@@ -147,8 +149,8 @@ const PrivacyPolicy = (props) => {
                     exercise caution when deciding to disclose any personal or confidential 
                     information in e-mails or via the Internet.
                 </Text>
-                <Text>4. E-mails</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>4. E-mails</Text>
+                <Text style={styles.docParagraph}>
                     4.1 RUNROOM will use your e-mail address to respond directly to your 
                     questions or comments. Except to provide you with products and services 
                     you have requested, RUNROOM will not share, sell, rent, swap or authorize 
@@ -160,7 +162,8 @@ const PrivacyPolicy = (props) => {
                     have received an e-mail from us in error, please contact team@runroomapp.com
                 </Text>
                 <Text>
-                    4.2 Account and Service-Related E-mails
+                    <Text style={styles.docEmphasis}>{'4.2 Account and Service-Related E-mails' + '\n'}</Text>
+                    <Text style={styles.docParagraph}>
                     RUNROOM reserves the right to send you e-mails relating to your account 
                     status. This includes order confirmations, renewal/expiration notices,
                     notices of credit-card problems, other transactional e-mails and 
@@ -169,15 +172,16 @@ const PrivacyPolicy = (props) => {
                     receive e-mails specific to your participation in those activities. If you
                     participate in an online survey, or submit a sweepstakes or contest entry, 
                     you may receive a confirmation e-mail.
+                    </Text>
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     4.3 Promotional E-mails
                     Certain parts of the App may give you the option to receive periodic emails
                     from RUNROOM about products and services it considers may be of interest 
                     to you. If you opt-in to receive these e-mails, you can choose not to receive 
                     additional messages in the future by following the instructions in the emails.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     4.4 Survey E-mails
                     RUNROOM may send you an e-mail inviting you to participate in user 
                     surveys, asking for feedback on the App and existing or prospective 
@@ -186,8 +190,8 @@ const PrivacyPolicy = (props) => {
                     so obtained will not be shared with third parties, except in aggregate and 
                     anonymized form.
                 </Text>
-                <Text>5. Social Networking Service</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>5. Social Networking Service</Text>
+                <Text style={styles.docParagraph}>
                     If you choose to access, visit and/or use any third-party social networking 
                     service(s) that may be integrated with the App, RUNROOM may receive 
                     personally identifiable information and other information about you and 
@@ -206,8 +210,8 @@ const PrivacyPolicy = (props) => {
                     you and your computer, mobile or other device that it receives through 
                     third-party social networking services.
                 </Text>
-                <Text>6. Third-Party Web Apps</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>6. Third-Party Web Apps</Text>
+                <Text style={styles.docParagraph}>
                     6.1 The App contains links to other web Apps that are not under our 
                     control, even though some of them may feature the RUNROOM logo 
                     through a marketing agreement with us. RUNROOM cannot be held 
@@ -217,15 +221,15 @@ const PrivacyPolicy = (props) => {
                     from the App. It is recommended that you review the privacy policy of any 
                     web App you visit.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     6.2 On occasion, RUNROOM sponsors special promotions, sweepstakes, 
                     and contests that are hosted by partner web Apps, which may require that 
                     your browser accept cookies, or that you agree to receive information from 
                     such sponsors. Please note that 6.1 is fully applicable to said partner web 
                     Apps.
                 </Text>
-                <Text>7. Security</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>7. Security</Text>
+                <Text style={styles.docParagraph}>
                     RUNROOM takes highly serious security measures designed to guard access 
                     to information, data quality, and physical security of servers where 
                     information is stored. The App has security measures in place to help 
@@ -236,15 +240,15 @@ const PrivacyPolicy = (props) => {
                     RUNROOM is not responsible for the security of information transmitted via 
                     the Internet.
                 </Text>
-                <Text>8. Notice to California Residents</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>8. Notice to California Residents</Text>
+                <Text style={styles.docParagraph}>
                     California Civil Code Section 179883 permits California residents to request 
                     certain information regarding the disclosure of personal information to 
                     third parties for direct marketing purposes. To make such a request, please 
                     contact RUNROOM at team@runroom-app.com.
                 </Text>
-                <Text>9. Transfer of Information</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>9. Transfer of Information</Text>
+                <Text style={styles.docParagraph}>
                     Your information may be transferred to and maintained on, servers and 
                     databases located outside of your state, providence, country or other 
                     governmental jurisdiction where the privacy laws may not be as protective 
@@ -254,8 +258,8 @@ const PrivacyPolicy = (props) => {
                     Your consent to this Privacy Policy followed by your submission of such 
                     information represents your agreement to any such transfer.
                 </Text>
-                <Text>10. Information Security and Notification</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>10. Information Security and Notification</Text>
+                <Text style={styles.docParagraph}>
                     10.1 Because no data transmission is completely secure, and no system of 
                     physical or electronic security is impenetrable, RUNROOM cannot guaranty 
                     the security of the information you submit or the security of servers, 
@@ -265,7 +269,7 @@ const PrivacyPolicy = (props) => {
                     personally identifiable information, and RUNROOM is not responsible for 
                     any loss of such information or the consequences thereof.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     10.2 Should you elect to store information, such as your personally 
                     identifiable information where others may access it, RUNROOM is not 
                     responsible for any loss of such information or the consequences thereof. If 
@@ -273,14 +277,14 @@ const PrivacyPolicy = (props) => {
                     identifiable information, it is up to you to take all the steps necessary to 
                     avoid or protect yourself.
                 </Text>
-                <Text>
+                <Text style={styles.docParagraph}>
                     10.3 In the unlikely event that we believe that the security of your 
                     information in RUNROOM’s possession or control may have been 
                     compromised, RUNROOM may seek to notify you via your computer, mobile 
                     or other device.
                 </Text>
-                <Text>11. RUNROOM Contact</Text>
-                <Text>
+                <Text style={styles.docSubTitle}>11. RUNROOM Contact</Text>
+                <Text style={styles.docParagraph}>
                     You can contact RUNROOM regarding this Privacy Policy by mail at
                     team@runroom-app.com.
                 </Text>
@@ -298,6 +302,43 @@ const styles = StyleSheet.create({
     header: {
         paddingHorizontal: global.CONSTANTS.SIZE_20,
         marginBottom: 10,
+    },
+    docContainer: {
+        paddingHorizontal: 15,
+        marginBottom: 40,
+    },
+    docTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    docDate: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    docParagraph: {
+        fontSize: 14,
+        textAlign: 'justify',
+        lineHeight: 18,
+        marginBottom: 10,
+    },
+    docSubTitle: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        lineHeight: 19,
+        marginTop: 5,
+        marginBottom: 10,
+    },
+    docEmphasis: {
+        fontSize: 14,
+        textAlign: 'justify',
+        lineHeight: 18,
+        fontWeight: 'bold',
+        marginBottom: 5,
     }
 });
 
