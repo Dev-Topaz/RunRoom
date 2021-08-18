@@ -579,3 +579,27 @@ export async function refreshAccessToken(accessToken, refreshToken) {
 
     return result;
 }
+
+export async function enterLobby(userId, roomId, accessToken) {
+
+    const result = await Axios.post('/RunRooms/EnterLobby', {
+        runnerId: userId,
+        runRoomId: roomId,
+    }, {
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(
+        async function(response) {
+            if(response.status == 200)
+                return response.data.success;
+            else
+                return false;
+        }
+    ).catch(err => {
+        console.log(err);
+        return false;
+    });
+
+    return result;
+}

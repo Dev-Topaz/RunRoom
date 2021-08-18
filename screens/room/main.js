@@ -9,7 +9,7 @@ import FollowModal from '../../components/followModal';
 import FilterModal from '../../components/filterModal';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllRunRooms, joinRun, disjoinRun } from '../../utils/api';
+import { getAllRunRooms, joinRun, disjoinRun, enterLobby } from '../../utils/api';
 import { changeRoom } from '../../store/actions/actions';
 
 const RoomMain = (props) => {
@@ -182,7 +182,13 @@ const RoomMain = (props) => {
     const pressLobbyAction = (roomId, runDateTime, distMile, distKilo) => {
         const distance = unit == 1 ? distMile : distKilo;
         dispatch(changeRoom(roomId, runDateTime, distance, 'Room'));
-        props.navigation.navigate('Race');
+        enterLobby(userId, roomId, accessToken).then(result => {
+            if(result) {
+                props.navigation.navigate('Race');
+            } else {
+                Alert.alert('ERROR', 'There is an error in entering a lobby.');
+            }
+        });
     }
 
     const pressFollowingAction = (data) => {
