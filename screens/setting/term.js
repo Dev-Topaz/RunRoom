@@ -69,7 +69,7 @@ const TermsAndConditions = (props) => {
                     jurisdictions do so at their own volition and are responsible for compliance 
                     with local law.
                 </Text>
-                <Text>2. Grant of License</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>2. Grant of License</Text>
                 <Text>
                     This Agreement provides you with a personal, revocable, non-exclusive, 
                     non-transferable license to use as end-user the App subject to your 
@@ -84,7 +84,7 @@ const TermsAndConditions = (props) => {
                     that is unlawful, prohibited by any applicable regulation or is otherwise 
                     inconsistent with the Terms.
                 </Text>
-                <Text>3. User accounts</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>3. User accounts</Text>
                 <Text>
                     3.1 In order to use some parts of the App, you may need to create an 
                     account. You must never use the account of another user without obtaining 
@@ -110,7 +110,7 @@ const TermsAndConditions = (props) => {
                     3.3 Please review the RUNROOM Privacy Policy for details of the 
                     management of other collection of personal data.
                 </Text>
-                <Text>4. User submissions</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>4. User submissions</Text>
                 <Text>
                     4.1 We may now or in the future allow the submission to the App of
                     photographic material and/or other communications by users of the App
@@ -216,7 +216,7 @@ const TermsAndConditions = (props) => {
                     that are your view of another’s opinion and are constructive - be that 
                     agreeing or disagreeing.
                 </Text>
-                <Text>5. Communications and Electronic Signatures</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>5. Communications and Electronic Signatures</Text>
                 <Text>
                     You agree to accept all communications from RUNROOM regarding use of 
                     the App at the addresses you provide to RUNROOM. RUNROOM is entitled 
@@ -229,7 +229,7 @@ const TermsAndConditions = (props) => {
                     these Terms will be legally binding and enforceable and will be the legal 
                     equivalent of your handwritten signature.
                 </Text>
-                <Text>6. Intellectual Property Rights</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>6. Intellectual Property Rights</Text>
                 <Text>
                     6.1 All material contained on this App, unless otherwise indicated, is 
                     protected by law to the fullest extent possible including, but not limited to, 
@@ -246,14 +246,14 @@ const TermsAndConditions = (props) => {
                     their respective owners. Removing or altering the copyright notice and any 
                     other proprietary notice on any material on this App is strictly prohibited.
                 </Text>
-                <Text>7. Privacy Policy</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>7. Privacy Policy</Text>
                 <Text>
                     Please see the RUNROOM Privacy Policy for a summary of our practices 
                     regarding the collection and use of non-public personal information. 
                     Acceptance of the Terms constitutes consent to the terms, covenants, 
                     conditions, and provisions of the RUNROOM Privacy Policy.
                 </Text>
-                <Text>8. Code of Conduct</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>8. Code of Conduct</Text>
                 <Text>
                     You may not, nor may you allow others to, directly or indirectly, do any of 
                     the following:
@@ -308,7 +308,7 @@ const TermsAndConditions = (props) => {
                 <Text>
                     (j) Use the App for any unlawful purpose.
                 </Text>
-                <Text>9. Assumption of Risk</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>9. Assumption of Risk</Text>
                 <Text>
                     Use of the Internet and the App is solely at your own risk and is subject to 
                     all applicable local, state, national, and international laws and regulations. 
@@ -322,7 +322,7 @@ const TermsAndConditions = (props) => {
                     complete risk for using the App and must make your own determination as 
                     to these matters.
                 </Text>
-                <Text>10. Law Enforcement</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>10. Law Enforcement</Text>
                 <Text>
                     RUNROOM reserves the right to view, monitor, and record activity on the 
                     App without notice or permission from you. Any information obtained by 
@@ -331,7 +331,7 @@ const TermsAndConditions = (props) => {
                     criminal activity on the App. RUNROOM will also comply with all court 
                     orders involving requests for such information.
                 </Text>
-                <Text>11. Links to Other Apps</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>11. Links to Other Apps</Text>
                 <Text>
                     RUNROOM may offer links to third-party webApps that may offer various 
                     products, services, and/or information. Users should be aware that use of 
@@ -347,7 +347,7 @@ const TermsAndConditions = (props) => {
                     your sole responsibility to conduct whatever investigation you deem 
                     necessary and appropriate.
                 </Text>
-                <Text>12. Events Beyond the Control of TrailStep</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>12. Events Beyond the Control of TrailStep</Text>
                 <Text>
                     You expressly absolve and release RUNROOM from any claim of harm 
                     resulting from a cause beyond the control of RUNROOM including, but not 
@@ -357,7 +357,7 @@ const TermsAndConditions = (props) => {
                     natural disasters, strikes or other labor problems, wars, terrorism, or 
                     governmental restrictions.
                 </Text>
-                <Text>13. DISCLAIMERS</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>13. DISCLAIMERS</Text>
                 <Text>
                     WHILE RUNROOM ENDEAVORS TO PROVIDE ACCURATE AND TIMELY 
                     INFORMATION, THE INFORMATION AVAILABLE ON THIS APP MAY INCLUDE 
@@ -375,7 +375,7 @@ const TermsAndConditions = (props) => {
                     MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND 
                     NONINFRINGEMENT.
                 </Text>
-                <Text>14. Limitation of Liability</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>14. Limitation of Liability</Text>
                 <Text>
                     TO THE EXTENT PERMITTED BY LAW, RUNROOM SHALL NOT BE LIABLE 
                     FOR ANY DIRECT, INDIRECT, PUNITIVE, INCIDENTAL, SPECIAL, OR 
@@ -393,7 +393,7 @@ const TermsAndConditions = (props) => {
                     LIABILITY AND YOUR EXCLUSIVE REMEDY WITH RESPECT TO YOUR USE OF 
                     THIS APP SHALL BE LIMITED TO THE EXTENT PERMITTED BY LAW.
                 </Text>
-                <Text>15. Indemnity</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>15. Indemnity</Text>
                 <Text>
                     You agree to defend, indemnify, and hold harmless RUNROOM and its 
                     affiliates and all of their employees, agents, directors, officers, proprietors, 
@@ -412,7 +412,7 @@ const TermsAndConditions = (props) => {
                     written consent of RUNROOM to be withheld at RUNROOM’s sole 
                     discretion.
                 </Text>
-                <Text>16. App Access and Termination</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>16. App Access and Termination</Text>
                 <Text>
                     The App is controlled and operated by RUNROOM from its offices within the 
                     United States. RUNROOM makes no representation that materials in the 
@@ -423,7 +423,7 @@ const TermsAndConditions = (props) => {
                     local laws. RUNROOM reserves the right at any time and for any reason to 
                     deny you access to the App and to terminate this Agreement.
                 </Text>
-                <Text>17. Submissions</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>17. Submissions</Text>
                 <Text>
                     Any ideas, suggestions, information, know-how, material, or any other 
                     content (collectively, “Content”) received through the App will be deemed 
@@ -435,7 +435,7 @@ const TermsAndConditions = (props) => {
                     developed for the full term of any rights that may exist in such Content, and 
                     you hereby waive any claim to the contrary.
                 </Text>
-                <Text>18. Governing Law</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>18. Governing Law</Text>
                 <Text>
                     This Agreement has been made in, and will be construed and enforced in 
                     accordance with the laws of the State of New York without respect to its 
@@ -446,7 +446,7 @@ const TermsAndConditions = (props) => {
                     not give rise to personal jurisdiction over RUNROOM, either specific or 
                     general, in jurisdictions other than New York.
                 </Text>
-                <Text>19. Waiver</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>19. Waiver</Text>
                 <Text>
                     Failure to insist on strict performance of any of the Terms will not operate 
                     as a waiver of any subsequent default or failure of performance. No waiver 
@@ -454,7 +454,7 @@ const TermsAndConditions = (props) => {
                     waiver of any other right or provision or a waiver of that same right or 
                     provision at any other time.
                 </Text>
-                <Text>20. Severability</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>20. Severability</Text>
                 <Text>
                     If any provision of the Terms shall be deemed unlawful, void or for any 
                     reason unenforceable, then that provision shall be deemed to be severable 
@@ -462,13 +462,13 @@ const TermsAndConditions = (props) => {
                     provision that most clearly matches the intent of the original provision, and 
                     the remainder of the Terms shall continue in effect.
                 </Text>
-                <Text>21. Relationship</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>21. Relationship</Text>
                 <Text>
                     No joint venture, partnership, employment, or agency relationship exists 
                     between you and RUNROOM as a result of this Agreement or your use of 
                     the App.
                 </Text>
-                <Text>22. Entire Agreement</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>22. Entire Agreement</Text>
                 <Text>
                     The Terms, together with the RUNROOM Privacy Policy represent the entire 
                     agreement between you and RUNROOM with respect to use of and material 
