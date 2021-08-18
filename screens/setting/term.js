@@ -1,27 +1,49 @@
-import React from 'react';
-import { StyleSheet, ScrollView, View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, ScrollView, View, Text, Pressable, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements';
+import global from '../../global';
+import css from '../../css';
+import SvgIcon from '../../components/svgIcon';
 
 const TermsAndConditions = (props) => {
 
+    const [zoom, setZoom] = useState(1);
+
+    const pressMinusAction = () => {
+        if(zoom > 1)
+            setZoom(zoom => zoom - 0.1);
+    }
+
+    const pressPlusAction = () => {
+        if(zoom < 2)
+            setZoom(zoom => zoom + 0.1);
+    }
+
     return(
-        <View>
-            <ScrollView>
-                <Text>RUNROOM TERMS AND CONDITIONS</Text>
-                <Text>Last updated on August 1, 2021</Text>
-                <Text>1. Important Introduction</Text>
-                <Text>
+        <View style={styles.bgContainer}>
+            <View style={styles.header}>
+                <Pressable style={css.backButton} onPress={() => props.navigation.navigate('Settings')}>
+                    <SvgIcon icon='Back'/>
+                </Pressable>
+                <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>TERMS AND CONDITIONS</Text>
+            </View>
+            <ScrollView style={styles.docContainer}>
+                <Text style={[styles.docTitle, { fontSize: 18 * zoom }]}>RUNROOM TERMS AND CONDITIONS</Text>
+                <Text style={[styles.docDate, { fontSize: 16 * zoom }]}>Last updated on August 1, 2021</Text>
+                <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>1. Important Introduction</Text>
+                <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
                     1.1 These terms and conditions are effective immediately for users 
                     registering an RUNROOM account after the date of last update hereinabove 
-                    and will become effective 30 days after said date for pre-existing users.
-                    These are the App terms and conditions ("Terms"), which apply to the use
-                    by end users of the RUNROOM App, hereinafter referred to as the “App”,
+                    and will become effective 30 days after said date for pre-existing users. 
+                    These are the App terms and conditions ("Terms"), which apply to the use 
+                    by end users of the RUNROOM App, hereinafter referred to as the “App”, 
                     owned and operated by the Delaware Corporation Metomine LLC, 
                     hereinafter referred to as “RUNROOM” or “we”, “us” or “our”.
                 </Text>
                 <Text>
                     1.2 By accessing the App you agree to be bound by: (i) the Terms; and (ii) 
                     the RUNROOM Privacy Policy, which is found on the App and incorporated 
-                    herein for reference. If you do not agree to the Terms or the RUNROOM
+                    herein for reference. If you do not agree to the Terms or the RUNROOM 
                     Privacy Policy you are not entitled to enter the App.
                 </Text>
                 <Text>
@@ -456,12 +478,85 @@ const TermsAndConditions = (props) => {
                     rights not expressly granted herein are expressly reserved.
                 </Text>
             </ScrollView>
+            <View style={styles.bottomContainer}>
+                <TouchableOpacity style={styles.minusButton} onPress={pressMinusAction}>
+                    <Icon name='minus' type='font-awesome-5' size={15}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.plusButton} onPress={pressPlusAction}>
+                    <Icon name='plus' type='font-awesome-5' size={15}/>
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-
+    bgContainer: {
+        flex: 1,
+        backgroundColor: 'white',
+        paddingTop: global.CONSTANTS.SPACE_55,
+    },
+    header: {
+        paddingHorizontal: global.CONSTANTS.SIZE_20,
+        marginBottom: 10,
+    },
+    docContainer: {
+        paddingHorizontal: 15,
+        marginBottom: global.CONSTANTS.SPACE_40,
+    },
+    docTitle: {
+        //fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    docDate: {
+        //fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    docParagraph: {
+        //fontSize: 14,
+        textAlign: 'justify',
+        //lineHeight: 18,
+        marginBottom: 10,
+    },
+    docSubTitle: {
+        //fontSize: 15,
+        fontWeight: 'bold',
+        textAlign: 'left',
+        //lineHeight: 19,
+        marginTop: 5,
+        marginBottom: 10,
+    },
+    bottomContainer: {
+        position: 'absolute',
+        flexDirection: 'row',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        bottom: global.CONSTANTS.SPACE_40,
+    },
+    minusButton: {
+        width: 60,
+        height: 30,
+        backgroundColor: 'rgba(98, 157, 143, 0.8)',
+        marginRight: 15,
+        borderTopLeftRadius: 15,
+        borderBottomLeftRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    plusButton: {
+        width: 60,
+        height: 30,
+        backgroundColor: 'rgba(98, 157, 143, 0.8)',
+        borderTopRightRadius: 15,
+        borderBottomRightRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default TermsAndConditions;
