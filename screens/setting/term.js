@@ -103,7 +103,7 @@ const TermsAndConditions = (props) => {
                     enables the service to work. This data is stored by RUNROOM against your 
                     profile. When you login to the App using social networks the application will 
                     check for any changes to your personal information stored by the App and 
-                    update your App profile accordingly. If you choose to delete your App
+                    update your App profile accordingly. If you choose to delete your App 
                     account all your data is deleted from the App immediately.
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
@@ -112,9 +112,9 @@ const TermsAndConditions = (props) => {
                 </Text>
                 <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>4. User submissions</Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    4.1 We may now or in the future allow the submission to the App of
-                    photographic material and/or other communications by users of the App
-                    (collectively "User Submissions"). User Submissions must always comply
+                    4.1 We may now or in the future allow the submission to the App of 
+                    photographic material and/or other communications by users of the App 
+                    (collectively "User Submissions"). User Submissions must always comply 
                     with the Terms and with any separate terms and conditions relating to such 
                     User Submissions that we may publish on the App from time to time.
                 </Text>
@@ -126,57 +126,52 @@ const TermsAndConditions = (props) => {
                     you enjoyed or didn’t. By submitting a review to the App you agree that the 
                     review is based on your own experience and is your genuine opinion, that 
                     you have no personal or business relationship with what you are reviewing 
-                    and have not been offered any incentive or payment to write your review.
+                    and have not been offered any incentive or payment to write your review. 
                     You agree that you understand that the App has a zero-tolerance policy on 
                     fake reviews.
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    4.3 By submitting User Submissions to the App you hereby grant:
-                    (a) to RUNROOM a worldwide, royalty-free, perpetual, transferable, 
-                    irrevocable, non-exclusive license and right to use, reproduce, share, copy, 
-                    modify, publish, edit, translate, reformat, host, aggregate, distribute, 
-                    perform, and display the User Submission alone or as part of other works in 
-                    any form, media, or technology whether now known or hereafter 
-                    developed without territorial or time limitations, and to sublicense such 
-                    rights through multiple tiers of sub-licensees.; and
-                    (b) to each user of the App, an irrevocable, perpetual, worldwide, nonexclusive, royalty-free, license to access the User Submissions through the 
-                    App.
+                    {'4.3 By submitting User Submissions to the App you hereby grant:' + '\n' +
+                    '(a) to RUNROOM a worldwide, royalty-free, perpetual, transferable, ' +
+                    'irrevocable, non-exclusive license and right to use, reproduce, share, copy, ' +
+                    'modify, publish, edit, translate, reformat, host, aggregate, distribute, ' +
+                    'perform, and display the User Submission alone or as part of other works in ' +
+                    'any form, media, or technology whether now known or hereafter ' +
+                    'developed without territorial or time limitations, and to sublicense such ' +
+                    'rights through multiple tiers of sub-licensees.; and' + '\n' +
+                    '(b) to each user of the App, an irrevocable, perpetual, worldwide, nonexclusive, royalty-free, license to access the User Submissions through the ' +
+                    'App.'}
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    4.4 By submitting User Submissions to the App you warrant, represent and 
-                    undertake to us that you have full power and authority to grant the rights 
-                    and licenses relating to the User Submissions set out in this Agreement and 
-                    the User Submissions you submit:
-                    (i) do not infringe any third party's intellectual property rights (including 
-                    without limitation copyright and/or trademarks), other proprietary rights or 
-                    rights of publicity or privacy;
-                    (ii) do not violate any law, statute, ordinance or regulation;
-                    (iii) are not defamatory, libellous, unlawfully threatening or unlawfully 
-                    harassing;
-                    (iv) are not obscene or pornographic;
-                    (v) do not violate any laws regarding unfair competition, antidiscrimination or false advertising;
-                    (vi) do not include e-mail addresses, URLs or phone numbers or any other 
-                    Personal Identifiable Information; and
-                    (vii) are not a report of someone else's experience.
+                    {'4.4 By submitting User Submissions to the App you warrant, represent and ' +
+                    'undertake to us that you have full power and authority to grant the rights ' +
+                    'and licenses relating to the User Submissions set out in this Agreement and ' +
+                    'the User Submissions you submit:' + '\n' +
+                    "(i) do not infringe any third party's intellectual property rights (including " +
+                    'without limitation copyright and/or trademarks), other proprietary rights or ' +
+                    'rights of publicity or privacy;' + '\n' +
+                    '(ii) do not violate any law, statute, ordinance or regulation;' + '\n' +
+                    '(iii) are not defamatory, libellous, unlawfully threatening or unlawfully harassing;' + '\n' +
+                    '(iv) are not obscene or pornographic;' + '\n' +
+                    '(v) do not violate any laws regarding unfair competition, antidiscrimination or false advertising;' + '\n' +
+                    '(vi) do not include e-mail addresses, URLs or phone numbers or any other Personal Identifiable Information; and' + '\n' +
+                    "(vii) are not a report of someone else's experience."}
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    4.5 RUNROOM users like you rely on both our reviews and other users 
-                    reviews when looking for inspiration and how to get the best out of the city. 
-                    Helpful reviews should be:
-                    a) user-friendly - not contain any profanity, threats, prejudiced comments, 
-                    hate speech, sexually explicit language, or other content that is not 
-                    appropriate for other users;
-                    b) those that detail first-hand experiences;
-                    c) unique and independent - you should write one review on any given 
-                    event, restaurant, or attraction;
-                    d) original - no substantially quoted material from other sources, including 
-                    (but not limited to) webApps, e-mail correspondence, other reviews, etc;
-                    e) non-commercial - no promotional material of any kind, including selfpromotional URLs (we reserve the right to reject any URL, e-mail address, 
-                    or phone number for any reason);
-                    f) submitted by persons over the age of 13;
-                    g) submitted with a valid e-mail address; and
-                    h) submitted with no HTML tags and no excessive ALL CAPS, slang, or 
-                    typographic symbols.
+                    {'4.5 RUNROOM users like you rely on both our reviews and other users ' +
+                    'reviews when looking for inspiration and how to get the best out of the city. ' +
+                    'Helpful reviews should be:' + '\n' +
+                    'a) user-friendly - not contain any profanity, threats, prejudiced comments, ' +
+                    'hate speech, sexually explicit language, or other content that is not ' +
+                    'appropriate for other users;' + '\n' +
+                    'b) those that detail first-hand experiences;' + '\n' +
+                    'c) unique and independent - you should write one review on any given event, restaurant, or attraction;' + '\n' +
+                    'd) original - no substantially quoted material from other sources, including (but not limited to) webApps, e-mail correspondence, other reviews, etc;' + '\n' +
+                    'e) non-commercial - no promotional material of any kind, including selfpromotional URLs (we reserve the right to reject any URL, e-mail address, ' +
+                    'or phone number for any reason);' + '\n' +
+                    'f) submitted by persons over the age of 13;' + '\n' +
+                    'g) submitted with a valid e-mail address; and' + '\n' +
+                    'h) submitted with no HTML tags and no excessive ALL CAPS, slang, or typographic symbols.'}
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
                     4.6 We do not endorse any User Submission or any opinion, recommendation, or advice expressed therein, and we expressly disclaim any and all 
@@ -191,7 +186,7 @@ const TermsAndConditions = (props) => {
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
                     4.8 We allow the management or representatives of events, venues, 
-                    restaurants or attractions to respond to reviews written by users on the App
+                    restaurants or attractions to respond to reviews written by users on the App 
                     and these should be identified by your user account. We reserve the right 
                     to remove a review or management response at any time for any reason.
                 </Text>
@@ -217,7 +212,7 @@ const TermsAndConditions = (props) => {
                     agreeing or disagreeing.
                 </Text>
                 <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>5. Communications and Electronic Signatures</Text>
-                <Tex style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}t>
+                <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}t>
                     You agree to accept all communications from RUNROOM regarding use of 
                     the App at the addresses you provide to RUNROOM. RUNROOM is entitled 
                     to rely on the e-mail address and mailing address that you last provided to 
@@ -228,7 +223,7 @@ const TermsAndConditions = (props) => {
                     that, when in the future you visit the App, your agreement or consent to 
                     these Terms will be legally binding and enforceable and will be the legal 
                     equivalent of your handwritten signature.
-                </Tex>
+                </Text>
                 <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>6. Intellectual Property Rights</Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
                     6.1 All material contained on this App, unless otherwise indicated, is 
@@ -269,12 +264,9 @@ const TermsAndConditions = (props) => {
                     but not limited to passwords, account or other information.
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    (c) Restrict or inhibit any other authorized user from using and enjoying 
-                    the App. This includes, without limitation
-                    (i) using, or attempting to use, any account without the user’s 
-                    permission; and
-                    (ii) obtaining or soliciting another user’s password or other personal 
-                    information under false pretences.
+                    {'(c) Restrict or inhibit any other authorized user from using and enjoying the App. This includes, without limitation' + '\n' +
+                    "   (i) using, or attempting to use, any account without the user’s permission; and" + '\n' +
+                    "   (ii) obtaining or soliciting another user’s password or other personal information under false pretences."}
                 </Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
                     (d) Post, store, or transmit any knowingly inaccurate or misleading 
@@ -336,7 +328,7 @@ const TermsAndConditions = (props) => {
                     RUNROOM may offer links to third-party webApps that may offer various 
                     products, services, and/or information. Users should be aware that use of 
                     these third-party webApps may be subject to separate terms and 
-                    conditions, information collection practices, and other provisions. We
+                    conditions, information collection practices, and other provisions. We 
                     cannot ensure that users will be satisfied with any products or services 
                     offered and/or purchased from such third-party webApps. RUNROOM does 
                     not endorse any of the products or services offered in any third-party 
@@ -395,22 +387,19 @@ const TermsAndConditions = (props) => {
                 </Text>
                 <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>15. Indemnity</Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
-                    You agree to defend, indemnify, and hold harmless RUNROOM and its 
-                    affiliates and all of their employees, agents, directors, officers, proprietors, 
-                    partners, representatives, shareholders, attorneys, predecessors, 
-                    successors, and assigns, from and against any and all claims, proceedings, 
-                    damages, injuries, liabilities, losses, costs, and expenses (including 
-                    reasonable attorneys’ fees and litigation expenses), relating to or arising 
-                    from:
-                    (i) your use of and access to the App; 
-                    (ii) any breach by you of this Agreement; 
-                    (iii) your violation of any third-party right, including, without limitation, any 
-                    copyright, property or privacy right; and 
-                    (iv) any claim that your content caused damage to a thirty-party. 
-                    This defense and indemnification obligation will survive the Terms and your 
-                    use of the App. You shall not in any event settle any matter without the prior 
-                    written consent of RUNROOM to be withheld at RUNROOM’s sole 
-                    discretion.
+                    {'You agree to defend, indemnify, and hold harmless RUNROOM and its ' +
+                    'affiliates and all of their employees, agents, directors, officers, proprietors, ' +
+                    'partners, representatives, shareholders, attorneys, predecessors, ' +
+                    'successors, and assigns, from and against any and all claims, proceedings, ' +
+                    'damages, injuries, liabilities, losses, costs, and expenses (including ' +
+                    'reasonable attorneys’ fees and litigation expenses), relating to or arising from:' + '\n' +
+                    '(i) your use of and access to the App;' + '\n' +
+                    '(ii) any breach by you of this Agreement;' + '\n' +
+                    '(iii) your violation of any third-party right, including, without limitation, any copyright, property or privacy right; and' + '\n' +
+                    '(iv) any claim that your content caused damage to a thirty-party.' + '\n' +
+                    'This defense and indemnification obligation will survive the Terms and your ' +
+                    'use of the App. You shall not in any event settle any matter without the prior ' +
+                    'written consent of RUNROOM to be withheld at RUNROOM’s sole discretion.'}
                 </Text>
                 <Text style={[styles.docSubTitle, { fontSize: 15 * zoom, lineHeight: 19 * zoom }]}>16. App Access and Termination</Text>
                 <Text style={[styles.docParagraph, { fontSize: 14 * zoom, lineHeight: 18 * zoom }]}>
