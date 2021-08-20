@@ -12,7 +12,12 @@ const LocationPermission = (props) => {
         if(status !== 'granted') {
             Alert.alert('Permission to access location was denied.');
         } else {
-            props.navigation.navigate('Main');
+            let { status } = await Location.requestBackgroundPermissionsAsync();
+            if(status !== 'granted') {
+                Alert.alert('Permission to access location was denied.');
+            } else {
+                props.navigation.navigate('Main');
+            }   
         }
     }
 

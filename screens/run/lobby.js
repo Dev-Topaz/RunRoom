@@ -5,7 +5,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getLobbyRunners, follow, stopFollowing } from '../../utils/api';
+import { getLobbyRunners, follow, stopFollowing, joinRun } from '../../utils/api';
 import { convertFloat } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
 
@@ -148,11 +148,25 @@ const Lobby = (props) => {
         }
     }
 
+    const pressBackAction = () => {
+        const joinInfo = {
+            runnerId: userId,
+            runRoomId: roomId,
+        };
+        joinRun(joinInfo, accessToken).then(result => {
+            if(result) {
+                props.navigation.navigate(previousPage);
+            } else {
+                console.log('There is an error.');
+            }
+        });
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
-                    <Pressable style={{ paddingLeft: 6 }} onPress={() => props.navigation.navigate(previousPage)}>
+                    <Pressable style={{ paddingLeft: 6 }} onPress={pressBackAction}>
                         <SvgIcon icon='Back'/>
                     </Pressable>
                     <View style={{ justifyContent: 'flex-end' }}>

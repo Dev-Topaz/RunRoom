@@ -59,7 +59,7 @@ const Running = (props) => {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                const { status } = Location.requestBackgroundPermissionsAsync();
+                let { status } = Location.requestBackgroundPermissionsAsync();
                 if (status !== 'granted') {
                     Alert.alert('Your Location Background Permission is denied');
                 } else {
