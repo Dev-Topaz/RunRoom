@@ -70,6 +70,8 @@ export default function App() {
     global.IMAGE.STOCK.STOCK_18,
     global.IMAGE.STOCK.STOCK_19,
     global.IMAGE.UNKNOWN,
+    global.IMAGE.LOADING,
+    global.IMAGE.SPLASH,
   ]);
 
   if(!fontsLoaded || !imagesLoaded)
