@@ -8,11 +8,11 @@ import css from '../../css';
 const LocationPermission = (props) => {
     
     const requestPermission = async() => {
-        const { status } = Location.requestForegroundPermissionsAsync();
+        let { status } = await Location.requestForegroundPermissionsAsync();
         if(status !== 'granted') {
             Alert.alert('Location Foreground Permission is denied.');
         } else {
-            const { status } = Location.requestBackgroundPermissionsAsync();
+            let { status } = await Location.requestBackgroundPermissionsAsync();
             if(status != 'granted') {
                 Alert.alert('Location Background Permission is denied.');
             } else {
