@@ -102,7 +102,6 @@ const Running = (props) => {
             activityType: Location.ActivityType.Fitness,
             pausesUpdatesAutomatically: true,
         });
-        return res;
     }
 
     //const startLocationTracking = async() => {
