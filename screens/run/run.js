@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateRun, getLobbyRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
+import { result } from 'lodash';
 
 const LOCATION_TASK_NAME = 'background-location-task';
 
@@ -66,7 +67,7 @@ const Running = (props) => {
                     Alert.alert('Your Location Background Permission is denied');
                 } else {
                     _client = await startLocationTracking();
-                    console.log(_client);
+                    //console.log(_client);
                 }
             }
         })();
@@ -95,12 +96,14 @@ const Running = (props) => {
     }, [current]);
 
     const startLocationTracking = async() => {
-        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        let res = await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
             distanceInterval: 5,
             timeInterval: 5000,
             activityType: Location.ActivityType.Fitness,
+            pausesUpdatesAutomatically: true,
         });
+        console.log(res);
     }
 
     //const startLocationTracking = async() => {

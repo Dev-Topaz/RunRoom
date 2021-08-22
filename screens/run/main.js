@@ -42,7 +42,7 @@ const RunMain = (props) => {
         const listener = props.navigation.addListener('didFocus', () => {
             setPage(1);
             setLoading(true);
-            getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
+            getAllRunRooms(1, 3, accessToken, filterOption).then(result => {
                 if(result != null) {
                 
                     let res = [...result];
