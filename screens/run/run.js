@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateRun, getLobbyRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
-import { result } from 'lodash';
 
 const LOCATION_TASK_NAME = 'background-location-task';
 
@@ -96,14 +95,14 @@ const Running = (props) => {
     }, [current]);
 
     const startLocationTracking = async() => {
-        let res = await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
             distanceInterval: 5,
             timeInterval: 5000,
             activityType: Location.ActivityType.Fitness,
             pausesUpdatesAutomatically: true,
         });
-        console.log(res);
+        return res;
     }
 
     //const startLocationTracking = async() => {
@@ -180,10 +179,10 @@ const Running = (props) => {
                                 setCurPace(0);
                             } else {
                                 const delta = 2.5 / (unit == 1 ? 1609 : 1000);
-                                const curSpeed = 5 / (betweenDist - delta) * 0.1 + avgPace * 0.9;
-                                setCurPace(curSpeed > 59999 ? 0 : curSpeed);
+                                const curSpeed = 5 / (Math.abs(betweenDist) - delta) * 0.1 + avgPace * 0.9;
+                                setCurPace(curSpeed > 59999 ? 59999 : curSpeed);
 
-                                let newDist = dist + betweenDist - delta;
+                                let newDist = dist + Math.abs(betweenDist) - delta;
                                 setDist(newDist > distance ? distance : newDist);
                                 setLastPoint(location);
                                 //setLastCoords(midCoords);
@@ -204,8 +203,8 @@ const Running = (props) => {
                     runDistance: dist,
                     unit: unit,
                     runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
-                    currentPace: curPace > 59999 ? 0 : curPace,
-                    averagePace: averagePace > 59999 ? 0 : averagePace,
+                    currentPace: curPace > 59999 ? 59999 : curPace,
+                    averagePace: averagePace > 59999 ? 59999 : averagePace,
                     status: dist >= distance ? 3 : raceStatus,
                 };
 
