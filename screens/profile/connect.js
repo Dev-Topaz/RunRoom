@@ -74,21 +74,21 @@ const ProfileConnection = (props) => {
         setPage(1);
         setLoading(true);
         if(isFollower && isFollowing) {
-            getAllConnections(page, 8, searchText, accessToken).then(result => {
+            getAllConnections(1, 8, searchText, accessToken).then(result => {
                 if(result != null) {
                     setData(result);
                 }
                 setLoading(false);
             });
         } else if(isFollower && !isFollowing) {
-            getFollowers(page, 8, searchText, accessToken).then(result => {
+            getFollowers(1, 8, searchText, accessToken).then(result => {
                 if(result != null) {
                     setData(result);
                 }
                 setLoading(false);
             });
         } else if(!isFollower && isFollowing) {
-            getFollowings(page, 8, searchText, accessToken).then(result => {
+            getFollowings(1, 8, searchText, accessToken).then(result => {
                 if(result != null) {
                     setData(result);
                 }

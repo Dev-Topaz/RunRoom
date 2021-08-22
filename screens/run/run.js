@@ -12,6 +12,8 @@ import { updateRun, getRaceRunners, follow, stopFollowing } from '../../utils/ap
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
 
+const LOCATION_TASK_NAME = 'background-location-task';
+
 const Running = (props) => {
 
     const dispatch = useDispatch();
@@ -59,16 +61,17 @@ const Running = (props) => {
                 let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.BestForNavigation });
                 setLastPoint(location);
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
-                let { status } = Location.requestBackgroundPermissionsAsync();
+                let { status } = await Location.requestBackgroundPermissionsAsync();
                 if (status !== 'granted') {
                     Alert.alert('Your Location Background Permission is denied');
                 } else {
                     _client = await startLocationTracking();
+                    console.log(_client);
                 }
             }
         })();
 
-        return () => _client.remove();
+        //return () => _client.remove();
     }, []);
 
     useEffect(() => {
@@ -781,5 +784,3 @@ const styles = StyleSheet.create({
 export default Running;
 
 const followType = [ '', 'Follow', 'Following', 'Follow back' ];
-
-const LOCATION_TASK_NAME = 'background-location-task';
