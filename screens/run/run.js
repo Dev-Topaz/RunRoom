@@ -8,7 +8,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { updateRun, getRaceRunners, follow, stopFollowing } from '../../utils/api';
+import { updateRun, getLobbyRunners, follow, stopFollowing } from '../../utils/api';
 import { convertFloat, displayPace, getDistancePercent } from '../../utils/func';
 import { setRank } from '../../store/actions/actions';
 
@@ -209,7 +209,7 @@ const Running = (props) => {
                 if(raceStatus < 2) {
                     updateRun(updateInfo, accessToken).then(result => {
                         if(result) {
-                            getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+                            getLobbyRunners(roomId, 1, 500, accessToken).then(res => {
                                 if(res != null) {
                                     const idx = res.findIndex(item => userId === item.runnerId);
                                     setRunRank(idx + 1);
@@ -294,7 +294,7 @@ const Running = (props) => {
             }
             dispatch(setRank(true));
         } else {
-            getRaceRunners(roomId, 1, 500, accessToken).then(res => {
+            getLobbyRunners(roomId, 1, 500, accessToken).then(res => {
                 if(res != null) {
                     const idx = res.findIndex(item => userId === item.runnerId);
                     setRunRank(idx + 1);
