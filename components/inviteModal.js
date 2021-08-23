@@ -236,10 +236,10 @@ const InviteModal = (props) => {
                             />
                         </View>
                         <View style={css.toggleContainer}>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(1)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollower ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND, marginRight: 1 }]} onPress={() => pressGroupButton(1)}>
                                 <Text style={[css.typeText, { color: isFollower ? 'white' : global.COLOR.PRIMARY100 }]}>Followers</Text>
                             </Pressable>
-                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND }]} onPress={() => pressGroupButton(2)}>
+                            <Pressable style={[css.toggleButton, { backgroundColor: isFollowing ? global.COLOR.PRIMARY100 : global.COLOR.BACKGROUND, marginLeft: 1 }]} onPress={() => pressGroupButton(2)}>
                                 <Text style={[css.typeText, { color: isFollowing ? 'white' : global.COLOR.PRIMARY100 }]}>Following</Text>
                             </Pressable>
                         </View>

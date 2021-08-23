@@ -33,7 +33,7 @@ const Feedback = (props) => {
                 <SvgIcon icon='Back'/>
             </Pressable>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>FEEDBACK</Text>
-            <Text style={[css.authIndicatorText, { letterSpacing: -0.35, marginBottom: 40 }]}>{'Please help us improve our app by providing feedback' + '\n' + 'below'}</Text>
+            <Text style={[css.authIndicatorText, { letterSpacing: -0.35, marginBottom: 40 }]}>{'Please help us improve our app by providing feedback' + ' ' + 'below'}</Text>
             {
                 isKB ? null :
                 <View style={styles.radioGroupContainer}>

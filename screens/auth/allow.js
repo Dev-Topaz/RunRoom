@@ -26,7 +26,7 @@ const LocationPermission = (props) => {
             <View style={styles.midContainer}>
                 <SvgIcon icon='LocationMark'/>
                 <Text style={[css.titleText, { textAlign: 'center', marginTop: 45, color: global.COLOR.PRIMARY100 }]}>ALLOW LOCATION</Text>
-                <Text style={styles.indicatorText}>{ 'Please allow RunRoom to access your location' + '\n' + 'to maximize the features of the app' }</Text>
+                <Text style={styles.indicatorText}>{ 'Please allow RunRoom to access your location' + ' ' + 'to maximize the features of the app' }</Text>
             </View>
             <View style={styles.submitContainer}>
                 <TouchableOpacity style={css.submitButton} onPress={requestPermission}>

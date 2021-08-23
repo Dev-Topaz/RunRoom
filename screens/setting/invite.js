@@ -41,7 +41,7 @@ const InviteFriends = (props) => {
                 <SvgIcon icon='Back'/>
             </Pressable>
             <Text style={[css.titleText, { color: global.COLOR.PRIMARY100 }]}>INVITE FRIENDS</Text>
-            <Text style={css.authIndicatorText}>{'Share the below link with friends and enjoy running' + '\n' + 'together'}</Text>
+            <Text style={css.authIndicatorText}>{'Share the below link with friends and enjoy running' + ' ' + 'together'}</Text>
             <Text style={[css.labelText, { marginTop: 45 }]}>Share link</Text>
             <View style={css.textInputRowContainer}>
                 <TextInput

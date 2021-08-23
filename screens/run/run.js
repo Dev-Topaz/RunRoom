@@ -471,8 +471,8 @@ const Running = (props) => {
                 <View style={styles.overlay}>
                     <View style={styles.modalContainer}>
                         <View>
-                            <Text style={styles.modalTitle}>{'Are you sure you want to' + '\n' + 'exit race?'}</Text>
-                            <Text style={styles.modalIndicator}>{'You will not be able to re-enter the run' + '\n' + 'and performance will not be recorded'}</Text>
+                            <Text style={styles.modalTitle}>{'Are you sure you want to' + ' ' + 'exit race?'}</Text>
+                            <Text style={styles.modalIndicator}>{'You will not be able to re-enter the run' + ' ' + 'and performance will not be recorded'}</Text>
                         </View>
                         <View style={{ width: '100%', alignItems: 'center' }}>
                             <TouchableOpacity style={styles.submitButton} onPress={pressExitAction}>
