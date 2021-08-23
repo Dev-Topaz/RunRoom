@@ -63,7 +63,7 @@ const Running = (props) => {
                 //setLastCoords({ latitude: location.coords.latitude, longitude: location.coords.longitude });
                 let { status } = await Location.requestBackgroundPermissionsAsync();
                 if (status !== 'granted') {
-                    Alert.alert('Your Location Background Permission is denied');
+                    //Alert.alert('Your Location Background Permission is denied');
                 } else {
                     _client = await startLocationTracking();
                     console.log(_client);
@@ -249,12 +249,8 @@ const Running = (props) => {
     }, [now]);
 
     useEffect(() => {
-        if(elapsed > 600) {
-            setRaceStatus(2);
-            return;
-        }
         
-        if(!isWarning && elapsed > 120) {
+        if(!isWarning && elapsed > 240) {
             setWarning(true);
             Alert.alert('Notification', 'Are you still participating in the run?',
                 [
@@ -276,21 +272,23 @@ const Running = (props) => {
         if(isToggle) {
             if(canRank) {
                 const idx = data.findIndex(item => userId === item.runnerId);
-                const targetGender = data[idx].runnerGender;
-                const targetAgeGroup = data[idx].runnerAgeGroup;
-                let target = [];
-                data.forEach(item => {
-                    if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
-                        target.push(item);
-                });
-                setData(target);
-                const index = target.findIndex(item => userId === item.runnerId);
-                setRunRank(index + 1);
+                if(idx > -1) {
+                    const targetGender = data[idx].runnerGender;
+                    const targetAgeGroup = data[idx].runnerAgeGroup;
+                    let target = [];
+                    data.forEach(item => {
+                        if(item.runnerGender == targetGender && item.runnerAgeGroup == targetAgeGroup)
+                            target.push(item);
+                    });
+                    setData(target);
+                    const index = target.findIndex(item => userId === item.runnerId);
+                    setRunRank(index + 1);
+                }
+                dispatch(setRank(true));
             } else {
                 setAlertVisible(true);
                 setToggle(false);
             }
-            dispatch(setRank(true));
         } else {
             getLobbyRunners(roomId, 1, 500, accessToken).then(res => {
                 if(res != null) {
