@@ -66,7 +66,7 @@ const Running = (props) => {
                     //Alert.alert('Your Location Background Permission is denied');
                 } else {
                     _client = await startLocationTracking();
-                    console.log(_client);
+                    //console.log(_client);
                 }
             }
         })();
@@ -95,7 +95,7 @@ const Running = (props) => {
     }, [current]);
 
     const startLocationTracking = async() => {
-        return await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
             distanceInterval: 5,
             timeInterval: 5000,
