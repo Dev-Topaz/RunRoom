@@ -28,12 +28,12 @@ export default function App() {
     } else {
       if(appState.current == 'inactive') {
         if(timer == null) {
-          timer = setInterval(() => console.log('App is in the background.'), 1000);
+          timer = setInterval(() => console.log('App is in the background.'), 10000);
           console.log('App has come to the background');
         }
       } else {
         if(timer == null) {
-          timer = setInterval(() => console.log('App is in the background.'), 1000);
+          timer = setInterval(() => console.log('App is in the background.'), 10000);
           console.log('App has come to the background');
         }
       }

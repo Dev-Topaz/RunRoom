@@ -66,7 +66,7 @@ const Running = (props) => {
                     Alert.alert('Your Location Background Permission is denied');
                 } else {
                     _client = await startLocationTracking();
-                    //console.log(_client);
+                    console.log(_client);
                 }
             }
         })();
@@ -95,7 +95,7 @@ const Running = (props) => {
     }, [current]);
 
     const startLocationTracking = async() => {
-        await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
+        return await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
             accuracy: Location.Accuracy.BestForNavigation,
             distanceInterval: 5,
             timeInterval: 5000,
@@ -254,11 +254,8 @@ const Running = (props) => {
             return;
         }
         
-        if(!isWarning) {
-            if(elapsed % 120 == 0) {
-                setWarning(true);
-            }
-        } else {
+        if(!isWarning && elapsed > 120) {
+            setWarning(true);
             Alert.alert('Notification', 'Are you still participating in the run?',
                 [
                     {
