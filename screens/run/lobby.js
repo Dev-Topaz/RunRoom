@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar, Modal } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, View, Image, Text, Pressable, ScrollView, StatusBar, Modal, AppState } from 'react-native';
 import SwitchToggle from 'react-native-switch-toggle';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
@@ -30,10 +30,37 @@ const Lobby = (props) => {
     const [remainSec, setRemainSec] = useState(0);
     const [alertVisible, setAlertVisible] = useState(false);
 
+    const appState = useRef(AppState.currentState);
+    let timer = null;
+
     useEffect(() => {
         StatusBar.setHidden(true);
         //setToggle(isRank);
+        AppState.addEventListener('change', handleAppStateChange);
+
+        return () => AppState.removeEventListener('change', handleAppStateChange);
     }, []);
+
+    const handleAppStateChange = (nextAppState) => {
+        if(appState.current.match(/inactive|background/) && nextAppState === 'active') {
+            clearInterval(timer);
+            console.log('Lobby has come to the foreground');
+        } else {
+            if(appState.current == 'inactive') {
+                if(timer == null) {
+                    timer = setInterval(() => console.log('Lobby is in the background.'), 10000);
+                    console.log('Lobby has come to the background');
+                }
+            } else {
+                if(timer == null) {
+                    timer = setInterval(() => console.log('Lobby is in the background.'), 10000);
+                    console.log('Lobby has come to the background');
+                }
+            }
+        }
+
+        appState.current = nextAppState;
+    }
 
     useEffect(() => {
         const timer = setInterval(() => {setCurrent(new Date())}, 500);
