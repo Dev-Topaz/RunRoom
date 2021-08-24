@@ -171,8 +171,8 @@ const EditProfile = (props) => {
     }
 
     const pressSubmitAction = () => {
-        if(name.firstName == '' || name.lastName == '') {
-            Alert.alert('WARNING', 'The first name and last name cannot be empty');
+        if(name.firstName == '') {
+            Alert.alert('WARNING', 'Please choose a first name');
             return;
         }
         
