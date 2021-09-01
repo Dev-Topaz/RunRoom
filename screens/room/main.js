@@ -98,7 +98,7 @@ const RoomMain = (props) => {
         setLoading(true);
         getAllRunRooms(page, 3, accessToken, filterOption).then(result => {
             if(result != null) {
-
+                
                 let res = [...result];
                 res.forEach(item => {
                     const idx = item.runners.findIndex(element => userId == element.runnerId);
