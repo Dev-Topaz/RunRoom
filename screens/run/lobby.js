@@ -258,7 +258,7 @@ const Lobby = (props) => {
                         data.map((item, index) => {
                             return (
                                 <View key={item.runnerId} style={[styles.listItemContainer, { backgroundColor: item.runnerId == userId ? global.COLOR.STATUS_INACTIVE : 'white' }]}>
-                                    <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture}} style={styles.avatar}/>
+                                    <Image source={item.runnerPicture == null ? global.IMAGE.UNKNOWN : {uri: item.runnerPicture, cache: 'reload'}} style={styles.avatar}/>
                                     <View style={styles.infoContainer}>
                                         <Text style={styles.nameText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
                                         <Text style={styles.locationText}>{item.runningLocation}</Text>
