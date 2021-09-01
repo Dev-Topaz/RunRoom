@@ -45,7 +45,7 @@ const InviteFriends = (props) => {
             <Text style={[css.labelText, { marginTop: 45 }]}>Share link</Text>
             <View style={css.textInputRowContainer}>
                 <TextInput
-                    style={css.inputText}
+                    style={[css.inputText, { paddingRight: 40 }]}
                     editable={false}
                     placeholder='Enter your url'
                     value='https://apps.apple.com/us/app/runroom/id1560016139'
