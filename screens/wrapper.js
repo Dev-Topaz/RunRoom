@@ -4,7 +4,7 @@ import AppNavigator from '../navigations/appNavigator';
 import { checkIfLoggedIn, initUnitFromStorageToRedux } from '../utils/func';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from '../utils/api';
-import { chanageLoggedIn } from '../store/actions/actions';
+import { chanageLoggedIn, updateToken } from '../store/actions/actions';
 
 const AppWrapper = () => {
 
@@ -28,7 +28,12 @@ const AppWrapper = () => {
 
     useEffect(() => {
         const timer = setInterval(() => setCurrent(new Date()), 3000000);
-        refreshAccessToken(accessToken, refreshToken);
+        refreshAccessToken(accessToken, refreshToken).then(result => {
+            if(result != null)
+                dispatch(updateToken(result.accessToken));
+        }).catch(err => {
+            console.log(err);
+        });
 
         return () => clearInterval(timer);
     }, [current]);

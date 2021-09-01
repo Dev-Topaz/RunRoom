@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, MOBILE_NUMBER_VERIFIED, LOG_OUT, LOG_IN } from '../constants';
+import { MOBILE_NUMBER_CHANGE, MOBILE_NUMBER_VERIFIED, LOG_OUT, LOG_IN, UPDATE_TOKEN } from '../constants';
 
 const initialState = {
     phoneNumber: '',
@@ -40,6 +40,12 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isLoggedIn: action.payload
+            }
+
+        case UPDATE_TOKEN:
+            return {
+                ...state,
+                accessToken: action.payload
             }
 
         default:
