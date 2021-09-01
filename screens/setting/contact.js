@@ -73,7 +73,7 @@ const Contact = (props) => {
 
     const pressSubmitAction = async() => {
         let didShare = false;
-        const message = "Let's run together! Check this app https://runroom.com/cjsKck12";
+        const message = "Let's run together! Check this app https://apps.apple.com/us/app/runroom/id1560016139";
         const emails = selectedContacts.filter(item => item.email != null).map(item => item.email);
         const phoneNumbers = selectedContacts.filter(item => item.phoneNumber != null).map(item => item.phoneNumber);
         if(emails.length > 0) {
