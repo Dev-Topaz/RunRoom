@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import global from './global';
 import configureStore from './store/configureStore';
 import Splash from './screens/splash';
-import AppNavigator from './navigations/appNavigator';
+import AppWrapper from './screens/wrapper';
 
 const store = configureStore()
 
@@ -79,7 +79,7 @@ export default function App() {
 
   return (
     <Provider store = { store }>
-      <AppNavigator/>
+      <AppWrapper/>
     </Provider>
   );
 }
