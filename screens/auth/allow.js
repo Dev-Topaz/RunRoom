@@ -12,8 +12,8 @@ const LocationPermission = (props) => {
         if(status !== 'granted') {
             Alert.alert('Location Foreground Permission is denied.');
         } else {
-            let { status } = await Location.requestBackgroundPermissionsAsync();
-            if(status !== 'granted') {
+            let BackPermission = await Location.requestBackgroundPermissionsAsync();
+            if(BackPermission.status !== 'granted') {
                 Alert.alert('Location Background Permission is denied.');
             } else {
                 props.navigation.navigate('Main');

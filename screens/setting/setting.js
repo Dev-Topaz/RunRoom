@@ -68,7 +68,7 @@ const Setting = (props) => {
                             }).catch(err => {
                                 console.log(err);
                             });
-                            props.navigation.navigate('Auth');
+                            props.navigation.navigate('PhoneNumber');
                         } else {
                             Alert.alert('ERROR', 'There is an error in logout');
                         }
