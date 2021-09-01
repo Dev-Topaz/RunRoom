@@ -19,8 +19,8 @@ const FilterModal = (props) => {
         participating: false,
         organized: false,
     });
-    const [lowValue, setLow] = useState(3.4);
-    const [highValue, setHigh] = useState(12.7);
+    const [lowValue, setLow] = useState(0);
+    const [highValue, setHigh] = useState(20.1);
     const [dateValue, setDateValue] = useState(null);
     const [dateVisible, setDateVisible] = useState(false);
     const [warningVisible, setWarningVisible] = useState(false);
@@ -31,8 +31,8 @@ const FilterModal = (props) => {
             participating: false,
             organized: false,
         });
-        setLow(3.4);
-        setHigh(12.7);
+        setLow(0);
+        setHigh(20.1);
         setDateValue(null);
     }
 
@@ -49,6 +49,7 @@ const FilterModal = (props) => {
             unit: unit,
             dateValue: dateValue == null ? new Date() : dateValue,
         };
+        
         props.onChangeValue(filterOption);
         props.onChangeVisible(false);
     }
