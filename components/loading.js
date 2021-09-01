@@ -7,7 +7,7 @@ const Loading = () => {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Image source={global.IMAGE.LOADING} style={{ width: 100, height: 100, resizeMode: 'contain' }}/>
-            <Text style={{ fontFamily: 'SFProBold', fontSize: 18, marginTop: 20 }}>LOADING ...</Text>
+            <Text style={{ fontFamily: 'SFProMedium', fontSize: 18, marginTop: 20 }}>LOADING ...</Text>
         </View>
     );
 }
