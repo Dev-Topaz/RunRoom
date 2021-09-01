@@ -64,17 +64,21 @@ const EditProfile = (props) => {
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
                         };
-                        
-                        if(result.location == '' || result.location == null) {
-                            let area = await Location.reverseGeocodeAsync(position);
-                            //console.log(area);
-                            if(area[0].country != null) {
+
+                        let area = await Location.reverseGeocodeAsync(position);
+                        //console.log(area);
+                        if(area[0].country != null) {
+                            if(area[0].city != null)
                                 Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
-                                if(area[0].city != null)
-                                    setRunningLocation(area[0].city + ', ' + area[0].country);
-                                else
-                                    setRunningLocation(area[0].region + ', ' + area[0].country);
-                            }
+                            else
+                                Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
+                        }
+                        
+                        if(result.location === '' || result.location === null) {
+                            if(area[0].city != null)
+                                setRunningLocation(area[0].city + ', ' + area[0].country);
+                            else
+                                setRunningLocation(area[0].region + ', ' + area[0].country);
                         } else {
                             setRunningLocation(result.location);
                         }
@@ -223,7 +227,7 @@ const EditProfile = (props) => {
                 </Pressable>
                 <Text style={[css.titleText, { marginTop: 5, color: global.COLOR.PRIMARY100 }]}>EDIT PROFILE</Text>
                 <View style={styles.avatarContainer}>
-                    <Image source={avatar == null ? global.IMAGE.UNKNOWN : { uri: avatar }} style={styles.avatar}/>
+                    <Image source={avatar == null ? global.IMAGE.UNKNOWN : { uri: avatar, cache: 'reload' }} style={styles.avatar}/>
                     <View style={{ justifyContent: 'center', marginLeft: 15 }}>
                         <Text style={css.inputText}>Profile Photo</Text>
                         <Pressable style={styles.uploadButton} onPress={pressPickerAction}>

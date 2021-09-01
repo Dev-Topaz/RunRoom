@@ -52,7 +52,7 @@ const Profile = (props) => {
             <View style={styles.header}>
                 <Text style={[css.titleText, { color: global.COLOR.PRIMARY100, marginBottom: 10 }]}>PROFILE</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Image source={userInfo.avatar == null ? global.IMAGE.UNKNOWN : { uri: userInfo.avatar }} style={css.hostAvatar}/>
+                    <Image source={userInfo.avatar == null ? global.IMAGE.UNKNOWN : { uri: userInfo.avatar, cache: 'reload' }} style={css.hostAvatar}/>
                     <View style={[css.hostInfo, { justifyContent: 'center' }]}>
                         <Text style={[css.hostName, { color: global.COLOR.PRIMARY100 }]}>{userInfo.firstName + ' ' + userInfo.lastName}</Text>
                         <Text style={[css.hostLabel, { marginTop: 2 }]}>{userInfo.phoneNumber}</Text>
