@@ -4,23 +4,34 @@ import PhoneInput from 'react-native-phone-input';
 import CountryPicker from '../../components/countryPicker';
 import global from '../../global';
 import css from '../../css';
+import Loading from '../../components/loading';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeMobileNumber } from '../../store/actions/actions';
 import { sendVerifyCode } from '../../utils/api';
 
 const MobileInput = (props) => {
 
     const dispatch = useDispatch();
+    const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
     const [modalVisible, setModalVisible] = useState(false);
     const [modalData, setModalData] = useState([]);
+    const [isLoaded, setLoaded] = useState(false);
 
     const phoneInput = useRef(null);
 
     useEffect(() => {
-        setModalData(phoneInput.current.getPickerData());
+        if(isLoggedIn)
+            props.navigation.navigate('Main');
+        else
+            setLoaded(true);
     }, []);
+
+    useEffect(() => {
+        if(isLoaded)
+            setModalData(phoneInput.current.getPickerData());
+    }, [isLoaded]);
 
     const selectCountry = (item) => {
         phoneInput.current.selectCountry(item.iso2);
@@ -42,6 +53,9 @@ const MobileInput = (props) => {
             });
         }
     }
+
+    if(!isLoaded)
+        return (<Loading/>);
     
     return (
         <View style={css.bgAuthContainer}>
