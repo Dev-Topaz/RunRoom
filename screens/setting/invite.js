@@ -17,7 +17,7 @@ const InviteFriends = (props) => {
     const toast = useRef(null);
 
     const copyToClipboard = () => {
-        Clipboard.setString('https://runroom.com/cjsKck12');
+        Clipboard.setString('https://apps.apple.com/us/app/runroom/id1560016139');
         toast.current.show('Copied to Clipboard!');
     }
 
@@ -48,7 +48,7 @@ const InviteFriends = (props) => {
                     style={css.inputText}
                     editable={false}
                     placeholder='Enter your url'
-                    value='https://runroom.com/cjsKck12'
+                    value='https://apps.apple.com/us/app/runroom/id1560016139'
                 />
                 <Pressable style={styles.duplicateButton} onPress={copyToClipboard}>
                     <Icon name='content-copy' type='material-community' size={25} color={global.COLOR.SETTING_ICON}/>
