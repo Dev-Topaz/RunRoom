@@ -8,3 +8,4 @@ export const RANK_SET = 'Set the rank setting';
 export const BOARD_ENTER = 'Enter a leaderboard';
 export const CLICK_INVITE = 'Click invite button';
 export const PREV_FLAG = 'Set the previous flag';
+export const LOG_IN = 'Log in a user';

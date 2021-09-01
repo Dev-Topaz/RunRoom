@@ -4,6 +4,7 @@ import AppNavigator from '../navigations/appNavigator';
 import { checkIfLoggedIn, initUnitFromStorageToRedux } from '../utils/func';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAccessToken } from '../utils/api';
+import { chanageLoggedIn } from '../store/actions/actions';
 
 const AppWrapper = () => {
 
@@ -11,14 +12,16 @@ const AppWrapper = () => {
     const refreshToken = useSelector(state => state.user.refreshToken);
     const dispatch = useDispatch();
     const [isLoaded, setLoaded] = useState(false);
-    const [isLoggedIn, setLoggedIn] = useState(false);
     const [current, setCurrent] = useState(new Date());
 
     useEffect(() => {
         initUnitFromStorageToRedux(dispatch);
         checkIfLoggedIn(dispatch).then(result => {
             if(result)
-                setLoggedIn(true);
+                dispatch(chanageLoggedIn(true));
+            else
+                dispatch(chanageLoggedIn(false));
+
             setLoaded(true);
         })
     }, []);
@@ -26,7 +29,7 @@ const AppWrapper = () => {
     useEffect(() => {
         const timer = setInterval(() => setCurrent(new Date()), 3000000);
         refreshAccessToken(accessToken, refreshToken);
-        
+
         return () => clearInterval(timer);
     }, [current]);
 

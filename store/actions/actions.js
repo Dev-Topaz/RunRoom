@@ -1,4 +1,4 @@
-import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, RANK_SET, BOARD_ENTER, CLICK_INVITE, PREV_FLAG } from '../constants';
+import { MOBILE_NUMBER_CHANGE, UNIT_CHANGE, MOBILE_NUMBER_VERIFIED, ROOM_ENTER, LOG_OUT, RANK_CUSTOMIZE, RANK_SET, BOARD_ENTER, CLICK_INVITE, PREV_FLAG, LOG_IN } from '../constants';
 
 export function changeMobileNumber(phoneNumber) {
     
@@ -81,6 +81,14 @@ export function changePrevFlag(flag) {
 
     return {
         type: PREV_FLAG,
+        payload: flag
+    }
+}
+
+export function chanageLoggedIn(flag) {
+
+    return {
+        type: LOG_IN,
         payload: flag
     }
 }
