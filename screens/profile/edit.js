@@ -53,48 +53,46 @@ const EditProfile = (props) => {
                 setGender(result.gender);
                 setToggle(isRank);
 
-                (async () => {
-                    Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
-                    let { status } = await Location.requestForegroundPermissionsAsync();
-                    if (status !== 'granted') {
-                        Alert.alert('Your Location Permission is denied');
-                    } else {
-                        let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-                        const position = {
-                            latitude: location.coords.latitude,
-                            longitude: location.coords.longitude,
-                        };
-
-                        let area = await Location.reverseGeocodeAsync(position);
-                        //console.log(area);
-                        if(area[0].country != null) {
-                            if(area[0].city != null)
-                                Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
-                            else
-                                Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
-                        }
-                        
-                        if(result.location === '' || result.location === null) {
-                            if(area[0].city != null)
-                                setRunningLocation(area[0].city + ', ' + area[0].country);
-                            else
-                                setRunningLocation(area[0].region + ', ' + area[0].country);
+                if(result.location == '' || result.location == null) {
+                    (async () => {
+                        Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
+                        let { status } = await Location.requestForegroundPermissionsAsync();
+                        if (status !== 'granted') {
+                            Alert.alert('Your Location Permission is denied');
                         } else {
-                            setRunningLocation(result.location);
+                            let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                            const position = {
+                                latitude: location.coords.latitude,
+                                longitude: location.coords.longitude,
+                            };
+    
+                            let area = await Location.reverseGeocodeAsync(position);
+                            //console.log(area);
+                            if(area[0].country != null) {
+                                if(area[0].city != null) {
+                                    Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
+                                    setRunningLocation(area[0].city + ', ' + area[0].country);
+                                } else {
+                                    Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
+                                    setRunningLocation(area[0].region + ', ' + area[0].country);
+                                }
+                            }
+                            
+                            //if(region[0].country != null) {
+                            //    setCountry(region[0].country);
+                            //    getCities(region[0].country).then(result => {
+                            //        setCityList(result);
+                            //    });
+                            //}
+                            //if(region[0].city != null)
+                            //    setCity(region[0].city);
+                            //else
+                            //    setCity(cityList[0]);
                         }
-                        
-                        //if(region[0].country != null) {
-                        //    setCountry(region[0].country);
-                        //    getCities(region[0].country).then(result => {
-                        //        setCityList(result);
-                        //    });
-                        //}
-                        //if(region[0].city != null)
-                        //    setCity(region[0].city);
-                        //else
-                        //    setCity(cityList[0]);
-                    }
-                })();
+                    })();
+                } else {
+                    setRunningLocation(result.location);
+                }
             }
         });
     }, []);
