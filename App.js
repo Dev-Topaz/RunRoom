@@ -72,6 +72,7 @@ export default function App() {
     global.IMAGE.UNKNOWN,
     global.IMAGE.LOADING,
     global.IMAGE.SPLASH,
+    global.IMAGE.LOCATION,
   ]);
 
   if(!fontsLoaded || !imagesLoaded)

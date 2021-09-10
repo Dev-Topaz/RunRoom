@@ -74,6 +74,7 @@ export default {
         },
         UNKNOWN: require('./assets/unknown.png'),
         LOADING: require('./assets/loading.gif'),
+        LOCATION: require('./assets/location.png'),
     },
     FONT: {
         FUTURA: require('./assets/fonts/FuturaCondExtraBoldObl.otf'),
