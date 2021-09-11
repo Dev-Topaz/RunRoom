@@ -53,7 +53,7 @@ const ConnectionModal = (props) => {
                                         <View style={css.infoContainer}>
                                             <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
                                             <Text style={css.infoText}>{item.runningLocation == null ? '' : item.runningLocation}</Text>
-                                            <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
+                                            <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted == 1 ? ' Run completed' : ' Runs completed')}</Text>
                                         </View>
                                         <View style={css.buttonGroupContainer}>
                                             <Pressable style={[css.inviteButton, { backgroundColor: findIndex(item, inviteList) > -1 ? global.COLOR.BACKGROUND : global.COLOR.SECONDARY}]} onPress={() => pressUninviteAction(idx - 1)}>

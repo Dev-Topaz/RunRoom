@@ -47,52 +47,52 @@ const EditProfile = (props) => {
                 Alert.alert('You are a fake user.');
             } else {
                 setName({ firstName: result.firstName, lastName: result.lastName });
-                //setRunningLocation(result.location == null ? '' : result.location);
+                setRunningLocation(result.location == null ? '' : result.location);
                 setAgeGroup(result.ageGroup);
                 setAvatar(result.avatar);
                 setGender(result.gender);
                 setToggle(isRank);
 
-                if(result.location == '' || result.location == null) {
-                    (async () => {
-                        Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
-                        let { status } = await Location.requestForegroundPermissionsAsync();
-                        if (status !== 'granted') {
-                            Alert.alert('Your Location Permission is denied');
-                        } else {
-                            let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
-                            const position = {
-                                latitude: location.coords.latitude,
-                                longitude: location.coords.longitude,
-                            };
-    
-                            let area = await Location.reverseGeocodeAsync(position);
-                            //console.log(area);
-                            if(area[0].country != null) {
-                                if(area[0].city != null) {
-                                    Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
-                                    setRunningLocation(area[0].city + ', ' + area[0].country);
-                                } else {
-                                    Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
-                                    setRunningLocation(area[0].region + ', ' + area[0].country);
-                                }
-                            }
-                            
-                            //if(region[0].country != null) {
-                            //    setCountry(region[0].country);
-                            //    getCities(region[0].country).then(result => {
-                            //        setCityList(result);
-                            //    });
-                            //}
-                            //if(region[0].city != null)
-                            //    setCity(region[0].city);
-                            //else
-                            //    setCity(cityList[0]);
-                        }
-                    })();
-                } else {
-                    setRunningLocation(result.location);
-                }
+                //if(result.location == '' || result.location == null) {
+                //    (async () => {
+                //        Location.setGoogleApiKey('AIzaSyCGRVa2B7TBFR7ZVboNcOKDjYYbbwjm6QA');
+                //        let { status } = await Location.requestForegroundPermissionsAsync();
+                //        if (status !== 'granted') {
+                //            Alert.alert('Your Location Permission is denied');
+                //        } else {
+                //            let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                //            const position = {
+                //                latitude: location.coords.latitude,
+                //                longitude: location.coords.longitude,
+                //            };
+                //
+                //            let area = await Location.reverseGeocodeAsync(position);
+                //            //console.log(area);
+                //            if(area[0].country != null) {
+                //                if(area[0].city != null) {
+                //                    Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
+                //                    setRunningLocation(area[0].city + ', ' + area[0].country);
+                //                } else {
+                //                    Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
+                //                    setRunningLocation(area[0].region + ', ' + area[0].country);
+                //                }
+                //            }
+                //            
+                //            //if(region[0].country != null) {
+                //            //    setCountry(region[0].country);
+                //            //    getCities(region[0].country).then(result => {
+                //            //        setCityList(result);
+                //            //    });
+                //            //}
+                //            //if(region[0].city != null)
+                //            //    setCity(region[0].city);
+                //            //else
+                //            //    setCity(cityList[0]);
+                //        }
+                //    })();
+                //} else {
+                //    setRunningLocation(result.location);
+                //}
             }
         });
     }, []);
@@ -110,6 +110,33 @@ const EditProfile = (props) => {
         if(gender == 0 || ageGroup == 0)
             setToggle(false);
     }, [gender, ageGroup]);
+
+    const pressLocationDetect = () => {
+        (async () => {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Your Location Permission is denied');
+            } else {
+                let location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Highest });
+                const position = {
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                };
+
+                let area = await Location.reverseGeocodeAsync(position);
+                //console.log(area);
+                if(area[0].country != null) {
+                    if(area[0].city != null) {
+                        Alert.alert('Your location: ' + area[0].city + ', ' + area[0].country);
+                        setRunningLocation(area[0].city + ', ' + area[0].country);
+                    } else {
+                        Alert.alert('Your location: ' + area[0].region + ', ' + area[0].country);
+                        setRunningLocation(area[0].region + ', ' + area[0].country);
+                    }
+                }
+            }
+        })();
+    }
 
     const pressCameraAction = () => {
         setPickerVisible(false);
@@ -266,13 +293,16 @@ const EditProfile = (props) => {
                     />
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Running Location</Text>
-                <View style={css.textInputContainer}>
+                <View style={css.textInputRowContainer}>
                     <TextInput
-                        style={[css.inputText, { paddingVertical: 20 }]}
+                        style={[css.inputText, { paddingVertical: 20, paddingRight: 40 }]}
                         placeholder='Enter your running location'
                         value={runningLocation}
                         onChangeText={text => setRunningLocation(text)}
                     />
+                    <Pressable style={[css.plusButton, { right: 10 }]} onPress={pressLocationDetect}>
+                        <Image source={global.IMAGE.LOCATION} style={{ width: 40, height: 40, resizeMode: 'contain' }}/>
+                    </Pressable>
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Age Group</Text>
                 <Pressable style={css.textInputRowContainer} onPress={() => setAgeVisible(true)}>

@@ -161,7 +161,7 @@ const ProfileConnection = (props) => {
             <View style={css.infoContainer}>
                 <Text style={css.labelText}>{item.firstName + ' ' + item.lastName}</Text>
                 <Text style={css.infoText}>{item.runningLocation == null ? '' : item.runningLocation}</Text>
-                <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
+                <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted == 1 ? ' Run completed' : ' Runs completed')}</Text>
             </View>
             <View style={css.buttonGroupContainer}>
                 <Pressable style={[css.inviteButton, { backgroundColor: item.followingStatus == 1 ? global.COLOR.STATUS_INACTIVE : item.followingStatus == 2 ? global.COLOR.SECONDARY : 'transparent', borderWidth: 1, borderColor: item.followingStatus  == 1 ? global.COLOR.STATUS_INACTIVE : global.COLOR.SECONDARY }]} onPress={() => pressFollowAction(index)}>

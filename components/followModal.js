@@ -30,7 +30,7 @@ const FollowModal = (props) => {
                                         <View style={css.infoContainer}>
                                             <Text style={css.labelText}>{item.runnerFirstName + ' ' + item.runnerLastName}</Text>
                                             <Text style={css.infoText}>{item.runningLocation}</Text>
-                                            <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted < 2 ? ' Run completed' : ' Runs completed')}</Text>
+                                            <Text style={css.infoText}>{item.runsCompleted + (item.runsCompleted == 1 ? ' Run completed' : ' Runs completed')}</Text>
                                         </View>
                                     </View>
                                 );
