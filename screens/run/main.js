@@ -19,7 +19,7 @@ const RunMain = (props) => {
     const accessToken = useSelector(state => state.user.accessToken);
     const unit = useSelector(state => state.setting.unit);
 
-    const filterOption = {
+    const [filterOption, setFilterOption] = useState({
         invited: false,
         participating: true,
         organized: false,
@@ -27,7 +27,7 @@ const RunMain = (props) => {
         endValue: 100,
         unit: 1,
         dateValue: new Date(),
-    };
+    });
 
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
@@ -76,6 +76,27 @@ const RunMain = (props) => {
 
         return () => listener.remove();
     }, []);
+
+    useEffect(() => {
+        setLoaded(false);
+        setPage(1);
+        setLoading(true);
+        getAllRunRooms(1, 3, accessToken, filterOption).then(result => {
+            if(result != null) {
+
+                let res = [...result];
+                res.forEach(item => {
+                    const idx = item.runners.findIndex(element => userId == element.runnerId);
+                    if(idx > -1)
+                        item.runners.splice(idx, 1);
+                });
+                setData(res);
+            }
+            setLoading(false);
+            setLoaded(true);
+        });
+        setLoading(false);
+    }, [filterOption]);
 
     useEffect(() => {
         setLoading(true);
