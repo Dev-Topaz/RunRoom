@@ -7,6 +7,7 @@ import css from '../../css';
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import FollowModal from '../../components/followModal';
 import FilterModal from '../../components/filterModal';
+import Loading from '../../components/loading';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllRunRooms, joinRun, disjoinRun, enterLobby } from '../../utils/api';
@@ -24,6 +25,7 @@ const RoomMain = (props) => {
     const [follower, setFollower] = useState([]);
 
     const [isEmpty, setEmpty] = useState(false);
+    const [isLoaded, setLoaded] = useState(false);
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -41,6 +43,7 @@ const RoomMain = (props) => {
     useEffect(() => {
         StatusBar.setHidden(true);
         const listener = props.navigation.addListener('didFocus', () => {
+            setLoaded(false);
             setPage(1);
             setLoading(true);
             getAllRunRooms(1, 3, accessToken, filterOption).then(result => {
@@ -68,6 +71,7 @@ const RoomMain = (props) => {
 
                 }
                 setLoading(false);
+                setLoaded(true);
             });
             setLoading(false);
         });
@@ -76,6 +80,7 @@ const RoomMain = (props) => {
     }, []);
 
     useEffect(() => {
+        setLoaded(false);
         setPage(1);
         setLoading(true);
         getAllRunRooms(1, 3, accessToken, filterOption).then(result => {
@@ -90,6 +95,7 @@ const RoomMain = (props) => {
                 setData(res);
             }
             setLoading(false);
+            setLoaded(true);
         });
         setLoading(false);
     }, [filterOption]);
@@ -266,6 +272,9 @@ const RoomMain = (props) => {
             </View>
         </View>
     );
+
+    if(!isLoaded)
+        return (<Loading/>);
 
     return (
         <View style={{ flex: 1, backgroundColor: global.COLOR.BACKGROUND }}>

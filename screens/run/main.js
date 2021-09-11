@@ -4,6 +4,7 @@ import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
 import FollowModal from '../../components/followModal';
+import Loading from '../../components/loading';
 
 import { convertFloat, getRemainTimeStyle, displayRemainTime, displayRunDateTime } from '../../utils/func';
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,6 +34,7 @@ const RunMain = (props) => {
     const [loading, setLoading] = useState(false);
     const [current, setCurrent] = useState(new Date());
     const [isEmpty, setEmpty] = useState(false);
+    const [isLoaded, setLoaded] = useState(false);
 
     const [follower, setFollower] = useState([]);
     const [followVisible, setFollowVisible] = useState(false);
@@ -40,6 +42,7 @@ const RunMain = (props) => {
     useEffect(() => {
         StatusBar.setHidden(true);
         const listener = props.navigation.addListener('didFocus', () => {
+            setLoaded(false);
             setPage(1);
             setLoading(true);
             getAllRunRooms(1, 3, accessToken, filterOption).then(result => {
@@ -66,6 +69,7 @@ const RunMain = (props) => {
                     }
                 }
                 setLoading(false);
+                setLoaded(true);
             });
             setLoading(false);
         });
@@ -226,6 +230,9 @@ const RunMain = (props) => {
             </View>
         </View>
     );
+
+    if(!isLoaded)
+        return (<Loading/>);
 
     return (
         <View style={{ flex: 1, backgroundColor: global.COLOR.BACKGROUND }}>
