@@ -122,6 +122,7 @@ const ProfileConnection = (props) => {
             case 2:
                 stopFollowing(target[index].connectedUserId, accessToken).then(result => {
                     if(result != null) {
+                        //console.log(result);
                         target[index].followingStatus = result;
                         setData(target);
                     }
