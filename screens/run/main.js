@@ -225,7 +225,7 @@ const RunMain = (props) => {
                 </View>
             </ImageBackground>
             <View style={css.cardInfoContainer}>
-                <Image source={item.organizerDetails.runnerPicture == null ? unknown : {uri: item.organizerDetails.runnerPicture, cache: 'reload'}} style={css.hostAvatar}/>
+                <Image source={item.organizerDetails.runnerPicture == null ? unknown : {uri: item.organizerDetails.runnerPicture}} style={css.hostAvatar}/>
                 <View style={css.hostInfo}>
                     <Text style={css.hostName}>{item.organizerDetails.runnerFirstName + ' ' + item.organizerDetails.runnerLastName}</Text>
                     <View style={css.hostInvited}>
