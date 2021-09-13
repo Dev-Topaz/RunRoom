@@ -155,6 +155,8 @@ const Contact = (props) => {
                         />
                     );
                 }}
+                initialNumToRender={20}
+                removeClippedSubviews
             />
             <View style={styles.footer}>
                 <TouchableOpacity style={css.submitButton} onPress={pressSubmitAction}>
