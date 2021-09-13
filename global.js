@@ -74,6 +74,7 @@ export default {
         },
         UNKNOWN: require('./assets/unknown.png'),
         LOADING: require('./assets/loading.gif'),
+        TARGET: require('./assets/target.png'),
         LOCATION: require('./assets/location.png'),
     },
     FONT: {
