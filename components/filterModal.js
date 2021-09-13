@@ -26,14 +26,22 @@ const FilterModal = (props) => {
     const [warningVisible, setWarningVisible] = useState(false);
 
     const initStateValue = () => {
+        //setOption({
+        //    invited: false,
+        //    participating: false,
+        //    organized: false,
+        //});
+        //setLow(0);
+        //setHigh(20.1);
+        //setDateValue(null);
         setOption({
-            invited: false,
-            participating: false,
-            organized: false,
+            invited: props.value.invited,
+            participating: props.value.participating,
+            organized: props.value.organized,
         });
-        setLow(0);
-        setHigh(20.1);
-        setDateValue(null);
+        setLow(props.value.startValue);
+        setHigh(props.value.endValue > 20 ? 20.1 : props.value.endValue);
+        setDateValue(props.value.dateValue);
     }
 
     const pressSubmitAction = () => {
@@ -55,7 +63,6 @@ const FilterModal = (props) => {
     }
 
     const pressCloseAction = () => {
-        initStateValue();
         props.onChangeVisible(false);
     }
 
@@ -88,7 +95,7 @@ const FilterModal = (props) => {
             animationType='slide'
             transparent
             visible={ props.visible }
-            onRequestClose={() => {}}
+            onShow={() => initStateValue()}
         >
             <View style={css.overlay}>
                 <View style={[css.modalContainer801, { paddingHorizontal: global.CONSTANTS.SIZE_20 }]}>

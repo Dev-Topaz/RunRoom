@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, ImageBackground, FlatList, ActivityIndicator, Pressable, Alert, StatusBar } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
+import { Badge } from 'react-native-elements';
 import SvgIcon from '../../components/svgIcon';
 import global from '../../global';
 import css from '../../css';
@@ -39,6 +40,7 @@ const RoomMain = (props) => {
         unit: 1,
         dateValue: new Date(),
     });
+    const [isFilterChanged, setFilterChanged] = useState(false);
 
     useEffect(() => {
         StatusBar.setHidden(true);
@@ -98,6 +100,11 @@ const RoomMain = (props) => {
             setLoaded(true);
         });
         setLoading(false);
+
+        if(filterOption.organized == true || filterOption.participating == true || filterOption.invited == true || filterOption.startValue != 0 || filterOption.endValue != 100)
+            setFilterChanged(true);
+        else
+            setFilterChanged(false);
     }, [filterOption]);
 
     useEffect(() => {
@@ -283,6 +290,9 @@ const RoomMain = (props) => {
                     <Text style={[css.titleText, { color: global.COLOR.HEADER_TITLE }]}>RUNROOMS</Text>
                     <Pressable onPress={() => setFilterVisible(true)}>
                         <SvgIcon icon='Filter'/>
+                        {
+                            isFilterChanged ? <Badge status='success' containerStyle={{ position: 'absolute', top: -1, right: -1 }}/> : null
+                        }
                     </Pressable>
                 </View>
             </View>
@@ -319,6 +329,7 @@ const RoomMain = (props) => {
                 visible={ filterVisible }
                 onChangeVisible={ setFilterVisible }
                 onChangeValue={ setFilterOption }
+                value = { filterOption }
             />
         </View>
     );
