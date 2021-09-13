@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Image, Text, Pressable, TouchableOpacity, TextInput, Modal, Alert } from 'react-native';
+import { StyleSheet, View, Image, ImageBackground, Text, Pressable, TouchableOpacity, TextInput, Modal, Alert, ActivityIndicator } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SwitchToggle from 'react-native-switch-toggle';
 import PhoneInput from 'react-native-phone-input';
@@ -33,6 +33,7 @@ const EditProfile = (props) => {
     const [gender, setGender] = useState(0);
     const [avatar, setAvatar] = useState(null);
     const [isToggle, setToggle] = useState(false);
+    const [isClicked, setClicked] = useState(false);
 
     const [alertVisible, setAlertVisible] = useState(false);
     const [ageVisible, setAgeVisible] = useState(false);
@@ -112,6 +113,7 @@ const EditProfile = (props) => {
     }, [gender, ageGroup]);
 
     const pressLocationDetect = () => {
+        setClicked(true);
         (async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
@@ -134,6 +136,7 @@ const EditProfile = (props) => {
                         setRunningLocation(area[0].region + ', ' + area[0].country);
                     }
                 }
+                setClicked(false);
             }
         })();
     }
@@ -301,7 +304,12 @@ const EditProfile = (props) => {
                         onChangeText={text => setRunningLocation(text)}
                     />
                     <Pressable style={[css.plusButton, { right: 10 }]} onPress={pressLocationDetect}>
-                        <Image source={global.IMAGE.LOCATION} style={{ width: 40, height: 40, resizeMode: 'contain' }}/>
+                        <ImageBackground source={global.IMAGE.LOCATION} style={{ width: 45, height: 45, resizeMode: 'contain', justifyContent: 'center', alignItems: 'center' }}>
+                            {
+                                isClicked ? <ActivityIndicator animating size='small'/>
+                                          : <Image source={global.IMAGE.TARGET} style={{ width: '100%', height: '100%', resizeMode: 'contain' }}/>
+                            }
+                        </ImageBackground>
                     </Pressable>
                 </View>
                 <Text style={[css.labelText, { marginTop: 15 }]}>Age Group</Text>
