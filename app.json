@@ -2,7 +2,7 @@
   "expo": {
     "name": "RunRoom",
     "slug": "RunRoom",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.metomine.runroom",
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.0",
       "infoPlist": {
         "NSLocationAlwaysAndWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
         "NSLocationWhenInUseUsageDescription": "App uses your location permission to let others know where you are running now.",
