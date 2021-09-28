@@ -203,8 +203,8 @@ const Running = (props) => {
                     runDistance: dist,
                     unit: unit,
                     runTimeInSeconds: Math.floor((now.getTime() - startTime.getTime()) / 1000),
-                    currentPace: curPace > 59999 ? 59999 : curPace,
-                    averagePace: averagePace > 59999 ? 59999 : averagePace,
+                    currentPace: curPace > 5999 ? 5999 : curPace,
+                    averagePace: averagePace > 5999 ? 5999 : averagePace,
                     status: dist >= distance ? 3 : raceStatus,
                 };
 
